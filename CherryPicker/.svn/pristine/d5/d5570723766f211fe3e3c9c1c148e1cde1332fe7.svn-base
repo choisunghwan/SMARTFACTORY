@@ -1,0 +1,475 @@
+package com.CherryPicker.web.ui500;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.CherryPicker.web.common.CommandMap;
+import com.CherryPicker.web.common.util.CommonUtils;
+import com.CherryPicker.web.ui500.UI500Service;
+import com.CherryPicker.web.comm.CommService;
+//import dongaS.comm.service.DongaCommService;
+
+@Controller
+public class UI500Controller {
+	Logger log = Logger.getLogger(this.getClass());
+	
+	@Autowired
+	private UI500Service UI500Service;
+	
+	@Autowired
+	private CommService CommService;
+	
+	@RequestMapping(value="/CPMES/CPMES_UI510.do")
+    public ModelAndView CPMES_UI510(CommandMap commandMap) throws Exception{
+    	ModelAndView mv = new ModelAndView("/CPMES/CPMES_UI510");
+    	
+    	commandMap.put("pCdTp", "ACCOUNT_TP");
+		List<Map<String,Object>> list = CommService.searchComcode(commandMap.getMap());
+		
+//		List<Map<String,Object>> list1 = CommService.searchGridComcode(commandMap.getMap());
+		
+		
+		
+		mv.addObject("accountTp", list);
+		
+//		mv.addObject("accountTpGrid", list1);
+		
+    	return mv;
+    }
+	
+	@RequestMapping(value="/CPMES/CPMES_UI510_search.do")
+    public ModelAndView CPMES_UI510_search(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		List<Map<String,Object>> list = UI500Service.CPMES_UI510_search(commandMap.getMap());
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.addObject("response", list);
+		
+        mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/CPMES/CPMES_UI510_save.do")
+    public ModelAndView CPMES_UI510_save(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		String gridData = (String)commandMap.get("gridData");
+		
+		String sUserId = (String)commandMap.get("sUserId");
+		
+		JSONParser jsonParser = new JSONParser();
+		
+		JSONArray jsonArray = new JSONArray();
+				
+		if(gridData != null)
+		{
+			jsonArray = (JSONArray) jsonParser.parse(gridData);
+		}
+		
+		int iCnt = jsonArray.size();
+		
+		List<Map<String, Object>> list = new ArrayList();
+		
+		for(int i=0; i<iCnt; i++){
+			JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+    		
+			Map<String, Object> smap = new HashMap<String, Object>();
+			
+			String chk =CommonUtils.isNull(jsonObj.get("CHK"));
+			
+			if("1".equals(chk))
+			{
+				smap.put("CUSTOMER_PK_CP", CommonUtils.isNull(jsonObj.get("CUSTOMER_PK")));
+				smap.put("CUSTOMER_GUBUN_CP", CommonUtils.isNull(jsonObj.get("CUSTOMER_GUBUN")));
+				smap.put("CUSTOMER_TP_CP", CommonUtils.isNull(jsonObj.get("CUSTOMER_TP")));
+				smap.put("CUSTOMER_NAME_CP", CommonUtils.isNull(jsonObj.get("CUSTOMER_NAME")));
+				smap.put("REG_NO_CP", CommonUtils.isNull(jsonObj.get("REG_NO")));
+				smap.put("CEO_NAME_CP", CommonUtils.isNull(jsonObj.get("CEO_NAME")));
+				smap.put("TEL_NO_CP", CommonUtils.isNull(jsonObj.get("TEL_NO")));
+				smap.put("FAX_NO_CP", CommonUtils.isNull(jsonObj.get("FAX_NO")));
+				smap.put("ADDRESS_CP", CommonUtils.isNull(jsonObj.get("ADDRESS")));
+				smap.put("REMARKS_CP", CommonUtils.isNull(jsonObj.get("REMARKS")));
+				smap.put("CREATE_USER_CP", sUserId);
+				smap.put("UPDATE_USER_CP", sUserId);
+				
+				list.add(smap);
+			}
+			
+		}
+		
+		UI500Service.CPMES_UI510_save(list);
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/CPMES/CPMES_UI510_del.do")
+    public ModelAndView CPMES_UI510_del(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		String gridData = (String)commandMap.get("gridData");
+		String sUserId = (String)commandMap.get("sUserId");
+		
+		JSONParser jsonParser = new JSONParser();
+		
+		JSONArray jsonArray = new JSONArray();
+				
+		if(gridData != null)
+		{
+			jsonArray = (JSONArray) jsonParser.parse(gridData);
+		}
+		
+		int iCnt = jsonArray.size();
+		
+		List<Map<String, Object>> list = new ArrayList();
+		
+		for(int i=0; i<iCnt; i++){
+			JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+    		
+			Map<String, Object> smap = new HashMap<String, Object>();
+			
+			String chk =CommonUtils.isNull(jsonObj.get("CHK"));
+			
+			if("1".equals(chk))
+			{
+				
+				smap.put("CUSTOMER_PK_CP", CommonUtils.isNull(jsonObj.get("CUSTOMER_PK")));
+				smap.put("UPDATE_USER_CP", sUserId);
+				
+				list.add(smap);
+			}
+			
+		}
+		
+		UI500Service.CPMES_UI510_delete(list);
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	//업체팝업
+	@RequestMapping(value="/CPMES/CPMES_UI511.do")
+    public ModelAndView CPMES_UI511(CommandMap commandMap) throws Exception{
+    	ModelAndView mv = new ModelAndView("/CPMES/CPMES_UI511");
+    	
+    	commandMap.put("pCdTp", "ACCOUNT_TP");
+		List<Map<String,Object>> list = CommService.searchComcode(commandMap.getMap());
+		
+		mv.addObject("accountTp", list);
+		
+    	return mv;
+    }
+	
+	@RequestMapping(value="/CPMES/CPMES_UI520.do")
+    public ModelAndView CPMES_TD1_020(CommandMap commandMap) throws Exception{
+    	ModelAndView mv = new ModelAndView("/CPMES/CPMES_UI520");
+    	
+    	String aaa = (String)commandMap.get("aaa");
+    	
+//    	JSONParser jsonParser = new JSONParser();
+//		
+//		JSONArray jsonArray = new JSONArray();
+//				
+//		if(gridData != null)
+//		{
+//			jsonArray = (JSONArray) jsonParser.parse(gridData);
+//		}
+//		
+//		int iCnt = jsonArray.size();
+		
+    	commandMap.put("pCdTp", "MANAGE_TP");
+		List<Map<String,Object>> list = CommService.searchComcode(commandMap.getMap());
+		
+		mv.addObject("manageTp", list);
+    	return mv;
+    }
+	
+	@RequestMapping(value="/CPMES/CPMES_UI520_search.do")
+    public ModelAndView CPMES_UI520_search(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		List<Map<String,Object>> list = UI500Service.CPMES_UI520_search(commandMap.getMap());
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.addObject("response", list);
+		
+        mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/CPMES/CPMES_UI520_save.do")
+    public ModelAndView CPMES_UI520_save(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		String gridData = (String)commandMap.get("gridData");
+		
+		String sUserId = (String)commandMap.get("sUserId");
+		
+		JSONParser jsonParser = new JSONParser();
+		
+		JSONArray jsonArray = new JSONArray();
+				
+		if(gridData != null)
+		{
+			jsonArray = (JSONArray) jsonParser.parse(gridData);
+		}
+		
+		int iCnt = jsonArray.size();
+		
+		List<Map<String, Object>> list = new ArrayList();
+		
+		for(int i=0; i<iCnt; i++){
+			JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+    		
+			Map<String, Object> smap = new HashMap<String, Object>();
+			
+			String chk =CommonUtils.isNull(jsonObj.get("CHK"));
+			
+			if("1".equals(chk))
+			{
+				smap.put("USER_ID_CP", CommonUtils.isNull(jsonObj.get("USER_ID_CP")));
+				smap.put("USER_NAME_CP", CommonUtils.isNull(jsonObj.get("USER_NAME_CP")));
+				smap.put("USER_PW_CP", CommonUtils.isNull(jsonObj.get("USER_PW_CP")));
+				smap.put("USER_AUTH_CP", CommonUtils.isNull(jsonObj.get("USER_AUTH_CP")));
+				smap.put("USER_DISP_CP", CommonUtils.isNull(jsonObj.get("USER_DISP_CP")));
+				smap.put("JOIN_DATE_CP", CommonUtils.isNull(jsonObj.get("JOIN_DATE_CP")));
+				smap.put("CREATE_USER_CP", sUserId);
+				smap.put("UPDATE_USER_CP", sUserId);
+				
+				list.add(smap);
+			}
+			
+		}
+		
+		UI500Service.CPMES_UI520_save(list);
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/CPMES/CPMES_UI520_del.do")
+    public ModelAndView CPMES_UI520_del(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		String gridData = (String)commandMap.get("gridData");
+		String sUserId = (String)commandMap.get("sUserId");
+		
+		JSONParser jsonParser = new JSONParser();
+		
+		JSONArray jsonArray = new JSONArray();
+				
+		if(gridData != null)
+		{
+			jsonArray = (JSONArray) jsonParser.parse(gridData);
+		}
+		
+		int iCnt = jsonArray.size();
+		
+		List<Map<String, Object>> list = new ArrayList();
+		
+		for(int i=0; i<iCnt; i++){
+			JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+    		
+			Map<String, Object> smap = new HashMap<String, Object>();
+			
+			String chk =CommonUtils.isNull(jsonObj.get("CHK"));
+			
+			if("1".equals(chk))
+			{
+				smap.put("USER_ID_CP", CommonUtils.isNull(jsonObj.get("USER_ID")));
+				
+				list.add(smap);
+			}
+			
+		}
+		
+		UI500Service.CPMES_UI520_delete(list);
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	
+	@RequestMapping(value="/CPMES/CPMES_UI530.do")
+    public ModelAndView CPMES_TD1_031(CommandMap commandMap) throws Exception{
+    	ModelAndView mv = new ModelAndView("/CPMES/CPMES_UI530");
+    	
+    	return mv;
+    }
+	///////
+	
+///////
+	@RequestMapping(value="/CPMES/CPMES_UI530_searchMas.do")
+    public ModelAndView CPMES_UI530_searchMas(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		List<Map<String,Object>> list = UI500Service.CPMES_UI530_searchMas(commandMap.getMap());
+			
+		
+		ModelAndView mv = new ModelAndView(); 
+			
+		mv.addObject("response", list);
+			
+        mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/CPMES/CPMES_UI530_searchDet.do")
+    public ModelAndView CPMES_UI530_searchDet(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		List<Map<String,Object>> list = UI500Service.CPMES_UI530_searchDet(commandMap.getMap());
+			
+		
+		ModelAndView mv = new ModelAndView(); 
+			
+		mv.addObject("response", list);
+			
+        mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	
+	@RequestMapping(value="/CPMES/CPMES_UI530_save.do")
+    public ModelAndView CPMES_UI530_save(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		String gridData = (String)commandMap.get("gridData");
+		String gridData2 = (String)commandMap.get("gridData2");
+		
+		JSONParser jsonParser = new JSONParser();
+		
+		JSONArray jsonArray = new JSONArray();
+		JSONArray jsonArray2 = new JSONArray();
+				
+		if(gridData != null)
+		{
+			jsonArray = (JSONArray) jsonParser.parse(gridData);
+		}
+		
+		if(gridData2 != null)
+		{
+			jsonArray2 = (JSONArray) jsonParser.parse(gridData2);
+		}
+		
+		int iCnt = jsonArray.size();
+		int iCnt2 = jsonArray2.size();
+		
+		List<Map<String, Object>> list = new ArrayList();
+		List<Map<String, Object>> list2 = new ArrayList();
+		
+		for(int i=0; i<iCnt; i++){
+			JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+    		
+			Map<String, Object> smap = new HashMap<String, Object>();
+			
+			String chk =CommonUtils.isNull(jsonObj.get("CHK"));
+			
+			if("1".equals(chk))
+			{
+				smap.put("CD_TP_CP", CommonUtils.isNull(jsonObj.get("CD_TP")));
+				smap.put("CD_V_CP", CommonUtils.isNull(jsonObj.get("CD_V")));
+				smap.put("CD_NM_CP", CommonUtils.isNull(jsonObj.get("CD_NM")));
+				
+				list.add(smap);
+			}
+			
+		}
+		
+		for(int i=0; i<iCnt2; i++){
+			JSONObject jsonObj = (JSONObject) jsonArray2.get(i);
+    		
+			Map<String, Object> smap = new HashMap<String, Object>();
+			
+			String chk =CommonUtils.isNull(jsonObj.get("CHK"));
+			
+			if("1".equals(chk))
+			{
+				smap.put("CD_TP_CP", CommonUtils.isNull(jsonObj.get("CD_TP")));
+				smap.put("CD_V_CP", CommonUtils.isNull(jsonObj.get("CD_V")));
+				smap.put("CD_NM_CP", CommonUtils.isNull(jsonObj.get("CD_NM")));
+				smap.put("ATTR1_CP", CommonUtils.isNull(jsonObj.get("ATTR1")));
+				smap.put("ATTR2_CP", CommonUtils.isNull(jsonObj.get("ATTR2")));
+				smap.put("ATTR3_CP", CommonUtils.isNull(jsonObj.get("ATTR3")));
+				smap.put("ATTR4_CP", CommonUtils.isNull(jsonObj.get("ATTR4")));
+				
+				list2.add(smap);
+			}
+			
+		}
+		
+		UI500Service.CPMES_UI530_save(list, list2);
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	
+	@RequestMapping(value="/CPMES/CPMES_UI530_del.do")
+    public ModelAndView CPMES_UI530_del(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		String gridData = (String)commandMap.get("gridData");
+		
+		JSONParser jsonParser = new JSONParser();
+		
+		JSONArray jsonArray = new JSONArray();
+				
+		if(gridData != null)
+		{
+			jsonArray = (JSONArray) jsonParser.parse(gridData);
+		}
+		
+		int iCnt = jsonArray.size();
+		
+		List<Map<String, Object>> list = new ArrayList();
+		List<Map<String, Object>> list2 = new ArrayList();
+		
+		for(int i=0; i<iCnt; i++){
+			JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+    		
+			Map<String, Object> smap = new HashMap<String, Object>();
+			
+			String chk =CommonUtils.isNull(jsonObj.get("CHK"));
+			
+			if("1".equals(chk))
+			{
+				String cdtp = CommonUtils.isNull(jsonObj.get("CD_TP"));
+				
+				smap.put("CD_TP_CP", cdtp);
+				smap.put("CD_V_CP", CommonUtils.isNull(jsonObj.get("CD_V")));
+				smap.put("CD_NM_CP", CommonUtils.isNull(jsonObj.get("CD_NM")));
+				
+				list.add(smap);
+				
+				if("TOP".equals(cdtp))
+				{
+					list2.add(smap);
+				}
+			}
+			
+		}
+		
+		UI500Service.CPMES_UI530_delete(list, list2);
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.setViewName("jsonView");
+			
+		return mv;
+    }
+}
+	////////////////////선호////////////////////////

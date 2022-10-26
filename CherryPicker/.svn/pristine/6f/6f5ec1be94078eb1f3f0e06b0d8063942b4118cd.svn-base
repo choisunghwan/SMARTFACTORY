@@ -1,0 +1,5 @@
+package com.hubizict.web.jsonView;
+
+public class View {
+    public static class Public {}
+}

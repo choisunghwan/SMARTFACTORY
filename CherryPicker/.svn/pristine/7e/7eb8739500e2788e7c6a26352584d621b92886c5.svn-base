@@ -1,0 +1,131 @@
+package com.hubizict.web.ui400;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
+
+import com.hubizict.web.common.util.FileUtils;
+
+
+@Service
+@SuppressWarnings({"rawtypes"})
+public class UI400Service	{
+	
+	Logger log = Logger.getLogger(this.getClass());
+	
+	@Resource(name="fileUtils")
+	private FileUtils fileUtils;
+	
+	@Resource(name="UI400DAO")
+	private UI400DAO UI400DAO;
+	
+	
+	//////////////////////////////////////////////////
+	// 작업지시
+	//////////////////////////////////////////////////
+	public void PSMES_UI410_save(List<Map<String, Object>> list) throws Exception  {
+		// TODO Auto-generated method stub
+		for(int i=0, size=list.size(); i<size; i++){
+			UI400DAO.PSMES_UI410_save(list.get(i));
+		}
+	}
+	
+	public void PSMES_UI410_save_status(Map<String, Object> map) throws Exception  {
+		// TODO Auto-generated method stub
+		UI400DAO.PSMES_UI410_save_status(map);
+	}
+
+
+	public List<Map<String, Object>> searchROrderLov(Map<String, Object> map)  throws Exception {
+		// TODO Auto-generated method stub
+		return  UI400DAO.searchROrderLov(map);
+	}
+
+	public List<Map<String, Object>> PSMES_UI410_search(Map<String, Object> map)  throws Exception {
+		return  UI400DAO.PSMES_UI410_search(map);
+	}
+	
+	public List<Map<String, Object>> PSMES_UI410_searchWorkDateList()  throws Exception {
+		// TODO Auto-generated method stub
+		return  UI400DAO.PSMES_UI410_searchWorkDateList();
+	}
+	
+	
+	//////////////////////////////////////////////////
+	// 생산실적조회
+	//////////////////////////////////////////////////
+	public List<Map<String, Object>> PSMES_UI420_main_search(Map<String, Object> map) throws Exception {
+		return  UI400DAO.PSMES_UI420_main_search(map);
+	}
+	
+	public List<Map<String, Object>> PSMES_UI420_detail_search(Map<String, Object> map) throws Exception {
+		return  UI400DAO.PSMES_UI420_detail_search(map);
+	}
+	
+	public void PSMES_UI420_save(List<Map<String, Object>> list) throws Exception {
+		for(int i=0, size=list.size(); i<size; i++){
+			UI400DAO.PSMES_UI420_save(list.get(i));
+		}
+	}
+	
+	public void PSMES_UI420_WORK_LIST_save(Map<String, Object> map) throws Exception {
+		
+		UI400DAO.PSMES_UI420_WORK_LIST_save(map);
+		
+	}
+	
+	//////////////////////////////////////////////////
+	// 설비관리
+	//////////////////////////////////////////////////
+	public List<Map<String, Object>> PSMES_UI430_main_search(Map<String, Object> map) throws Exception {
+		return  UI400DAO.PSMES_UI430_main_search(map);
+	}
+	
+	public void PSMES_UI430_main_insert(Map<String, Object> map) throws Exception {
+		UI400DAO.PSMES_UI430_main_insert(map);
+	}
+	
+	public void PSMES_UI430_main_update(Map<String, Object> map) throws Exception {
+		UI400DAO.PSMES_UI430_main_update(map);
+	}
+	
+	public void PSMES_UI430_main_delete(Map<String, Object> map) throws Exception {
+		UI400DAO.PSMES_UI430_main_delete(map);
+	}
+	
+	public void PSMES_UI430_detail_delete_all(Map<String, Object> map) throws Exception {
+		UI400DAO.PSMES_UI430_detail_delete_all(map);
+	}
+	
+	public List<Map<String, Object>> PSMES_UI430_detail_search(Map<String, Object> map) throws Exception {
+		return  UI400DAO.PSMES_UI430_detail_search(map);
+	}
+	
+	public void PSMES_UI430_detail_save(List<Map<String, Object>> list) throws Exception {
+		for(int i=0, size=list.size(); i<size; i++){
+			UI400DAO.PSMES_UI430_detail_save(list.get(i));
+		}
+	}
+	
+	public void PSMES_UI430_detail_delete(List<Map<String, Object>> list) throws Exception {
+		for(int i=0, size=list.size(); i<size; i++){
+			UI400DAO.PSMES_UI430_detail_delete(list.get(i));
+		}
+	}
+
+
+
+
+
+
+	
+	
+	
+	
+	
+}

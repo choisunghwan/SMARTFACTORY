@@ -1,0 +1,159 @@
+package com.hubizict.web.interceptor;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import com.hubizict.web.comm.UserVO;
+
+import java.io.PrintWriter;
+import java.util.*;
+
+public class LoginInterceptor extends HandlerInterceptorAdapter {
+
+  private static final String LOGIN = "login";
+  private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
+
+  @Override
+  public void postHandle(HttpServletRequest request, 
+		  HttpServletResponse response, Object handler,
+		  ModelAndView modelAndView) throws Exception {
+
+	  System.out.println("postHandle me................");
+	  HttpSession session = request.getSession();
+	  
+	  String page = ((HttpServletRequest)request).getRequestURI();
+	  System.out.println("page me................" + page);
+	  String returnUrl = "";
+	  
+	  if(page.indexOf("login.do")<1 )
+	  {
+		  if(page.indexOf("loginCheck.do")>-1)
+		  {
+			  
+			  
+		  }
+	  }
+	  
+  }
+
+  @Override
+  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+	  boolean result = false;
+	  String webRoot = request.getContextPath();
+	  
+	  HttpSession session = request.getSession();
+	  
+	  UserVO user = (UserVO)session.getAttribute("UserInfo");
+//	  System.out.println("ajax...............");
+	  //isAjaxRequest(request);
+	  try {
+		  if(user == null ){
+			  if(isAjaxRequest(request)){
+				  System.out.println("ajax...............");
+				  response.sendError(HttpServletResponse.SC_FORBIDDEN);
+//				  response.sendRedirect(webRoot + "/sessionout.do");  
+//				  try {
+//			            throw new Exception();
+//			            
+//			            
+//			        } catch (Exception e){
+//			            System.out.println("firstMethod메서드에서의 예외가 처리되었음");
+//			            
+//			        }
+				  
+				  return false;
+			  }else{
+				  String page = ((HttpServletRequest)request).getRequestURI();
+				  System.out.println("page me................" + page);
+				  if(!"".equals(page) && (page.indexOf("login.do")<0 || page.indexOf("PSMES_UI610")<0  ))
+				  {
+					  System.out.println("여기오니?? " + page);
+					  
+					  response.setContentType("text/html; charset=UTF-8");
+					  
+					  PrintWriter out = response.getWriter();
+					   
+					  out.println("<script>alert('세션이 만료되었습니다. 로그인화면으로 이동합니다.'); window.parent.location.href='/login.do';window.parent.parent.location.href='/login.do'</script>");
+					   
+					  out.flush();
+
+//					  response.sendRedirect(webRoot + "/login.do");  
+					  
+					  result =  false; 
+				  }
+				  
+			  }
+		  }else{
+			  
+			  user = (UserVO)session.getAttribute("UserInfo");
+			  String page = ((HttpServletRequest)request).getRequestURI();
+//			  request.getRequestDispatcher(page+ "?userId=" + user.getsUserId()).forward(request, response);
+
+//			  request.getParameterMap().put("userId", new String[] {user.getUserId()});
+			  request.setAttribute("sUserId", user.getUser_id());
+	    		
+			  result =  true;
+		  }
+	  } catch (Exception e) { 
+		  e.printStackTrace();
+		  
+		  System.out.println(e.getMessage());
+		  return false;
+	  }
+	        
+	  return result;
+	     
+    
+//    if(page.indexOf("login.do")>-1)
+//    	return true;
+//    
+//    if(page.indexOf("loginCheck.do")>-1 || page.indexOf("login.do")>-1)
+//    {
+//    }
+//    else
+//    {
+//    	logger.info("111111111111111111e + " + session);
+//    	UserVO user = (UserVO)session.getAttribute("UserInfo");
+//    	logger.info("111111111111111111e + " + user);
+//    	
+//    	if (user == null) {
+//    		logger.info("clear login data before");
+//        	session.removeAttribute("UserInfo");
+//        	response.sendRedirect("/");
+//            //index.jsp 로 이동, web.xml 에 설정 되어 있음 (<welcome-file-list> 태그)
+//            return false;
+//        	
+//        }
+//    	else
+//    	{
+//    		user = (UserVO)session.getAttribute("UserInfo");
+//    		
+//    		logger.info("유저 정보는 있나=== > "+ user.getsUserId());
+//    		//request.getRequestDispatcher(page+ "?userId=" + user.getUserId()).forward(request, response);
+//
+//    		//request.getParameterMap().put("userId", new String[] {user.getUserId()});
+//    		request.setAttribute("sUserId", user.getsUserId());
+//    	}
+//    }
+//    
+//    return true;
+  }
+  
+	  private boolean isAjaxRequest(HttpServletRequest req) {
+	      String header = req.getHeader("AJAX");
+	      
+	      if ("true".equals(header)){
+	       return true;
+	      }else{
+	       return false;
+	      }
+	  }
+}

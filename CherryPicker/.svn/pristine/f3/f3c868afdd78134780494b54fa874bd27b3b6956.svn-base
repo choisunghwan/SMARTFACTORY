@@ -1,0 +1,235 @@
+package com.CherryPicker.web.comm;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.CherryPicker.web.comm.CommService;
+import com.CherryPicker.web.comm.UserVO;
+import com.CherryPicker.web.common.CommandMap;
+import com.CherryPicker.web.common.util.CommonUtils;
+import com.CherryPicker.web.common.util.SecurityUtil;
+
+@Controller
+public class CommController {
+//	Logger log = Logger.getLogger(this.getClass());
+	
+	@Resource(name="CommService")
+	private CommService CommService;
+	
+	HttpSession userSession;
+//	@Resource(name="DongaCommService")
+//	private DongaCommService DongaCommService;
+	
+	
+	@RequestMapping(value="/loginCheck.do")
+    public ModelAndView loginCheckView(CommandMap commandMap,HttpServletRequest request) throws Exception{
+    	ModelAndView mv = new ModelAndView();
+    	String userId = (String)commandMap.get("pUserId");
+    	String pwd = (String)commandMap.get("pwd");
+    	String browserType = (String)commandMap.get("browserType");
+    	
+    	SecurityUtil securityUtil = new SecurityUtil();
+    	
+    	String rtn1 = securityUtil.encryptSHA256(pwd);
+		/*test*/System.out.println(">" + rtn1);
+		
+		//Sha256 적용 차후에는 주석해지
+//		commandMap.put("pwd", rtn1);
+		
+    	System.out.println("loginCheck start==== > " );
+    	
+    	List<Map<String,Object>> list = CommService.selectUserInfo(commandMap.getMap());
+    	HttpSession session = request.getSession();
+    	
+    	session.setAttribute("UserInfo", null);
+    	UserVO user = new UserVO();
+    	
+    	Map map = new HashMap();
+		
+    	if(list.size()>0)
+    	{
+    		if(list.get(0).get("USER_ID") !=null)	user.setUser_id(list.get(0).get("USER_ID").toString());
+    		else user.setUser_id("");
+    		
+    		if(list.get(0).get("USER_NAME") !=null)	user.setUser_name(list.get(0).get("USER_NAME").toString());
+    		else user.setUser_name("");
+    		
+    		if(list.get(0).get("USER_AUTH") !=null)	user.setUser_auth(list.get(0).get("USER_AUTH").toString());
+    		else user.setUser_auth("");
+    		
+    		if(list.get(0).get("USER_DISP") !=null)	user.setUser_disp(list.get(0).get("USER_DISP").toString());
+    		else user.setUser_disp("");
+    		
+    		if(list.get(0).get("connectTime") !=null)	user.setConnectTime(list.get(0).get("connectTime").toString());
+    		else user.setConnectTime("");
+    		
+    		session.setAttribute("UserInfo", user);
+    		
+    		map.put("list", list);
+    		
+    		mv.addObject("list",list);
+    		
+    		sercurityLogInsert("로그인하셨습니다.", request);
+    	}
+    	else
+    	{
+    		//map.put("msg", "유저정보가 존재하지 않습니다.");
+    		map.put("list", list);
+    		mv.addObject("list",list);
+    	}
+    	
+    	mv.setViewName("jsonView");
+		
+		return mv;
+    	//return mv;
+    }
+	
+	public void sercurityLogInsert(String log_content, HttpServletRequest request)
+	{
+		Map map = new HashMap();
+		HttpSession session = request.getSession();
+
+		
+		UserVO user = (UserVO)session.getAttribute("UserInfo");
+		
+		map.put("log_content", user.getUser_name() + "님이 : " + log_content);
+		
+		map.put("pc_ip", request.getRemoteAddr());
+		
+		
+		try {
+			CommService.insert_sercutity_log(map);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value="/PSMES/PSMES_TD_MAIN.do")
+    public ModelAndView PSMES_TD_MAIN(CommandMap commandMap) throws Exception{
+    	ModelAndView mv = new ModelAndView("/PSMES/PSMES_TD_MAIN");
+    	
+    	//List<Map<String,Object>> combopPrd = CommService.selectMainGrape1(commandMap.getMap());
+    	
+    	//mv.addObject("combopPrd", combopPrd);    
+    	
+    	return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_TD_MAIN_CHART1.do")
+    public ModelAndView PSMES_TD_MAIN_CHART1(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		
+		List<Map<String,Object>> combopPrd = new ArrayList(); // CommService.selectMainGrape1(commandMap.getMap());
+		
+		ModelAndView mv = new ModelAndView(); 
+		
+		mv.addObject("response", combopPrd);
+			
+        mv.setViewName("jsonView");
+        
+//        sercurityLogInsert("탈산제 제품생산정보 조회.", request);
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_TD_MAIN_CHART2.do")
+    public ModelAndView PSMES_TD_MAIN_CHART2(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		List<Map<String,Object>> combopPrd = new ArrayList();
+		//List<Map<String,Object>> combopPrd = CommService.selectMainGrape2(commandMap.getMap());
+		
+		ModelAndView mv = new ModelAndView(); 
+		
+		mv.addObject("response", combopPrd);
+			
+        mv.setViewName("jsonView");
+        
+//        sercurityLogInsert("탈산제 제품생산정보 조회.", request);
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_TD_MAIN_CHART3.do")
+    public ModelAndView PSMES_TD_MAIN_CHART3(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		List<Map<String,Object>> combopPrd = new ArrayList();
+		
+		//List<Map<String,Object>> combopPrd = CommService.selectMainGrape3(commandMap.getMap());
+		
+		ModelAndView mv = new ModelAndView(); 
+		
+		mv.addObject("response", combopPrd);
+			
+        mv.setViewName("jsonView");
+        
+//        sercurityLogInsert("탈산제 제품생산정보 조회.", request);
+			
+		return mv;
+    }
+	
+	
+	@RequestMapping(value="/PSMES/PSMES_TD_BL_MAIN_CHART1.do")
+    public ModelAndView PSMES_TD_BL_MAIN_CHART1(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		List<Map<String,Object>> combopPrd = new ArrayList();
+		//List<Map<String,Object>> combopPrd = CommService.selectBlMainGrape1(commandMap.getMap());
+		
+		ModelAndView mv = new ModelAndView(); 
+		
+		mv.addObject("response", combopPrd);
+			
+        mv.setViewName("jsonView");
+        
+//        sercurityLogInsert("탈산제 제품생산정보 조회.", request);
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_TD_BL_MAIN_CHART2.do")
+    public ModelAndView PSMES_TD_BL_MAIN_CHART2(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		List<Map<String,Object>> combopPrd = new ArrayList();
+		//List<Map<String,Object>> combopPrd = CommService.selectBlMainGrape2(commandMap.getMap());
+		
+		ModelAndView mv = new ModelAndView(); 
+		
+		mv.addObject("response", combopPrd);
+			
+        mv.setViewName("jsonView");
+        
+//        sercurityLogInsert("탈산제 제품생산정보 조회.", request);
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_TD_BL_MAIN_CHART3.do")
+    public ModelAndView PSMES_TD_BL_MAIN_CHART3(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		List<Map<String,Object>> combopPrd = new ArrayList();
+		//List<Map<String,Object>> combopPrd = CommService.selectBlMainGrape3(commandMap.getMap());
+		
+		ModelAndView mv = new ModelAndView(); 
+		
+		mv.addObject("response", combopPrd);
+			
+        mv.setViewName("jsonView");
+        
+//        sercurityLogInsert("탈산제 제품생산정보 조회.", request);
+			
+		return mv;
+    }
+}

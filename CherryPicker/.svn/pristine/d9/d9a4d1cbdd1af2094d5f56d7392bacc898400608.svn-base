@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ui200">
+	<select id="PSMES_UI220_searchMas" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+		SELECT ROW_NUMBER() OVER(ORDER BY (SELECT 1)) AS ROWNUM
+      		   ,T.*
+         FROM (
+				SELECT DISTINCT A.R_ORDER_PK
+				     , A.R_ORDER_NO
+				     , A.R_ORDER_NAME
+				     , A.COMPANY_CODE
+				     , (SELECT CUSTOMER_NAME FROM dbo.TB_HUBIZICT_CUSTOMER WHERE CUSTOMER_PK = A.COMPANY_CODE) AS COMPANY_NAME
+				     , SUBSTRING(A.R_ORDER_DATE, 1, 4) + '-' + SUBSTRING(A.R_ORDER_DATE, 5, 2) + '-' + SUBSTRING(A.R_ORDER_DATE, 7, 2) AS R_ORDER_DATE 
+				     , SUBSTRING(A.FIXED_DATE, 1, 4) + '-' + SUBSTRING(A.FIXED_DATE, 5, 2) + '-' + SUBSTRING(A.FIXED_DATE, 7, 2) AS FIXED_DATE 
+				     , SUBSTRING(A.SHIPPING_DATE, 1, 4) + '-' + SUBSTRING(A.SHIPPING_DATE, 5, 2) + '-' + SUBSTRING(A.SHIPPING_DATE, 7, 2) AS SHIPPING_DATE 
+				     , ISNULL((SELECT SUM(AA.FINAL_COST) FROM dbo.TB_PURCHASE_ORDER AA WHERE AA.R_ORDER_PK = A.R_ORDER_PK), 0) AS OUT_COST
+				     , A.ESTIMATED_COST
+				     , A.GENERAL_COST
+				     , A.FINAL_COST
+				     , A.REMARKS
+				     , (SELECT CD_NM FROM dbo.TB_HUBIZICT_CODE WHERE CD_TP='SALES_TP' AND CD_V = A.SALES_TP COLLATE SQL_Latin1_General_CP1_CI_AS) AS SALES_TP
+				  FROM dbo.TB_RECEIVE_ORDER A
+				 WHERE 1=1
+		            AND R_ORDER_DATE BETWEEN REPLACE(#{pSearchStaDt},'-','') AND REPLACE(#{pSearchEndDt},'-','')
+				    ]]>
+				    <if test="pSalesTp != ''">
+					AND A.SALES_TP = #{pSalesTp} 
+					</if>
+		            <if test="pCustomerNm != ''">
+					AND (SELECT CUSTOMER_NAME FROM [dbo].[TB_HUBIZICT_CUSTOMER] WHERE CUSTOMER_PK = COMPANY_CODE) LIKE '%' + #{pCustomerNm} + '%' 
+					</if>
+				) T
+					<![CDATA[
+		 ORDER BY T.R_ORDER_PK DESC
+		]]>	
+	</select>
+	<select id="PSMES_UI210_searchMas" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+		SELECT T.R_ORDER_PK
+			 , T.R_ORDER_NO
+			 , T.R_ORDER_NAME
+			 , T.COMPANY_CODE
+			 , (SELECT CUSTOMER_NAME FROM dbo.TB_HUBIZICT_CUSTOMER WHERE CUSTOMER_PK = T.COMPANY_CODE) AS COMPANY_NAME
+			 , FORMAT(CONVERT(DATE,T.R_ORDER_DATE), 'yyyy-MM-dd') AS R_ORDER_DATE
+			 , FORMAT(CONVERT(DATE,T.FIXED_DATE), 'yyyy-MM-dd') AS FIXED_DATE
+			 , CASE WHEN T.SHIPPING_DATE = null THEN
+			   	  		SUBSTRING(T.SHIPPING_DATE, 1, 4) + '-' + SUBSTRING(T.SHIPPING_DATE, 5, 2) + '-' + SUBSTRING(T.SHIPPING_DATE, 7, 2)
+				    ELSE ''
+			   END AS SHIPPING_DATE
+			 , ISNULL((SELECT FORMAT(SUM(SUM_COST),'###,###,###,###,###') FROM dbo.TB_RECEIVE_ORDER_DETAIL detail WHERE detail.R_ORDER_PK = T.R_ORDER_PK),0) AS ESTIMATED_COST
+			 , FORMAT(T.GENERAL_COST,'###,###,###,###,###') AS GENERAL_COST
+			 , FORMAT(T.FINAL_COST,'###,###,###,###,###') AS FINAL_COST
+		     , ISNULL((SELECT FORMAT(SUM(SUM_COST),'###,###,###,###,###') FROM dbo.TB_RECEIVE_ORDER_DETAIL detail WHERE detail.OUT_YN = 'Y' AND detail.R_ORDER_PK = T.R_ORDER_PK),0) AS OUTSOURCING_COST
+			 , T.NATION_TP
+			 , T.SALES_TP
+			 , T.REMARKS
+		  FROM dbo.TB_RECEIVE_ORDER T
+		 WHERE 1=1
+		    ]]>
+			<if test="pROrderPk != ''">
+		   AND T.R_ORDER_PK = #{pROrderPk}
+			</if>
+	</select>
+	
+	<select id="PSMES_UI230_searchMas" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+		SELECT ROW_NUMBER() OVER(ORDER BY (SELECT 1)) AS ROWNUM
+		     , A.R_ORDER_PK
+		     , A.R_ORDER_NO
+		     , A.R_ORDER_NAME
+		     , A.COMPANY_CODE
+		     , (SELECT CUSTOMER_NAME FROM dbo.TB_HUBIZICT_CUSTOMER WHERE CUSTOMER_PK = A.COMPANY_CODE) AS COMPANY_NAME
+		     , SUBSTRING(A.R_ORDER_DATE, 1, 4) + '-' + SUBSTRING(A.R_ORDER_DATE, 5, 2) + '-' + SUBSTRING(A.R_ORDER_DATE, 7, 2) AS R_ORDER_DATE
+		     , SUBSTRING(A.FIXED_DATE, 1, 4) + '-' + SUBSTRING(A.FIXED_DATE, 5, 2) + '-' + SUBSTRING(A.FIXED_DATE, 7, 2) AS FIXED_DATE
+		     , SUBSTRING(B.P_WORK_START_DATE, 1, 4) + '-' + SUBSTRING(B.P_WORK_START_DATE, 5, 2) + '-' + SUBSTRING(B.P_WORK_START_DATE, 7, 2) AS P_WORK_START_DATE
+		     , (CASE WHEN (A.SALES_TP = 'S04' OR A.SALES_TP = 'S05' ) THEN
+			 			SUBSTRING(B.P_WORK_END_DATE, 1, 4) + '-' + SUBSTRING(B.P_WORK_END_DATE, 5, 2) + '-' + SUBSTRING(B.P_WORK_END_DATE, 7, 2)
+					ELSE '' 
+			    END) AS  P_WORK_END_DATE
+		     , SUBSTRING(A.SHIPPING_DATE, 1, 4) + '-' + SUBSTRING(A.SHIPPING_DATE, 5, 2) + '-' + SUBSTRING(A.SHIPPING_DATE, 7, 2) AS SHIPPING_DATE
+		     , (SELECT CD_NM FROM dbo.TB_HUBIZICT_CODE WHERE CD_TP='SALES_TP' AND CD_V = A.SALES_TP COLLATE SQL_Latin1_General_CP1_CI_AS) AS SALES_TP
+		  FROM dbo.TB_RECEIVE_ORDER A
+		     , (SELECT T.R_ORDER_PK
+					  ,MIN(T.P_WORK_START_DATE) AS P_WORK_START_DATE
+					  ,MAX(T.P_WORK_END_DATE) AS P_WORK_END_DATE
+				  FROM (
+						SELECT R_ORDER_PK, MIN(P1_WORK_START_DATE) AS P_WORK_START_DATE, MAX(P1_WORK_END_DATE) AS P_WORK_END_DATE FROM dbo.TB_WORK GROUP BY R_ORDER_PK
+						UNION ALL
+						SELECT R_ORDER_PK, MIN(P2_WORK_START_DATE) AS P_WORK_START_DATE, MAX(P2_WORK_END_DATE) AS P_WORK_END_DATE FROM dbo.TB_WORK GROUP BY R_ORDER_PK
+						UNION ALL
+						SELECT R_ORDER_PK, MIN(P3_WORK_START_DATE) AS P_WORK_START_DATE, MAX(P2_WORK_END_DATE) AS P_WORK_END_DATE FROM dbo.TB_WORK GROUP BY R_ORDER_PK
+						UNION ALL
+						SELECT R_ORDER_PK, MIN(P4_WORK_START_DATE) AS P_WORK_START_DATE, MAX(P2_WORK_END_DATE) AS P_WORK_END_DATE FROM dbo.TB_WORK GROUP BY R_ORDER_PK
+						) T
+				GROUP BY  T.R_ORDER_PK ) B
+		 WHERE A.R_ORDER_PK = B.R_ORDER_PK
+		   AND R_ORDER_DATE BETWEEN REPLACE(#{pSearchStaDt},'-','') AND REPLACE(#{pSearchEndDt},'-','')
+		   ]]>
+		    <if test="pSalesTp == ''">
+			AND A.SALES_TP IN ('S04','S05') 
+			</if>
+		    <if test="pSalesTp != ''">
+			AND A.SALES_TP = #{pSalesTp} 
+			</if>
+            <if test="pCustomerNm != ''">
+			AND (SELECT CUSTOMER_NAME FROM [dbo].[TB_HUBIZICT_CUSTOMER] WHERE CUSTOMER_PK = COMPANY_CODE) LIKE '%' + #{pCustomerNm} + '%' 
+			</if>
+			<![CDATA[
+		 ORDER BY A.R_ORDER_DATE DESC
+		]]>	
+	</select>
+	
+	<update id="PSMES_UI210_Main_save" parameterType="hashmap">
+		<![CDATA[  
+MERGE INTO dbo.TB_RECEIVE_ORDER AS tgt 
+     USING (
+             SELECT #{pROrderPk} AS R_ORDER_PK
+                  , #{pROrderNo} AS R_ORDER_NO
+                  , #{pROrderName} AS R_ORDER_NAME
+                  , #{pCompanyCode} AS COMPANY_CODE
+                  , REPLACE(#{pROrderDate},'-','') AS R_ORDER_DATE
+                  , REPLACE(#{pFixedDate},'-','') AS FIXED_DATE
+                  , REPLACE(#{pShippingDate},'-','') AS SHIPPING_DATE
+                  , REPLACE(#{pEstimatedCost},',','') AS ESTIMATED_COST
+                  , REPLACE(#{pGeneralCost},',','') AS GENERAL_COST
+                  , REPLACE(#{pFinalCost},',','') AS FINAL_COST
+                  , #{pRemarks} AS REMARKS
+                  , #{pNationTp} AS NATION_TP
+                  , #{pSalesTp} AS SALES_TP
+           ) AS src
+        ON (tgt.R_ORDER_PK      = src.R_ORDER_PK)
+    WHEN MATCHED THEN
+  UPDATE SET tgt.R_ORDER_NO     = src.R_ORDER_NO
+           , tgt.R_ORDER_NAME   = src.R_ORDER_NAME
+           , tgt.COMPANY_CODE   = src.COMPANY_CODE
+           , tgt.R_ORDER_DATE   = src.R_ORDER_DATE
+           , tgt.FIXED_DATE     = src.FIXED_DATE
+           , tgt.SHIPPING_DATE  = src.SHIPPING_DATE
+           , tgt.ESTIMATED_COST = src.ESTIMATED_COST
+           , tgt.GENERAL_COST   = src.GENERAL_COST
+           , tgt.FINAL_COST     = src.FINAL_COST
+           , tgt.REMARKS        = src.REMARKS
+           , tgt.NATION_TP      = src.NATION_TP
+           , tgt.SALES_TP       = src.SALES_TP
+           , tgt.UPDATE_USER    = #{UPDATE_USER}
+           , tgt.UPDATE_DATE    = getdate()
+    WHEN NOT MATCHED THEN
+  INSERT
+     ( R_ORDER_NO
+     , R_ORDER_NAME
+     , COMPANY_CODE
+     , R_ORDER_DATE
+     , FIXED_DATE
+     , SHIPPING_DATE
+     , ESTIMATED_COST
+     , GENERAL_COST
+     , FINAL_COST
+     , REMARKS
+     , NATION_TP
+     , SALES_TP
+     , CREATE_USER
+     , CREATE_DATE
+     , UPDATE_USER
+     , UPDATE_DATE
+     )
+VALUES
+     ( src.R_ORDER_NO
+     , src.R_ORDER_NAME
+     , src.COMPANY_CODE
+     , src.R_ORDER_DATE
+     , src.FIXED_DATE
+     , src.SHIPPING_DATE
+     , src.ESTIMATED_COST
+     , src.GENERAL_COST
+     , src.FINAL_COST
+     , src.REMARKS
+     , src.NATION_TP
+     , src.SALES_TP
+     , #{CREATE_USER}
+     , getdate()
+     , #{UPDATE_USER}
+     , getdate()
+     );
+		]]>
+	</update>
+	<update id="PSMES_UI210_Detail_save" parameterType="hashmap">
+		<![CDATA[ 
+MERGE INTO dbo.TB_RECEIVE_ORDER_DETAIL AS tgt
+     USING (
+        SELECT #{R_ORDER_DETAIL_PK} AS R_ORDER_DETAIL_PK
+             , #{R_ORDER_PK} AS R_ORDER_PK
+             , #{PRODUCT_NO} AS PRODUCT_NO
+             , #{PRODUCT_NAME} AS PRODUCT_NAME
+             , #{R_STANDARD} AS R_STANDARD
+             , #{UNIT_COST} AS UNIT_COST
+             , #{AMOUNT} AS AMOUNT
+             , #{SUM_COST} AS SUM_COST
+             , #{OUT_YN} AS OUT_YN
+             , #{SELF_YN} AS SELF_YN
+             , #{DRAWING_FILE} AS DRAWING_FILE
+             , #{NOTE} AS NOTE
+          ) AS src
+      ON (tgt.R_ORDER_DETAIL_PK      = src.R_ORDER_DETAIL_PK)
+    WHEN MATCHED THEN
+  UPDATE SET tgt.R_ORDER_PK        = src.R_ORDER_PK
+           , tgt.PRODUCT_NO        = src.PRODUCT_NO
+           , tgt.PRODUCT_NAME      = src.PRODUCT_NAME
+           , tgt.R_STANDARD      = src.R_STANDARD
+           , tgt.UNIT_COST         = src.UNIT_COST
+           , tgt.AMOUNT            = src.AMOUNT
+           , tgt.SUM_COST          = src.SUM_COST
+           , tgt.OUT_YN            = src.OUT_YN
+           , tgt.SELF_YN           = src.SELF_YN
+           , tgt.DRAWING_FILE      = src.DRAWING_FILE
+           , tgt.NOTE              = src.NOTE
+           , tgt.UPDATE_USER       = #{UPDATE_USER}
+           , tgt.UPDATE_DATE       = getdate()
+    WHEN NOT MATCHED THEN
+INSERT
+     ( 
+       R_ORDER_PK
+     , PRODUCT_NO
+     , PRODUCT_NAME
+     , R_STANDARD
+     , UNIT_COST
+     , AMOUNT
+     , SUM_COST
+     , OUT_YN
+     , SELF_YN
+     , DRAWING_FILE
+     , NOTE
+     , CREATE_USER
+     , CREATE_DATE
+     , UPDATE_USER
+     , UPDATE_DATE
+     )
+VALUES
+     ( src.R_ORDER_PK
+     , src.PRODUCT_NO
+     , src.PRODUCT_NAME
+     , src.R_STANDARD
+     , src.UNIT_COST
+     , src.AMOUNT
+     , src.SUM_COST
+     , src.OUT_YN
+     , src.SELF_YN
+     , src.DRAWING_FILE
+     , src.NOTE
+     , #{CREATE_USER}
+     , getdate()
+     , #{UPDATE_USER}
+     , getdate()
+     ) ;
+		]]>
+	</update>
+	
+	<select id="getROrderPk" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+		SELECT R_ORDER_PK
+		  FROM dbo.TB_RECEIVE_ORDER
+		 WHERE 1=1
+		   AND R_ORDER_NO = #{pROrderNo}
+		]]>	
+	</select>
+	
+	<select id="PSMES_UI210_searchDet" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+		SELECT R_ORDER_DETAIL_PK
+		     , R_ORDER_PK
+		     , PRODUCT_NO
+		     , PRODUCT_NAME
+		     , R_STANDARD
+		     , UNIT_COST
+		     , AMOUNT
+		     , SUM_COST
+		     , SELF_YN
+		     , DRAWING_FILE
+		     , NOTE
+		     , CREATE_USER
+		     , CREATE_DATE
+		     , UPDATE_USER
+		     , UPDATE_DATE
+			 ,(SELECT BB.CUSTOMER_NAME
+				 FROM (
+						SELECT T1.P_ORDER_PK
+							  ,T1.P_ORDER_DETAIL_PK
+							  ,T2.R_ORDER_PK
+							  ,T1.R_ORDER_DETAIL_PK
+							  ,(SELECT B.CUSTOMER_NAME FROM dbo.TB_HUBIZICT_CUSTOMER B WHERE B.CUSTOMER_PK = T2.COMPANY_CODE) AS CUSTOMER_NAME
+						  FROM dbo.TB_PURCHASE_ORDER_DETAIL T1 LEFT OUTER JOIN dbo.TB_PURCHASE_ORDER T2
+							ON T1.P_ORDER_PK = T2.P_ORDER_PK
+						 WHERE T1.P_ORDER_PK in (SELECT P_ORDER_PK FROM dbo.TB_PURCHASE_ORDER WHERE R_ORDER_PK = #{pROrderPk}) 
+					  ) BB
+				WHERE BB.R_ORDER_PK = A.R_ORDER_PK
+				  AND BB.R_ORDER_DETAIL_PK = A.R_ORDER_DETAIL_PK
+			  ) AS OUT_YN
+	    FROM dbo.TB_RECEIVE_ORDER_DETAIL A
+	   WHERE R_ORDER_PK = (
+		                       SELECT R_ORDER_PK
+		                         FROM dbo.TB_RECEIVE_ORDER
+		                        WHERE 1=1
+							    ]]>
+								<if test="pROrderPk != ''">
+							   AND R_ORDER_PK = #{pROrderPk}
+								</if>
+							<![CDATA[
+		                     )
+	  ORDER BY A.PRODUCT_NO
+		]]>	
+	</select>
+	<delete id="PSMES_UI210_deleteRow" parameterType="hashmap">
+		<![CDATA[  
+			DELETE FROM dbo.TB_RECEIVE_ORDER_DETAIL
+			WHERE R_ORDER_DETAIL_PK = #{R_ORDER_DETAIL_PK}
+	   ]]>
+	</delete>
+	<delete id="PSMES_UI210_deleteMain" parameterType="hashmap">
+		<![CDATA[  
+			DELETE FROM dbo.TB_RECEIVE_ORDER
+			WHERE R_ORDER_PK = #{pROrderPk}
+	   ]]>
+	</delete>
+	<delete id="PSMES_UI210_deleteDetail" parameterType="hashmap">
+		<![CDATA[  
+			DELETE FROM dbo.TB_RECEIVE_ORDER_DETAIL
+			WHERE R_ORDER_PK = #{pROrderPk}
+	   ]]>
+	</delete>
+	<update id="PSMES_UI210_FIleUp" parameterType="hashmap">
+		UPDATE dbo.TB_RECEIVE_ORDER_DETAIL 
+		   SET DRAWING_FILE = #{originFileName}
+		      ,UPDATE_USER  = #{UPDATE_USER}
+		      ,UPDATE_DATE  = getdate()
+		 WHERE 1=1
+		   AND R_ORDER_PK = #{pROrderPk}
+		   AND PRODUCT_NO = #{produnctNo}
+		   AND R_ORDER_DETAIL_PK = (
+		                             SELECT R_ORDER_DETAIL_PK FROM dbo.TB_RECEIVE_ORDER WHERE R_ORDER_NO = #{orderNo}
+		                           )
+	</update>
+	
+	<insert id="PSMES_UI210_FIleIns" parameterType="hashmap">
+		<![CDATA[ 
+		INSERT INTO dbo.TB_RECEIVE_ORDER_FILE
+		     ( R_ORDER_PK
+		     , FILE_NM
+		     , CREATE_USER
+		     , CREATE_DATE
+		     , UPDATE_USER
+		     , UPDATE_DATE
+		     )
+		VALUES
+		     ( #{pROrderPk}
+		     , #{originFileName}
+		     , #{CREATE_USER}
+		     , getdate()
+		     , #{UPDATE_USER}
+		     , getdate()
+		     ) 
+		]]>
+	</insert>
+	
+	<update id="PSMES_UI230_save" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE [dbo].[TB_RECEIVE_ORDER]
+	   SET SALES_TP = 'S05'
+	 	  ,UPDATE_USER = #{UPDATE_USER}
+	 	  ,UPDATE_DATE = GETDATE()
+	 WHERE R_ORDER_PK = #{R_ORDER_PK}
+	   ]]>
+	</update>
+	
+	<select id="PSMES_UI214_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+	SELECT 
+	    B.R_ORDER_NO
+	  , B.R_ORDER_NAME
+	  , A.FILE_NM
+	  , A.R_ORDER_FILE_PK
+	  , A.R_ORDER_PK
+	FROM dbo.TB_RECEIVE_ORDER_FILE A
+	   , dbo.TB_RECEIVE_ORDER B
+	WHERE A.R_ORDER_PK = B.R_ORDER_PK
+	  AND A.R_ORDER_PK = #{pROrderPk}
+	ORDER BY R_ORDER_FILE_PK
+	]]>
+	</select>
+	
+	<update id="PSMES_UI214_delete" parameterType="hashmap">
+		<![CDATA[  
+	DELETE FROM dbo.TB_RECEIVE_ORDER_FILE
+	 WHERE R_ORDER_FILE_PK = #{R_ORDER_FILE_PK}
+	   ]]>
+	</update>
+	
+	
+</mapper>

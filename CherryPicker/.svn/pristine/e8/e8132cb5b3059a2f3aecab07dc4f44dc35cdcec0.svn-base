@@ -1,0 +1,94 @@
+package com.hubizict.web.ui200;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Repository;
+
+import com.hubizict.web.common.AbstractDAO;
+import com.hubizict.web.common.CommandMap;
+
+@Repository("UI200DAO")
+public class UI200DAO extends AbstractDAO{
+
+	public List<Map<String, Object>> PSMES_UI220_searchMas(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return (List<Map<String, Object>>)selectList("ui200.PSMES_UI220_searchMas", map);
+	}
+
+	public List<Map<String, Object>> PSMES_UI230_searchMas(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return (List<Map<String, Object>>)selectList("ui200.PSMES_UI230_searchMas", map);
+	}
+
+	public void PSMES_UI210_Main_save(Map<String, Object> smap) {
+		// TODO Auto-generated method stub
+
+		//System.out.println("Dao Start");
+		insert("ui200.PSMES_UI210_Main_save", smap);
+	}
+
+	public Map<String, Object> PSMES_UI210_searchMas(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return (Map<String, Object>)selectOne("ui200.PSMES_UI210_searchMas", map);
+	}
+
+	public Map<String, Object> getROrderPk(Map<String, Object> smap) {
+		// TODO Auto-generated method stub
+		return (Map<String, Object>)selectOne("ui200.getROrderPk", smap);
+	}
+
+	public void PSMES_UI210_Detail_save(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		insert("ui200.PSMES_UI210_Detail_save", map);
+	}
+
+	public List<Map<String, Object>> PSMES_UI210_searchDet(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return (List<Map<String, Object>>)selectList("ui200.PSMES_UI210_searchDet", map);
+	}
+
+	public void PSMES_UI210_deleteRow(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		delete("ui200.PSMES_UI210_deleteRow", map);
+	}
+
+	public void PSMES_UI210_deleteMain(Map<String, Object> smap) {
+		// TODO Auto-generated method stub
+		delete("ui200.PSMES_UI210_deleteMain", smap);
+	}
+
+	public void PSMES_UI210_deleteDetail(Map<String, Object> smap) {
+		// TODO Auto-generated method stub
+		delete("ui200.PSMES_UI210_deleteDetail", smap);
+	}
+
+	public int PSMES_UI210_FIleUp(Map<String, Object> smap) {
+		// TODO Auto-generated method stub
+		return (int) update("ui200.PSMES_UI210_FIleUp", smap);
+	}
+
+
+	public void PSMES_UI210_FIleIns(Map<String, Object> smap) {
+		// TODO Auto-generated method stub
+		insert("ui200.PSMES_UI210_FIleIns", smap);
+	}
+	
+	public void PSMES_UI230_save(Map<String, Object> smap) {
+		// TODO Auto-generated method stub
+		update("ui200.PSMES_UI230_save", smap);
+	}
+	
+	
+	public List<Map<String, Object>> PSMES_UI214_searchList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return (List<Map<String, Object>>)selectList("ui200.PSMES_UI214_searchList", map);
+	}
+	
+	public void PSMES_UI214_delete(Map<String, Object> smap) {
+		// TODO Auto-generated method stub
+		delete("ui200.PSMES_UI214_delete", smap);
+	}
+	
+	
+}

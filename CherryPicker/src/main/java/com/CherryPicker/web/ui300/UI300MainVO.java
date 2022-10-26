@@ -1,0 +1,156 @@
+package com.CherryPicker.web.ui300;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class UI300MainVO {
+	
+	private String p_order_no;
+	private String company_code_nm;
+	private String tel_no;
+	private String fax_no;
+	private String p_order_name;
+	private String amount_cnt;
+	private String final_cost;
+	private String vat;
+	private String total_cost;
+	private String total_nm;
+	private String fixed_date;
+	
+	private List<UI300DetailVO> details = new ArrayList<UI300DetailVO>();
+	
+	public String getP_order_no() {
+		return p_order_no;
+	}
+
+	public void setP_order_no(String p_order_no) {
+		this.p_order_no = p_order_no;
+	}
+
+	public String getCompany_code_nm() {
+		return company_code_nm;
+	}
+
+	public void setCompany_code_nm(String company_code_nm) {
+		this.company_code_nm = company_code_nm;
+	}
+
+	public String getTel_no() {
+		return tel_no;
+	}
+
+	public void setTel_no(String tel_no) {
+		this.tel_no = tel_no;
+	}
+
+	public String getFax_no() {
+		return fax_no;
+	}
+
+	public void setFax_no(String fax_no) {
+		this.fax_no = fax_no;
+	}
+
+	public String getP_order_name() {
+		return p_order_name;
+	}
+
+	public void setP_order_name(String p_order_name) {
+		this.p_order_name = p_order_name;
+	}
+
+	public String getAmount_cnt() {
+		return amount_cnt;
+	}
+
+	public void setAmount_cnt(String amount_cnt) {
+		this.amount_cnt = amount_cnt;
+	}
+
+	public String getFinal_cost() {
+		return final_cost;
+	}
+
+	public void setFinal_cost(String final_cost) {
+		this.final_cost = final_cost;
+	}
+
+	public String getVat() {
+		return vat;
+	}
+
+	public void setVat(String vat) {
+		this.vat = vat;
+	}
+
+	public String getTotal_cost() {
+		return total_cost;
+	}
+
+	public void setTotal_cost(String total_cost) {
+		this.total_cost = total_cost;
+	}
+
+	public String getTotal_nm() {
+		return total_nm;
+	}
+
+	public void setTotal_nm(String total_nm) {
+		this.total_nm = total_nm;
+	}
+
+	public void setDetails(List<UI300DetailVO> details) {
+		this.details = details;
+	}
+
+	public void addDetail(UI300DetailVO detail) {
+        details.add(detail);
+    }
+	
+    public String getFixed_date() {
+		return fixed_date;
+	}
+
+	public void setFixed_date(String fixed_date) {
+		this.fixed_date = fixed_date;
+	}
+
+	public void addDetail(
+   		String num, String p_product_no, String p_product_name, String p_standard,String unit_cost, String amount, String sum_cost, String sum_cost_vat, String note) {
+    	
+    	UI300DetailVO detail = new UI300DetailVO();
+
+    	detail.setNum(num);
+    	detail.setP_product_no(p_product_no);
+    	detail.setP_product_name(p_product_name);
+    	detail.setP_standard(p_standard);
+    	detail.setUnit_cost(unit_cost);
+    	detail.setAmount(amount);
+    	detail.setSum_cost(sum_cost);
+    	detail.setSum_cost_vat(sum_cost_vat);
+    	detail.setNote(note);
+    	
+        addDetail(detail);
+    }
+
+    public List<UI300DetailVO> getDetails() {
+        return details;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

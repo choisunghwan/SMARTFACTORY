@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="comm">
+	<select id="selectUserInfo" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT USER_ID
+      ,USER_NAME
+      ,USER_PW
+      ,USER_AUTH
+      ,USER_DISP
+      ,JOIN_DATE
+      ,CREATE_DATE
+      ,CREATE_USER
+      ,UPDATE_DATE
+      ,UPDATE_USER
+      , (CONVERT(CHAR(19), getdate(), 20)) AS connectTime
+  FROM TB_HUBIZICT_USER
+  where USER_ID = #{pUserId}
+    and USER_PW =#{pwd}
+		]]>
+	</select>
+	<insert id="insert_sercutity_log" parameterType="hashmap">
+		<![CDATA[ 
+	INSERT INTO TB_HUBIZICT_LOG
+           (log_date
+           ,log_content
+           ,pc_ip)
+     VALUES
+           (GETDATE()
+           ,#{log_content}
+           ,#{pc_ip})
+           ]]>
+	</insert>
+	
+	<select id="searchComcode" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	
+	SELECT [CD_V]
+      ,[CD_NM]
+  FROM [dbo].[TB_HUBIZICT_CODE]
+  WHERE CD_TP = #{pCdTp} 
+    AND ISNULL(ACTIVE,'Y') = 'Y'
+  ORDER BY SEQ 
+    	]]>	
+	</select>
+	
+	<select id="searchGridComcode" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT N'선택' AS CD_V
+	    , N'선택' AS CD_NM
+	    , 0 AS SEQ
+    UNION ALL	
+	SELECT [CD_V]
+      ,[CD_NM]
+      , [SEQ]
+  FROM [dbo].[TB_HUBIZICT_CODE]
+  WHERE CD_TP = #{pCdTp} 
+    AND ISNULL(ACTIVE,'Y') = 'Y'
+  ORDER BY SEQ 
+    	]]>	
+	</select>
+	
+	<select id="searchYearCombo" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+	with yearlist as 
+	(
+	    select 2021 as year
+	    union all
+	    select yl.year + 1 as year
+	    from yearlist yl
+	    where yl.year + 1 <= YEAR(GetDate())
+	)
+	
+	select year AS CD_V
+	      ,year AS CD_NM
+	  from yearlist 
+	  order by year desc
+  	]]>
+	</select>
+	
+	
+	
+</mapper>

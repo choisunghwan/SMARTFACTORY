@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ui400">
+	
+	<update id="CPMES_UI410_save" parameterType="hashmap">
+		<![CDATA[  
+		MERGE INTO dbo.TB_WORK_CP AS tgt
+		     USING (
+		             SELECT #{R_ORDER_PK_CP} AS R_ORDER_PK_CP
+		                  , #{R_ORDER_DETAIL_PK_CP} AS R_ORDER_DETAIL_PK_CP
+		                  , SUBSTRING(REPLACE(#{P1_PLAN_DATE_CP},'-',''),0,9) AS P1_PLAN_DATE_CP
+		                  , SUBSTRING(REPLACE(#{P2_PLAN_DATE_CP},'-',''),0,9) AS P2_PLAN_DATE_CP
+		                  , SUBSTRING(REPLACE(#{P3_PLAN_DATE_CP},'-',''),0,9) AS P3_PLAN_DATE_CP
+		                  , SUBSTRING(REPLACE(#{P4_PLAN_DATE_CP},'-',''),0,9) AS P4_PLAN_DATE_CP
+		           ) AS src
+		        ON (
+		                tgt.R_ORDER_PK_CP             = src.R_ORDER_PK_CP
+		            AND tgt.R_ORDER_DETAIL_PK_CP      = src.R_ORDER_DETAIL_PK_CP
+		           )
+		    WHEN MATCHED THEN
+		  UPDATE SET tgt.R_ORDER_PK_CP        = src.R_ORDER_PK_CP
+		           , tgt.R_ORDER_DETAIL_PK_CP = src.R_ORDER_DETAIL_PK_CP
+		           , tgt.P1_PLAN_DATE_CP      = src.P1_PLAN_DATE_CP
+		           , tgt.P2_PLAN_DATE_CP      = src.P2_PLAN_DATE_CP
+		           , tgt.P3_PLAN_DATE_CP      = src.P3_PLAN_DATE_CP
+		           , tgt.P4_PLAN_DATE_CP      = src.P4_PLAN_DATE_CP
+		           , tgt.UPDATE_USER_CP    = #{UPDATE_USER_CP}
+		           , tgt.UPDATE_DATE_CP    = getdate()
+		    WHEN NOT MATCHED THEN
+		INSERT
+		     ( R_ORDER_PK_CP
+		     , R_ORDER_DETAIL_PK_CP
+		     , P1_PLAN_DATE_CP
+		     , P2_PLAN_DATE_CP
+		     , P3_PLAN_DATE_CP
+		     , P4_PLAN_DATE_CP
+		     , CREATE_USER_CP
+		     , CREATE_DATE_CP
+		     , UPDATE_USER_CP
+		     , UPDATE_DATE_CP
+		     )
+		VALUES
+		     ( src.R_ORDER_PK_CP
+		     , src.R_ORDER_DETAIL_PK_CP
+		     , src.P1_PLAN_DATE_CP
+		     , src.P2_PLAN_DATE_CP
+		     , src.P3_PLAN_DATE_CP
+		     , src.P4_PLAN_DATE_CP
+		     , #{CREATE_USER_CP}
+		     , getdate()
+		     , #{UPDATE_USER_CP}
+		     , getdate()
+		     ) ;
+	   ]]>
+	</update>
+	
+	<update id="CPMES_UI410_save_status" parameterType="hashmap">
+		<![CDATA[  
+		UPDATE dbo.TB_RECEIVE_ORDER_CP
+		   SET SALES_TP_CP = 'S03'
+		      ,WORK_SDATE_CP = CONVERT(varchar, getdate(), 112)
+		 WHERE R_ORDER_PK_CP = #{R_ORDER_PK_CP}
+		   AND SALES_TP_CP = 'S02'
+	   ]]>
+	</update>
+	
+	<!-- 수주 -->
+	<select id="searchROrderLov" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+        SELECT R_ORDER_PK_CP AS CD_V_CP
+              ,R_ORDER_NO_CP + ' (' + R_ORDER_NAME_CP + ')' AS CD_NM_CP
+          FROM dbo.TB_RECEIVE_ORDER_CP
+         WHERE 1=1
+           AND R_ORDER_PK_CP = #{R_ORDER_PK_CP}
+        
+        UNION
+		
+		SELECT R_ORDER_PK_CP AS CD_V_CP
+		      ,R_ORDER_NO_CP +' ('+R_ORDER_NAME_CP+')' AS CD_NM_CP
+		  FROM TB_RECEIVE_ORDER_CP
+		 WHERE SALES_TP_CP IN ('S02', 'S03')	
+			 	]]>
+	</select>
+	
+	<!-- 수주 클릭시 이벤트 -->
+	<select id="CPMES_UI410_search" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+        SELECT A.R_ORDER_PK_CP
+             , A.R_ORDER_DETAIL_PK_CP
+             , B.PRODUCT_NO_CP
+             , B.PRODUCT_NAME_CP
+             , B.R_STANDARD_CP
+             , B.AMOUNT_CP
+             , SUBSTRING(A.P1_PLAN_DATE_CP, 1, 4) + '-' + SUBSTRING(A.P1_PLAN_DATE_CP, 5, 2) + '-' + SUBSTRING(A.P1_PLAN_DATE_CP, 7, 2) AS P001_DATE_CP
+             , SUBSTRING(A.P2_PLAN_DATE_CP, 1, 4) + '-' + SUBSTRING(A.P2_PLAN_DATE_CP, 5, 2) + '-' + SUBSTRING(A.P2_PLAN_DATE_CP, 7, 2) AS P002_DATE_CP
+             , SUBSTRING(A.P3_PLAN_DATE_CP, 1, 4) + '-' + SUBSTRING(A.P3_PLAN_DATE_CP, 5, 2) + '-' + SUBSTRING(A.P3_PLAN_DATE_CP, 7, 2) AS P003_DATE_CP
+             , SUBSTRING(A.P4_PLAN_DATE_CP, 1, 4) + '-' + SUBSTRING(A.P4_PLAN_DATE_CP, 5, 2) + '-' + SUBSTRING(A.P4_PLAN_DATE_CP, 7, 2) AS P004_DATE_CP
+          FROM dbo.TB_WORK_CP A
+             , dbo.TB_RECEIVE_ORDER_DETAIL_CP B
+         WHERE 1=1
+           AND A.R_ORDER_PK_CP = B.R_ORDER_PK_CP
+           AND A.R_ORDER_DETAIL_PK_CP = B.R_ORDER_DETAIL_PK_CP
+		   AND A.R_ORDER_PK_CP = #{ROrderLov}
+           -- AND ISNULL(A.WORK_CONFIRM_CP,'N') != 'Y'
+		 ORDER BY R_ORDER_DETAIL_PK_CP
+			 	]]>
+	</select>
+	
+	<select id="CPMES_UI410_searchWorkDateList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+        SELECT *
+		  FROM dbo.TB_CODE_CP
+		 WHERE CD_TP_CP = 'WORK_DAY'	
+		 ORDER BY SEQ_CP
+	]]>
+	</select>
+	
+	<select id="CPMES_UI420_main_search" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT *
+	  FROM (
+	   	    SELECT R_ORDER_PK_CP
+				  ,R_ORDER_NO_CP
+				  ,R_ORDER_NAME_CP
+				  ,R_ORDER_DATE_CP
+				  ,R_ORDER_DATE_V_CP
+				  ,FIXED_DATE_CP
+				  ,SALES_TP_CP
+				  ,SALES_NM_CP
+				  ,CASE WHEN CNT_ALL > 0 AND CNT_N = 0 THEN 'Y' ELSE '' END AS WORK_CONFIRM_CP
+			  FROM (
+					SELECT T2.R_ORDER_PK_CP
+						  ,T2.R_ORDER_NO_CP
+						  ,T2.R_ORDER_NAME_CP
+						  ,T2.R_ORDER_DATE_CP
+						  ,T2.SALES_TP_CP
+						  ,(SELECT CD_NM_CP FROM dbo.TB_CODE_CP WHERE CD_TP_CP='SALES_TP_CP' AND CD_V_CP = T2.SALES_TP_CP COLLATE SQL_Latin1_General_CP1_CI_AS) AS SALES_NM_CP
+						  ,SUBSTRING(T2.R_ORDER_DATE_CP, 1, 4) + '-' + SUBSTRING(T2.R_ORDER_DATE_CP, 5, 2) + '-' + SUBSTRING(T2.R_ORDER_DATE_CP, 7, 2) AS R_ORDER_DATE_V_CP
+						  ,SUBSTRING(T2.FIXED_DATE_CP, 1, 4) + '-' + SUBSTRING(T2.FIXED_DATE_CP, 5, 2) + '-' + SUBSTRING(T2.FIXED_DATE_CP, 7, 2) AS FIXED_DATE_CP
+						  ,(SELECT COUNT(1) CNT FROM [dbo].[TB_WORK_CP] T1 WHERE T1.R_ORDER_PK_CP = T2.R_ORDER_PK_CP) AS CNT_ALL
+						  ,(SELECT COUNT(1) CNT FROM [dbo].[TB_WORK_CP] T1 WHERE T1.R_ORDER_PK_CP = T2.R_ORDER_PK_CP AND (T1.WORK_CONFIRM_CP <> 'Y' OR T1.WORK_CONFIRM_CP IS NULL)) CNT_N
+					  FROM [dbo].[TB_RECEIVE_ORDER_CP] T2
+					) A
+		   ) B
+	 WHERE 1=1
+	  ]]>
+	 <if test="pPstatus == ''">
+	   AND B.SALES_TP_CP IN ('S03','S04','S05')
+	 </if>
+	 <!--아래 쿼리는 pPstatus 가 공백이 아니라면, SALES_TP_CP = s03,s04,s05-->
+	 <if test="pPstatus != ''">
+	   AND B.SALES_TP_CP = #{pPstatus}
+<!-- 	   AND B.SALES_NM_CP = '하이' -->
+	 </if>
+	 ORDER BY B.R_ORDER_DATE_CP DESC
+	</select>
+	
+	<select id="CPMES_UI420_detail_search" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT T1.R_ORDER_PK_CP
+	      ,T1.R_ORDER_DETAIL_PK_CP
+	      ,T1.WORK_CONFIRM_CP
+	      ,(SELECT USER_NAME_CP FROM TB_USER_CP WHERE USER_ID_CP = T1.P1_WORKER_CP) AS P1_WORKER_CP
+		  ,SUBSTRING(T1.P1_PLAN_DATE_CP, 1, 4) + '-' + SUBSTRING(T1.P1_PLAN_DATE_CP, 5, 2) + '-' + SUBSTRING(T1.P1_PLAN_DATE_CP, 7, 2) AS P1_PLAN_DATE_CP
+	      ,SUBSTRING(T1.P1_WORK_START_DATE_CP, 1, 4) + '-' + SUBSTRING(T1.P1_WORK_START_DATE_CP, 5, 2) + '-' + SUBSTRING(T1.P1_WORK_START_DATE_CP, 7, 2) AS P1_WORK_START_DATE_CP
+	      ,SUBSTRING(T1.P1_WORK_END_DATE_CP, 1, 4) + '-' + SUBSTRING(T1.P1_WORK_END_DATE_CP, 5, 2) + '-' + SUBSTRING(T1.P1_WORK_END_DATE_CP, 7, 2) AS P1_WORK_END_DATE_CP
+	      ,(SELECT USER_NAME_CP FROM TB_USER_CP WHERE USER_ID_CP = T1.P2_WORKER_CP) AS P2_WORKER_CP
+		  ,SUBSTRING(T1.P2_PLAN_DATE_CP, 1, 4) + '-' + SUBSTRING(T1.P2_PLAN_DATE_CP, 5, 2) + '-' + SUBSTRING(T1.P2_PLAN_DATE_CP, 7, 2) AS P2_PLAN_DATE_CP
+	      ,SUBSTRING(T1.P2_WORK_START_DATE_CP, 1, 4) + '-' + SUBSTRING(T1.P2_WORK_START_DATE_CP, 5, 2) + '-' + SUBSTRING(T1.P2_WORK_START_DATE_CP, 7, 2) AS P2_WORK_START_DATE_CP
+	      ,SUBSTRING(T1.P2_WORK_END_DATE_CP, 1, 4) + '-' + SUBSTRING(T1.P2_WORK_END_DATE_CP, 5, 2) + '-' + SUBSTRING(T1.P2_WORK_END_DATE_CP, 7, 2) AS P2_WORK_END_DATE_CP
+		  ,(SELECT USER_NAME_CP FROM TB_USER_CP WHERE USER_ID_CP = T1.P3_WORKER_CP) AS P3_WORKER_CP
+		  ,SUBSTRING(T1.P3_PLAN_DATE_CP, 1, 4) + '-' + SUBSTRING(T1.P3_PLAN_DATE_CP, 5, 2) + '-' + SUBSTRING(T1.P3_PLAN_DATE_CP, 7, 2) AS P3_PLAN_DATE_CP 
+	      ,SUBSTRING(T1.P3_WORK_START_DATE_CP, 1, 4) + '-' + SUBSTRING(T1.P3_WORK_START_DATE_CP, 5, 2) + '-' + SUBSTRING(T1.P3_WORK_START_DATE_CP, 7, 2) AS P3_WORK_START_DATE_CP 
+	      ,SUBSTRING(T1.P3_WORK_END_DATE_CP, 1, 4) + '-' + SUBSTRING(T1.P3_WORK_END_DATE_CP, 5, 2) + '-' + SUBSTRING(T1.P3_WORK_END_DATE_CP, 7, 2) AS P3_WORK_END_DATE_CP
+		  ,(SELECT USER_NAME_CP FROM TB_USER_CP WHERE USER_ID_CP = T1.P4_WORKER_CP) AS P4_WORKER_CP
+		  ,SUBSTRING(T1.P4_PLAN_DATE_CP, 1, 4) + '-' + SUBSTRING(T1.P4_PLAN_DATE_CP, 5, 2) + '-' + SUBSTRING(T1.P4_PLAN_DATE_CP, 7, 2) AS P4_PLAN_DATE_CP 
+	      ,SUBSTRING(T1.P4_WORK_START_DATE_CP, 1, 4) + '-' + SUBSTRING(T1.P4_WORK_START_DATE_CP, 5, 2) + '-' + SUBSTRING(T1.P4_WORK_START_DATE_CP, 7, 2) AS P4_WORK_START_DATE_CP 
+	      ,SUBSTRING(T1.P4_WORK_END_DATE_CP, 1, 4) + '-' + SUBSTRING(T1.P4_WORK_END_DATE_CP, 5, 2) + '-' + SUBSTRING(T1.P4_WORK_END_DATE_CP, 7, 2) AS P4_WORK_END_DATE_CP
+		  ,T2.PRODUCT_NO_CP
+		  ,T2.PRODUCT_NAME_CP
+	  FROM [dbo].[TB_WORK_CP] T1 LEFT OUTER JOIN [dbo].[TB_RECEIVE_ORDER_DETAIL_CP] T2
+	    ON T1.R_ORDER_PK_CP = T2.R_ORDER_PK_CP
+	   AND T1.R_ORDER_DETAIL_PK_CP = T2.R_ORDER_DETAIL_PK_CP
+	 WHERE T1.R_ORDER_PK_CP = #{pROrderPk}
+    ]]>
+	</select>
+	
+	<update id="CPMES_UI420_save" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE [dbo].[TB_RECEIVE_ORDER_CP]
+	   SET SALES_TP_CP = 'S04'
+	      ,WORK_EDATE_CP = CONVERT(varchar, getdate(), 112)
+	 	  ,UPDATE_USER_CP = #{UPDATE_USER_CP}
+	 	  ,UPDATE_DATE_CP = GETDATE()
+	 WHERE R_ORDER_PK_CP = #{R_ORDER_PK_CP}
+	   ]]>
+	</update>
+	
+	<update id="CPMES_UI420_WORK_LIST_save" parameterType="hashmap">
+		<![CDATA[  
+	 UPDATE [dbo].[TB_WORK_CP]
+	    SET P1_WORKER_CP = CASE WHEN P1_PLAN_DATE_CP IS NOT NULL AND P1_WORKER_CP IS NULL THEN #{UPDATE_USER_CP} ELSE P1_WORKER_CP END
+		   ,P1_WORK_START_DATE_CP = CASE WHEN P1_PLAN_DATE_CP IS NOT NULL AND P1_WORK_START_DATE_CP IS NULL THEN CONVERT(varchar, getdate(), 112) ELSE P1_WORK_START_DATE_CP END
+		   ,P1_WORK_END_DATE_CP = CASE WHEN P1_PLAN_DATE_CP IS NOT NULL AND P1_WORK_CP_END_DATE IS NULL THEN CONVERT(varchar, getdate(), 112) ELSE P1_WORK_END_DATE_CP END
+		   ,P2_WORKER_CP = CASE WHEN P2_PLAN_DATE_CP IS NOT NULL AND P2_WORKER_CP IS NULL THEN #{UPDATE_USER_CP} ELSE P2_WORKER_CP END
+		   ,P2_WORK_START_DATE_CP = CASE WHEN P2_PLAN_DATE_CP IS NOT NULL AND P2_WORK_START_DATE_CP IS NULL THEN CONVERT(varchar, getdate(), 112) ELSE P2_WORK_START_DATE_CP END
+		   ,P2_WORK_END_DATE_CP = CASE WHEN P2_PLAN_DATE_CP IS NOT NULL AND P2_WORK_END_DATE_CP IS NULL THEN CONVERT(varchar, getdate(), 112) ELSE P2_WORK_END_DATE_CP END
+		   ,P3_WORKER_CP = CASE WHEN P3_PLAN_DATE_CP IS NOT NULL AND P3_WORKER_CP IS NULL THEN #{UPDATE_USER_CP} ELSE P3_WORKER_CP END
+		   ,P3_WORK_START_DATE_CP = CASE WHEN P3_PLAN_DATE_CP IS NOT NULL AND P3_WORK_START_DATE_CP IS NULL THEN CONVERT(varchar, getdate(), 112) ELSE P3_WORK_START_DATE_CP END
+		   ,P3_WORK_END_DATE_CP = CASE WHEN P3_PLAN_DATE_CP IS NOT NULL AND P3_WORK_END_DATE_CP IS NULL THEN CONVERT(varchar, getdate(), 112) ELSE P3_WORK_END_DATE_CP END
+		   ,P4_WORKER_CP = CASE WHEN P4_PLAN_DATE_CP IS NOT NULL AND P4_WORKER_CP IS NULL THEN #{UPDATE_USER_CP} ELSE P4_WORKER_CP END
+		   ,P4_WORK_START_DATE_CP = CASE WHEN P4_PLAN_DATE_CP IS NOT NULL AND P4_WORK_START_DATE_CP IS NULL THEN CONVERT(varchar, getdate(), 112) ELSE P4_WORK_START_DATE_CP END
+		   ,P4_WORK_END_DATE_CP = CASE WHEN P4_PLAN_DATE_CP IS NOT NULL AND P4_WORK_END_DATE_CP IS NULL THEN CONVERT(varchar, getdate(), 112) ELSE P4_WORK_END_DATE_CP END
+		   ,WORK_CONFIRM_CP = 'Y'
+		   ,UPDATE_USER_CP = #{UPDATE_USER_CP}
+	 	  ,UPDATE_DATE_CP = GETDATE()
+	  WHERE R_ORDER_PK_CP = #{R_ORDER_PK_CP}
+	    AND WORK_CONFIRM_CP IS NULL
+	   ]]>
+	</update>
+	
+	<select id="PSMES_UI430_main_search" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT EQUIPMENT_PK
+		  ,EQUIP_CODE
+		  ,EQUIP_NAME
+		  ,MAKER
+		  ,SUPPLIER
+		  ,SUBSTRING(SUPPLY_DATE, 1, 4) + '-' + SUBSTRING(SUPPLY_DATE, 5, 2) + '-' + SUBSTRING(SUPPLY_DATE, 7, 2) AS SUPPLY_DATE
+		  ,SUBSTRING(INSTALL_DATE, 1, 4) + '-' + SUBSTRING(INSTALL_DATE, 5, 2) + '-' + SUBSTRING(INSTALL_DATE, 7, 2) AS INSTALL_DATE
+		  ,MANAGER
+		  ,EQUIP_AMOUNT
+		  ,CALIBARTION_YN
+		  ,USE_YN
+		  ,NOTE
+	  FROM [dbo].[TB_EQUIPMENT]
+	 WHERE 1=1
+	 	]]>
+		<if test="pSearchEquipName != ''">
+		AND EQUIP_NAME like  '%' + #{pSearchEquipName} + '%' 
+		</if>
+	 ORDER BY EQUIP_CODE	
+	</select>
+	
+	<insert id="PSMES_UI430_main_insert" parameterType="hashmap">
+		<![CDATA[  
+	INSERT INTO [dbo].[TB_EQUIPMENT] 
+	 (
+	 	 EQUIP_CODE
+	 	,EQUIP_NAME
+	 	,MAKER
+	 	,SUPPLIER
+	 	,SUPPLY_DATE
+	 	,INSTALL_DATE
+	 	,MANAGER
+	 	,EQUIP_AMOUNT
+	 	,CALIBARTION_YN
+	 	,USE_YN
+	 	,NOTE
+	 	,CREATE_USER
+	 	,CREATE_DATE
+	 	,UPDATE_USER
+	 	,UPDATE_DATE
+	 )
+	 VALUES
+	 (
+	 	 #{pEquipCode}
+	 	,#{pEquipName}
+	 	,#{pMaker}
+	 	,#{pSupplier}
+	 	,replace(#{pSupplyDate}, '-', '')
+	 	,replace(#{pInstallDate}, '-', '')
+	 	,#{pManager}
+	 	,#{pEquipAccount}
+	 	,#{pCalibartionYn}
+	 	,#{pUseYn}
+	 	,#{pNote}
+	 	,#{CREATE_USER}
+	 	,GETDATE()
+	 	,#{UPDATE_USER}
+	 	,GETDATE()
+	 	
+	 )
+	   ]]>
+	</insert>
+	
+	<update id="PSMES_UI430_main_update" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE [dbo].[TB_EQUIPMENT]
+	   SET EQUIP_CODE = #{pEquipCode}
+	 	  ,EQUIP_NAME = #{pEquipName}
+	 	  ,MAKER = #{pMaker}
+	 	  ,SUPPLIER = #{pSupplier}
+	 	  ,SUPPLY_DATE = replace(#{pSupplyDate}, '-', '')
+	 	  ,INSTALL_DATE = replace(#{pInstallDate}, '-', '')
+	 	  ,MANAGER = #{pManager}
+	 	  ,EQUIP_AMOUNT = #{pEquipAccount}
+	 	  ,CALIBARTION_YN = #{pCalibartionYn}
+	 	  ,USE_YN = #{pUseYn}
+	 	  ,NOTE = #{pNote}
+	 	  ,UPDATE_USER = #{UPDATE_USER}
+	 	  ,UPDATE_DATE = GETDATE()
+	 WHERE EQUIPMENT_PK = #{pEquipmentPk}
+	   ]]>
+	</update>
+	
+	<delete id="PSMES_UI430_main_delete" parameterType="hashmap">
+		<![CDATA[  
+	DELETE FROM [dbo].[TB_EQUIPMENT]
+	 WHERE EQUIPMENT_PK = #{pEquipmentPk}
+	   ]]>
+	</delete>
+	
+	<delete id="PSMES_UI430_detail_delete_all" parameterType="hashmap">
+		<![CDATA[  
+	DELETE FROM [dbo].[TB_EQUIPMENT_DETAIL]
+	 WHERE EQUIPMENT_PK = #{pEquipmentPk}
+	   ]]>
+	</delete>
+	
+	<delete id="PSMES_UI430_detail_delete" parameterType="hashmap">
+		<![CDATA[  
+	DELETE FROM [dbo].[TB_EQUIPMENT_DETAIL]
+	 WHERE EQUIPMENT_DETAIL_PK = #{EQUIPMENT_DETAIL_PK}
+	   ]]>
+	</delete>
+	
+	<select id="PSMES_UI430_detail_search" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT EQUIPMENT_DETAIL_PK
+	      ,EQUIPMENT_PK
+		  ,SUBSTRING(HISTORY_DATE, 1, 4) + '-' + SUBSTRING(HISTORY_DATE, 5, 2) + '-' + SUBSTRING(HISTORY_DATE, 7, 2) AS HISTORY_DATE
+		  ,REMARKS
+	  FROM [dbo].[TB_EQUIPMENT_DETAIL]
+	 WHERE EQUIPMENT_PK = #{pEquipmentPk}
+	 ORDER BY HISTORY_DATE	
+	 	]]>
+	</select>
+	
+	<update id="PSMES_UI430_detail_save" parameterType="hashmap">
+		<![CDATA[  
+	MERGE INTO [dbo].[TB_EQUIPMENT_DETAIL] AS A
+	USING (SELECT 1 AS dual) AS B
+	   ON (A.EQUIPMENT_DETAIL_PK = #{EQUIPMENT_DETAIL_PK})
+	WHEN MATCHED THEN
+	   UPDATE 
+	   	 SET  EQUIPMENT_PK = #{EQUIPMENT_PK}
+	   		, HISTORY_DATE =  REPLACE(SUBSTRING(#{HISTORY_DATE}, 1, 10), '-','')
+		    , REMARKS = #{REMARKS}
+			, UPDATE_USER = #{UPDATE_USER}
+		    , UPDATE_DATE = GETDATE()
+	WHEN NOT MATCHED THEN
+	   INSERT(
+	   		EQUIPMENT_PK
+           ,HISTORY_DATE
+           ,REMARKS
+           ,CREATE_USER
+           ,CREATE_DATE
+           ,UPDATE_USER
+           ,UPDATE_DATE
+           ) 
+           VALUES
+           (
+            #{EQUIPMENT_PK}
+           ,REPLACE(SUBSTRING(#{HISTORY_DATE}, 1, 10), '-','')
+           ,#{REMARKS}
+           ,#{CREATE_USER}
+           ,GETDATE()
+           ,#{UPDATE_USER}
+           ,GETDATE()
+           );
+	   ]]>
+	</update>
+	
+	
+	
+</mapper>

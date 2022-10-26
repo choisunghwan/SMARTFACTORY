@@ -1,0 +1,478 @@
+package com.hubizict.web.common.util;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.Map.Entry;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+
+import javax.servlet.http.HttpServletRequest;
+
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+
+import org.apache.commons.beanutils.BeanUtils;
+
+import org.apache.log4j.Logger;
+
+import java.lang.instrument.Instrumentation;
+
+public class CommonUtils {
+	private static final Logger log = Logger.getLogger(CommonUtils.class);
+	private static Instrumentation inst;
+	
+	public static String getRandomString(){
+		return UUID.randomUUID().toString().replaceAll("-", "");
+	}
+	
+	public static void printMap(Map<String,Object> map){
+		Iterator<Entry<String,Object>> iterator = map.entrySet().iterator();
+		Entry<String,Object> entry = null;
+		log.debug("--------------------printMap--------------------\n");
+		while(iterator.hasNext()){
+			entry = iterator.next();
+			log.debug("key : "+entry.getKey()+",\tvalue : "+entry.getValue());
+		}
+		log.debug("");
+		log.debug("------------------------------------------------\n");
+	}
+	
+	public static void printList(List<Map<String,Object>> list){
+		Iterator<Entry<String,Object>> iterator = null;
+		Entry<String,Object> entry = null;
+		log.debug("--------------------printList--------------------\n");
+		int listSize = list.size();
+		for(int i=0; i<listSize; i++){
+			log.debug("list index : "+i);
+			iterator = list.get(i).entrySet().iterator();
+			while(iterator.hasNext()){
+				entry = iterator.next();
+				log.debug("key : "+entry.getKey()+",\tvalue : "+entry.getValue());
+			}
+			log.debug("\n");
+		}
+		log.debug("------------------------------------------------\n");
+	}
+	
+	//현재 시간을 가져오는 함수
+	public static String currenDate(){
+		SimpleDateFormat sdf = new SimpleDateFormat ( "yyyy-MM-dd" );
+		
+		Calendar c = Calendar.getInstance ( ); 
+    	
+    	String curDate =  sdf.format ( c.getTime() );
+    	
+		return curDate;
+	}
+	
+	//현재 시간을 가져오는 함수
+	public static String currenDate1(){
+		SimpleDateFormat sdf = new SimpleDateFormat ( "yyyyMMdd" );
+		
+		Calendar c = Calendar.getInstance ( ); 
+    	
+    	String curDate =  sdf.format ( c.getTime() );
+    	
+		return curDate;
+	}
+	
+	//현재 시간을 가져오는 함수
+	public static String diffDate(int diff){
+		SimpleDateFormat sdf = new SimpleDateFormat ( "yyyy-MM-dd" );
+		
+		Calendar c = Calendar.getInstance ( ); 
+    	
+    	c.add ( c.DATE, -diff );
+    	
+    	String diffDate =  sdf.format ( c.getTime() );
+    	
+		return diffDate;
+	}
+	
+	//현재 월을 가져오는 함수
+	public static String currenMonth(){
+		SimpleDateFormat sdf = new SimpleDateFormat ( "yyyy-MM" );
+		
+		Calendar c = Calendar.getInstance ( ); 
+    	
+    	String curDate =  sdf.format ( c.getTime() );
+    	
+		return curDate;
+	}
+	
+	//현재 월을 가져오는 함수
+	public static String diffMonth(int diff){
+		SimpleDateFormat sdf = new SimpleDateFormat ( "yyyy-MM" );
+		
+		Calendar c = Calendar.getInstance ( ); 
+    	
+    	c.add ( c.MONTH, -diff );
+    	
+    	String diffDate =  sdf.format ( c.getTime() );
+    	
+		return diffDate;
+	}
+	
+	public static boolean isNull(String data){
+		boolean check = false;
+		
+		if(data == null || data == "null") check = true;
+		else check = false;
+		return check;
+	}
+	
+	public static String isNullToBlank( String obj )
+    {
+        try
+        {
+            if(obj == null) 
+                return "";
+            else
+                return obj;            
+        } catch ( Exception e )
+        {
+            return "";
+        }
+    }
+	
+	public static String isNull( Object obj )
+    {
+        try
+        {
+            if(obj == null) 
+                return "";
+            else
+                return String.valueOf(obj);            
+        } catch ( Exception e )
+        {
+            return "";
+        }
+    }
+	
+	public static String isNull( Object obj, String strDefult )
+    {
+        try
+        {
+            if(obj == null) 
+                return strDefult;
+            else
+                return String.valueOf(obj);            
+        } catch ( Exception e )
+        {
+            return "";
+        }
+    }
+	
+	public static long sizeOf(Object o)  throws Exception{
+		  assert inst != null;
+		  
+		
+		return inst.getObjectSize(o);
+	}
+	
+	public static String currentTime() {
+		long time = System.currentTimeMillis(); 
+		SimpleDateFormat dayTime = new SimpleDateFormat("yyyyMMddhhmmssSSS");
+		String str = dayTime.format(new Date(time));
+
+		return str;
+	}
+	
+	public static String currentTime1() {
+		long time = System.currentTimeMillis(); 
+		SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String str = dayTime.format(new Date(time));
+
+		return str;
+	}
+	
+	// Jasper Report 
+	public String makePdf(Object parameters, List bodyList,String jrxmlPath, String pdfPath) throws FileNotFoundException {
+		String pdfFileName = ""; 
+		InputStream template = new FileInputStream(jrxmlPath);
+		try {
+			JasperReport report = JasperCompileManager.compileReport(template);
+			
+			JasperPrint jasperPrint = null;
+			if(bodyList == null || bodyList.size() < 1) {
+				jasperPrint = JasperFillManager.fillReport(report,(Map<String,Object>)parameters, new JREmptyDataSource());	
+			}
+			else {
+				//jasperPrint = JasperFillManager.fillReport(report,BeanUtils.describe(parameters), new JRBeanCollectionDataSource(bodyList, false));
+				Map map  = BeanUtils.describe(parameters);
+				
+				jasperPrint = JasperFillManager.fillReport(report,map, new JRBeanCollectionDataSource(bodyList, false));
+			}
+
+			
+			// 서버에 저장된 pdf파일 삭제
+			deletePdfFile(pdfPath);
+			
+			// pdf파일명 변경 (pdf파일명 + 현재시간)
+			String currentTime = currentTime();
+			int indexOf = pdfPath.indexOf(".pdf");
+			pdfPath = pdfPath.substring(0, indexOf)+"_"+currentTime+pdfPath.substring(indexOf);
+			
+			JasperExportManager.exportReportToPdfFile(jasperPrint, pdfPath);
+			
+			File pdfFile = new File( pdfPath );
+			if (pdfFile.exists()){
+//					if (Desktop.isDesktopSupported()) {
+//						Desktop.getDesktop().open(pdfFile);
+//					}
+				pdfFileName = pdfFile.getName();
+			}
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException | InvocationTargetException
+				| NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return pdfFileName;
+	}
+	
+	// Jasper Report (여러개의 report를 붙여서 출력하기 위함)
+	public JasperPrint getJasperPrint(Object parameters, List bodyList,String jrxmlPath) throws FileNotFoundException {
+		log.debug("getJasperPrint : ====> : " + jrxmlPath);
+		InputStream template = new FileInputStream(jrxmlPath);
+		log.debug("template ====> " + template);
+		JasperPrint jasperPrint = null;
+		try {
+			log.debug("try 시작 ====> ");
+			JasperReport report = JasperCompileManager.compileReport(template);
+			log.debug("report ====> "+report);
+			log.debug("bodyList ====> "+bodyList);
+			//log.debug("bodyList.size() " + bodyList.size());
+			if(bodyList == null) {
+
+					jasperPrint = JasperFillManager.fillReport(report,(Map<String,Object>)parameters, new JREmptyDataSource());
+					
+					log.debug("jasperPrint111111" + jasperPrint);
+				
+			}
+			else {
+				Map map  = BeanUtils.describe(parameters);
+				
+				log.debug("jasperPrint222222" + map);
+				
+				jasperPrint = JasperFillManager.fillReport(report,map, new JRBeanCollectionDataSource(bodyList, false));
+				log.debug("jasperPrint222222" + jasperPrint);
+				//jasperPrint = JasperFillManager.fillReport(report,BeanUtils.describe(parameters), new JRBeanCollectionDataSource(bodyList, false));	
+			}
+			
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.debug("e============>" + e);
+		} catch (IllegalAccessException | InvocationTargetException
+				| NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			log.debug("e111============>" + e);
+			e.printStackTrace();
+		}
+		
+		return jasperPrint;
+	}
+	
+	
+	
+	// Jasper Report (여러개의 report를 붙여서 출력하기 위함) 
+	public String makePdfList(List<JasperPrint> jasperPrintList, String pdfPath) {
+		String pdfFileName = ""; 
+		try {
+			
+			// 서버에 저장된 pdf파일 삭제
+			deletePdfFile(pdfPath);
+			log.debug("pdfPath============>" + pdfPath);
+			// pdf파일명 변경 (pdf파일명 + 현재시간)
+			String currentTime = currentTime();
+			int indexOf = pdfPath.indexOf(".pdf");
+			pdfPath = pdfPath.substring(0, indexOf)+"_"+currentTime+pdfPath.substring(indexOf);
+			pdfPath = pdfPath.substring(0, indexOf)+".pdf";
+			log.debug("pdfPath============>" + pdfPath);
+			JRPdfExporter exporter = new JRPdfExporter();
+			exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList));
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(pdfPath)); 
+			log.debug("11111111111111111111111>" + pdfPath);
+			SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
+			configuration.setCreatingBatchModeBookmarks(true); 
+			exporter.setConfiguration(configuration);
+			exporter.exportReport();
+			log.debug("2222222222222222222222>" + pdfPath);
+			File pdfFile = new File( pdfPath );
+			log.debug("pdfFile.exists()>" + pdfFile.exists());
+			if (pdfFile.exists()){
+//					if (Desktop.isDesktopSupported()) {
+//						Desktop.getDesktop().open(pdfFile);
+//					}
+				pdfFileName = pdfFile.getName();
+			}
+				
+		
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		return pdfFileName;
+	}
+		
+	
+	
+	public static boolean isWindows(String OS) {
+        return (OS.indexOf("win") >= 0);
+    }
+	
+	// 서버에 저장된 pdf파일 삭제
+	private void deletePdfFile(String pdfPath) {
+		
+		String[] directoryArr = null;
+		if(isWindows(System.getProperty("os.name").toLowerCase())) { //WINDOWS
+			directoryArr = pdfPath.split("\\\\");
+		}
+		else {
+			directoryArr = pdfPath.split("/");
+		}
+		
+		String fileName = directoryArr[directoryArr.length -1];	
+		String directoryPath = pdfPath.substring(0, pdfPath.indexOf(fileName));
+		
+		File desti = new File(directoryPath);
+		if(!desti.exists()){
+			desti.mkdirs(); 
+		}
+		else {
+			File files[]= new File(directoryPath).listFiles();
+			if(files != null) {
+				for(int i=0;i<files.length;i++){
+					System.out.println(files[i].getName());
+					if(files[i].getName().indexOf(".pdf") != -1) { // pdf파일만 삭제
+						files[i].delete();
+					}
+				}	
+			}	
+		}
+	}
+	
+	public static List<Map<String, Object>> nullToBlankInList(List<Map<String, Object>> list){
+		List<Map<String, Object>> reList = new ArrayList<Map<String, Object>>();
+		HashMap<String, Object> map = new HashMap<>();
+		HashMap<String, Object> mapTemp = new HashMap<>();
+		for(int i=0;i<list.size();i++)
+		{
+			map = (HashMap<String, Object>) list.get(i);
+			
+			mapTemp = nullToBlankInHash(map);
+			
+			reList.add((Map<String, Object>)mapTemp);
+		}
+		
+		return reList;
+	}
+	
+	public static HashMap<String, Object> nullToBlankInHash(HashMap<String, Object> map){
+		  Set set = map.entrySet();
+		  Iterator it = set.iterator();
+
+		  while (it.hasNext()) {
+			  Map.Entry e = (Map.Entry) it.next();
+			  //System.out.println("===============>key " + (String)e.getKey());
+			  //System.out.println("===============>value " + e.getValue());
+			  String gValue  = "";
+			  if(e.getValue() == null || "null".equals(e.getValue())) gValue  = "";
+			  else gValue = (String)e.getValue();
+			  map.put((String)e.getKey(),  gValue);
+		  }
+		  //System.out.println(map);
+		  return map;
+	 }
+	
+	// 화면에서 List 형태인 request의 Object를 받아서 jqgrid에서 사용될 combo의 data를 리턴
+	public static String JqgridComboString(Object obj, String strKey, String strValue){
+		String ComboString = "";
+		 
+		List<Map<String,Object>> list = (List<Map<String,Object>>) obj;
+		 
+		for(int i=0; i<list.size(); i++){
+			
+			Map<String,Object> map = list.get(i);
+				
+			String strComboKey = (String) map.get(strKey);
+			String strComboValue = (String) map.get(strValue);
+				
+			ComboString += strComboKey+":"+strComboValue+";";
+		}
+		
+		ComboString = ComboString.substring(0, ComboString.length() -1);
+		 
+		return ComboString;
+	 }
+	
+	// 화면에서 List 형태인 request의 Object를 받아서 jqgrid에서 사용될 combo의 data를 리턴
+		public static String JqgridComboString1(Object obj, String strKey, String strValue){
+			String ComboString = "";
+			 
+			List<Map<String,Object>> list = (List<Map<String,Object>>) obj;
+			 
+			for(int i=0; i<list.size(); i++){
+				
+				Map<String,Object> map = list.get(i);
+				
+				if(i==0)
+				{
+					ComboString += "[";
+				}
+				
+				String strComboKey = (String) map.get(strKey);
+				String strComboValue = (String) map.get(strValue);
+					
+				ComboString += "{CD_V:\""+strComboKey+"\",CD_NM:\""+strComboValue+"\"},";
+			}
+			
+			ComboString = ComboString.substring(0, ComboString.length() -1) + "]";
+			 
+			return ComboString;
+		 }
+	
+	
+			
+}

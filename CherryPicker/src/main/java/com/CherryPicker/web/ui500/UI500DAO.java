@@ -1,0 +1,83 @@
+package com.CherryPicker.web.ui500;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Repository;
+
+import com.CherryPicker.web.common.AbstractDAO;
+
+@Repository("UI500DAO")
+public class UI500DAO extends AbstractDAO{
+	
+	
+	//거래처 조회
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> CPMES_UI510_search(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("ui500.CPMES_UI510_search", map);
+	}
+	
+	//공통코드 MAS 저장
+	public void CPMES_UI510_save(Map<String, Object> map) throws Exception{
+		insert("ui500.CPMES_UI510_save", map);
+	}
+		
+	public void CPMES_UI510_delete(Map<String, Object> map) throws Exception{
+		insert("ui500.CPMES_UI510_delete", map);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> CPMES_UI520_search(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("ui500.CPMES_UI520_search", map);
+	}
+	
+	//사용자 관리
+	public void CPMES_UI520_save(Map<String, Object> map) throws Exception{
+		insert("ui500.CPMES_UI520_save", map);
+	}
+		
+	public void CPMES_UI520_delete(Map<String, Object> map) throws Exception{
+		delete("ui500.CPMES_UI520_delete", map);
+	}
+	
+	
+	//공통코드조회 mas
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> CPMES_UI530_searchMas(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("ui500.CPMES_UI530_searchMas", map);
+	}
+	
+	//공통코드 조회 det
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> CPMES_UI530_searchDet(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("ui500.CPMES_UI530_searchDet", map);
+	}
+	
+	//공통코드 MAS 저장
+	public void CPMES_UI530_saveMas(Map<String, Object> map) throws Exception{
+		insert("ui500.CPMES_UI530_saveMas", map);
+	}
+	
+	//공통코드 Det 저장
+	public void CPMES_UI530_saveDet(Map<String, Object> map) throws Exception{
+		insert("ui500.CPMES_UI530_saveDet", map);
+	}
+	
+	//공통코드 Mas 삭제 저장
+	public void CPMES_UI530_delete(Map<String, Object> map) throws Exception{
+		insert("ui500.CPMES_UI530_delete", map);
+	}
+	
+	//공통코드 Det 삭제 저장
+	public void CPMES_UI530_delete_det(Map<String, Object> map) throws Exception{
+		insert("ui500.CPMES_UI530_delete_det", map);
+	}
+		
+		
+	
+	
+	
+	
+		
+	
+}

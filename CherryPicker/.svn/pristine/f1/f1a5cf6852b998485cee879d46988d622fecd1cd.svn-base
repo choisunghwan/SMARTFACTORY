@@ -1,0 +1,390 @@
+package com.CherryPicker.web.ui400;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.CherryPicker.web.common.CommandMap;
+import com.CherryPicker.web.common.util.CommonUtils;
+import com.CherryPicker.web.ui400.UI400Service;
+
+@Controller
+public class UI400Controller {
+	Logger log = Logger.getLogger(this.getClass());
+	
+	@Autowired
+	private UI400Service UI400Service;
+	
+	//////////////////////////////////////////////////
+	// 작업지시
+	//////////////////////////////////////////////////
+	@RequestMapping(value="/PSMES/PSMES_UI410.do")
+    public ModelAndView PSMES_UI410(CommandMap commandMap) throws Exception{
+    	ModelAndView mv = new ModelAndView("/PSMES/PSMES_UI410");
+    	
+    	commandMap.put("R_ORDER_PK", (String)commandMap.get("param1"));
+		List<Map<String,Object>> list = UI400Service.searchROrderLov(commandMap.getMap());
+		mv.addObject("ROrderLov", list);
+		
+		List<Map<String,Object>> list1 = UI400Service.PSMES_UI410_searchWorkDateList();
+		mv.addObject("WorkDayList", list1);
+		
+    	return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_UI410_search.do")
+    public ModelAndView PSMES_UI410_search(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		List<Map<String,Object>> list = UI400Service.PSMES_UI410_search(commandMap.getMap());
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.addObject("response", list);
+		
+        mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_UI410_save.do")
+    public ModelAndView PSMES_UI410_save(CommandMap commandMap) throws Exception{
+		
+		// 작업테이블 INSERT
+		String gridData = (String)commandMap.get("gridData");
+		
+		String sUserId = (String)commandMap.get("sUserId");
+		
+		JSONParser jsonParser = new JSONParser();
+		
+		JSONArray jsonArray = new JSONArray();
+				
+		if(gridData != null)
+		{
+			jsonArray = (JSONArray) jsonParser.parse(gridData);
+		}
+		
+		int iCnt = jsonArray.size();
+		
+		List<Map<String, Object>> list = new ArrayList();
+		for(int i=0; i<iCnt; i++){
+			JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+    		
+			Map<String, Object> smap = new HashMap<String, Object>();
+			
+			String chk =CommonUtils.isNull(jsonObj.get("CHK"));
+
+			if("1".equals(chk))
+			{
+				smap.put("R_ORDER_PK", CommonUtils.isNull(jsonObj.get("R_ORDER_PK")));
+				
+				// 수주테이블 작업지시 상태 변경
+				if(i==0) {
+					UI400Service.PSMES_UI410_save_status(smap);
+				}
+				
+				smap.put("R_ORDER_DETAIL_PK", CommonUtils.isNull(jsonObj.get("R_ORDER_DETAIL_PK")));
+				smap.put("P1_PLAN_DATE", CommonUtils.isNull(jsonObj.get("P001_DATE")));
+				smap.put("P2_PLAN_DATE", CommonUtils.isNull(jsonObj.get("P002_DATE")));
+				smap.put("P3_PLAN_DATE", CommonUtils.isNull(jsonObj.get("P003_DATE")));
+				smap.put("P4_PLAN_DATE", CommonUtils.isNull(jsonObj.get("P004_DATE")));
+				smap.put("CREATE_USER", sUserId);
+				smap.put("UPDATE_USER", sUserId);
+				
+				list.add(smap);
+			}
+			
+		}
+		
+		UI400Service.PSMES_UI410_save(list);
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	
+	//////////////////////////////////////////////////
+	// 생산실적조회
+	//////////////////////////////////////////////////
+	@RequestMapping(value="/PSMES/PSMES_UI420.do")
+    public ModelAndView PSMES_UI420(CommandMap commandMap) throws Exception{
+    	ModelAndView mv = new ModelAndView("/PSMES/PSMES_UI420");
+    	
+    	return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_UI420_main_search.do")
+    public ModelAndView PSMES_UI420_main_search(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		List<Map<String,Object>> list = UI400Service.PSMES_UI420_main_search(commandMap.getMap());
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.addObject("response", list);
+		
+        mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_UI420_detail_search.do")
+    public ModelAndView PSMES_UI420_detail_search(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		List<Map<String,Object>> list = UI400Service.PSMES_UI420_detail_search(commandMap.getMap());
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.addObject("response", list);
+		
+        mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_UI420_save.do")
+    public ModelAndView PSMES_UI420_save(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		String sUserId = (String)commandMap.get("sUserId");
+		commandMap.put("CREATE_USER", sUserId);
+		commandMap.put("UPDATE_USER", sUserId);
+		
+		String R_ORDER_PK = "";
+		
+		// 선택한 작업수주건의 작업완료 처리
+		String gridData = (String)commandMap.get("gridData");
+		
+		JSONParser jsonParser = new JSONParser();
+		
+		JSONArray jsonArray = new JSONArray();
+				
+		if(gridData != null)
+		{
+			jsonArray = (JSONArray) jsonParser.parse(gridData);
+		}
+		
+		int iCnt = jsonArray.size();
+		
+		List<Map<String, Object>> list = new ArrayList();
+		
+		for(int i=0; i<iCnt; i++){
+			JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+    		
+			Map<String, Object> smap = new HashMap<String, Object>();
+			
+			String chk =CommonUtils.isNull(jsonObj.get("CHK"));
+			
+			if("1".equals(chk))
+			{
+				R_ORDER_PK = CommonUtils.isNull(jsonObj.get("R_ORDER_PK"));
+				smap.put("R_ORDER_PK", CommonUtils.isNull(jsonObj.get("R_ORDER_PK")));
+				smap.put("UPDATE_USER", sUserId);
+				
+				list.add(smap);	
+			}
+		}
+		
+		if(list.size() > 0) {
+			UI400Service.PSMES_UI420_save(list);			
+		}
+		
+		
+		// 작업완료시 상세공정 작업완료 일괄처리
+		Map<String, Object> smap1 = new HashMap<String, Object>();
+		smap1.put("R_ORDER_PK", R_ORDER_PK);
+		smap1.put("UPDATE_USER", sUserId);
+		UI400Service.PSMES_UI420_WORK_LIST_save(smap1);
+		
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.setViewName("jsonView");
+			
+		
+		return mv;
+    }
+	
+	
+	
+	//////////////////////////////////////////////////
+	// 설비관리
+	//////////////////////////////////////////////////
+	@RequestMapping(value="/PSMES/PSMES_UI430.do")
+    public ModelAndView PSMES_UI430(CommandMap commandMap) throws Exception{
+    	ModelAndView mv = new ModelAndView("/PSMES/PSMES_UI430");
+    	
+    	return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_UI430_main_search.do")
+    public ModelAndView PSMES_UI430_main_search(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		List<Map<String,Object>> list = UI400Service.PSMES_UI430_main_search(commandMap.getMap());
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.addObject("response", list);
+		
+        mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_UI430_detail_search.do")
+    public ModelAndView PSMES_UI430_datail_search(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		List<Map<String,Object>> list = UI400Service.PSMES_UI430_detail_search(commandMap.getMap());
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.addObject("response", list);
+		
+        mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_UI430_save.do")
+    public ModelAndView PSMES_UI430_save(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		String sUserId = (String)commandMap.get("sUserId");
+		commandMap.put("CREATE_USER", sUserId);
+		commandMap.put("UPDATE_USER", sUserId);
+		
+		// 설비정보메인
+		String pEquipmentPk = (String)commandMap.get("pEquipmentPk");
+		
+		if(pEquipmentPk.equals("")) {
+			// insert
+			UI400Service.PSMES_UI430_main_insert(commandMap.getMap());
+			
+			
+			
+			
+		}else {
+			// update
+			UI400Service.PSMES_UI430_main_update(commandMap.getMap());
+			
+		}
+		
+		// 설비이력 저장
+		String gridData = (String)commandMap.get("gridData2");
+		
+		JSONParser jsonParser = new JSONParser();
+		
+		JSONArray jsonArray = new JSONArray();
+				
+		if(gridData != null)
+		{
+			jsonArray = (JSONArray) jsonParser.parse(gridData);
+		}
+		
+		int iCnt = jsonArray.size();
+		
+		List<Map<String, Object>> list = new ArrayList();
+		
+		for(int i=0; i<iCnt; i++){
+			JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+    		
+			Map<String, Object> smap = new HashMap<String, Object>();
+			
+			String chk =CommonUtils.isNull(jsonObj.get("CHK"));
+			
+			if("1".equals(chk))
+			{
+				smap.put("EQUIPMENT_PK", pEquipmentPk);
+				smap.put("EQUIPMENT_DETAIL_PK", CommonUtils.isNull(jsonObj.get("EQUIPMENT_DETAIL_PK")));
+				smap.put("HISTORY_DATE", CommonUtils.isNull(jsonObj.get("HISTORY_DATE")));
+				smap.put("REMARKS", CommonUtils.isNull(jsonObj.get("REMARKS")));
+				smap.put("CREATE_USER", sUserId);
+				smap.put("UPDATE_USER", sUserId);
+				
+				if(!CommonUtils.isNull(jsonObj.get("HISTORY_DATE")).equals("")) {
+					list.add(smap);	
+				}
+			}
+		}
+		
+		if(list.size() > 0) {
+			UI400Service.PSMES_UI430_detail_save(list);			
+		}
+		
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_UI430_main_delete.do")
+    public ModelAndView PSMES_UI430_main_delete(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		UI400Service.PSMES_UI430_main_delete(commandMap.getMap());			
+		
+		UI400Service.PSMES_UI430_detail_delete_all(commandMap.getMap());	
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	@RequestMapping(value="/PSMES/PSMES_UI430_detail_delete.do")
+    public ModelAndView PSMES_UI430_detail_delete(CommandMap commandMap, HttpServletRequest request) throws Exception{
+		
+		// 설비이력 저장
+		String gridData = (String)commandMap.get("gridData2");
+		
+		JSONParser jsonParser = new JSONParser();
+		
+		JSONArray jsonArray = new JSONArray();
+				
+		if(gridData != null)
+		{
+			jsonArray = (JSONArray) jsonParser.parse(gridData);
+		}
+		
+		int iCnt = jsonArray.size();
+		
+		List<Map<String, Object>> list = new ArrayList();
+		
+		for(int i=0; i<iCnt; i++){
+			JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+    		
+			Map<String, Object> smap = new HashMap<String, Object>();
+			
+			String chk =CommonUtils.isNull(jsonObj.get("CHK"));
+			
+			if("1".equals(chk))
+			{
+				smap.put("EQUIPMENT_DETAIL_PK", CommonUtils.isNull(jsonObj.get("EQUIPMENT_DETAIL_PK")));
+				
+				if(!CommonUtils.isNull(jsonObj.get("EQUIPMENT_DETAIL_PK")).equals("")) {
+					list.add(smap);	
+				}
+			}
+		}
+		
+		if(list.size() > 0) {
+			UI400Service.PSMES_UI430_detail_delete(list);			
+		}
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.setViewName("jsonView");
+			
+		return mv;
+    }
+	
+	
+	
+	
+	
+}

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<!-- @Controller, @Service, @Repository, @Component 등의 애노테이션을 component-scan을 xml에 선언해서 사용하고 있다 -->
+	<context:component-scan base-package="com.CherryPicker.web" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	<!-- 스프링 MVC 컴포넌트들을 그것의 디폴트 설정을 가지고 활성화하기 위해 사용된다. -->
+	<mvc:annotation-driven>
+		<!-- 세션에 저장되어 있는 값 중, 특정 이름의 값을 메서드 인자로 전달한다. -->
+		<mvc:argument-resolvers>
+			<bean class="com.CherryPicker.web.common.CustomMapArgumentResolver"></bean>		
+		</mvc:argument-resolvers>
+	</mvc:annotation-driven>
+	
+	<!-- AOP를 이용해 로그를 기록할 클래스를 만든다 -->
+	<aop:aspectj-autoproxy/>
+	<bean id="loggerAspect" class="com.CherryPicker.web.common.LoggerAspect" />
+	    
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+    
+    <bean id="beanNameViewResolver"  class="org.springframework.web.servlet.view.BeanNameViewResolver">
+  		<property name="order" value="1" />
+ 	</bean>
+ 
+    <!-- controller 의 요청에 해당하는 jsp 파일 연결 설정 -->
+    <bean
+    	class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="2" 
+    	p:viewClass="org.springframework.web.servlet.view.JstlView" 
+    	p:prefix="/WEB-INF/views/" p:suffix=".jsp">
+   	</bean>
+     
+   	<!-- 각종 bean 설정 -->
+	<bean id="excelXlsx" class="com.CherryPicker.web.common.util.ExcelXlsxDownloadView"></bean>
+	
+	<!-- 파일 첨부 관련 설정 -->
+   	<bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- max upload size in bytes -->
+        <property name="maxUploadSize" value="20971520" /> <!-- 20MB -->
+        <!-- max size of file in memory (in bytes) -->
+        <property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
+    </bean>
+    
+    <!-- ajax json 호출 시 사용하는 View -->
+   <bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView">
+		<property name="contentType" value="application/json;charset=UTF-8"></property>
+	</bean>
+    
+    <bean id="dummyTask" class="com.CherryPicker.web.common.DummyTask"/>
+ 
+    <bean name="dummyJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+          p:jobClass="com.CherryPicker.web.common.DummyJobBean"
+          p:durability="true"> 
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="dummyTask" value-ref="dummyTask"/>
+            </map>
+        </property>
+    </bean>
+</beans>
+
+

@@ -1,0 +1,42 @@
+package com.hubizict.web.comm;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Repository;
+
+import com.hubizict.web.common.AbstractDAO;
+
+@Repository("CommDAO")
+public class CommDAO extends AbstractDAO{
+	
+	//원료사용실적 원료코드
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> selectUserInfo(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("comm.selectUserInfo", map);
+	}
+	
+	
+	public void insert_sercutity_log(Map<String, Object> map) throws Exception{
+		insert("comm.insert_sercutity_log", map);
+	}
+	
+	//공통코드 조회
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> searchComcode(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("comm.searchComcode", map);
+	}
+	
+	//공통코드 조회
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> searchGridComcode(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("comm.searchGridComcode", map);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> searchYearCombo(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("comm.searchYearCombo", map);
+	}
+	
+	
+}

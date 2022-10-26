@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ui100">
+	
+	<select id="PSMES_UI110_searchData1" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT SALES_TP   AS GUBUN, count(1) CNT
+	  FROM dbo.TB_RECEIVE_ORDER
+	 WHERE SUBSTRING(R_ORDER_DATE, 1,6) = SUBSTRING(CONVERT(varchar, GETDATE(), 112), 1,6)
+	   AND SALES_TP NOT IN ('S01','S05')
+	 GROUP BY SALES_TP
+	 UNION ALL
+	 SELECT 'ORDER' AS GUBUN, count(1) CNT
+	   FROM dbo.TB_PURCHASE_ORDER
+	  WHERE SUBSTRING(P_ORDER_DATE, 1,6) = SUBSTRING(CONVERT(varchar, GETDATE(), 112), 1,6)
+	]]>	
+	</select>
+	
+	<select id="PSMES_UI110_searchData2" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	
+	SELECT T.V_GUBUN
+      ,CASE WHEN PLAN_CNT = 0 THEN 0
+           ELSE CAST(CAST( WORK_CNT AS FLOAT)/CAST(PLAN_CNT AS FLOAT)*100 AS DECIMAL)
+      END V_PERCENT
+  FROM (
+      SELECT 'P1' AS V_GUBUN
+           ,(SELECT COUNT(1) CNT FROM dbo.TB_WORK WHERE P1_WORK_END_DATE IS NOT NULL AND R_ORDER_PK = #{pOrderPk}) AS WORK_CNT
+           ,(SELECT COUNT(1) CNT FROM dbo.TB_WORK WHERE P1_PLAN_DATE IS NOT NULL AND R_ORDER_PK = #{pOrderPk}) AS PLAN_CNT
+      UNION ALL 
+      SELECT 'P2' AS V_GUBUN
+           ,(SELECT COUNT(1) CNT FROM dbo.TB_WORK WHERE P2_WORK_END_DATE IS NOT NULL AND R_ORDER_PK = #{pOrderPk}) AS WORK_CNT
+           ,(SELECT COUNT(1) CNT FROM dbo.TB_WORK WHERE P2_PLAN_DATE IS NOT NULL AND R_ORDER_PK = #{pOrderPk}) AS PLAN_CNT
+      UNION ALL 
+      SELECT 'P3' AS V_GUBUN
+           ,(SELECT COUNT(1) CNT FROM dbo.TB_WORK WHERE P3_WORK_END_DATE IS NOT NULL AND R_ORDER_PK = #{pOrderPk}) AS WORK_CNT
+           ,(SELECT COUNT(1) CNT FROM dbo.TB_WORK WHERE P3_PLAN_DATE IS NOT NULL AND R_ORDER_PK = #{pOrderPk}) AS PLAN_CNT
+      UNION ALL 
+      SELECT 'P4' AS V_GUBUN
+           ,(SELECT COUNT(1) CNT FROM dbo.TB_WORK WHERE P4_WORK_END_DATE IS NOT NULL AND R_ORDER_PK = #{pOrderPk}) AS WORK_CNT
+           ,(SELECT COUNT(1) CNT FROM dbo.TB_WORK WHERE P4_PLAN_DATE IS NOT NULL AND R_ORDER_PK = #{pOrderPk}) AS PLAN_CNT
+     ) T
+	]]>	
+	</select>
+	
+	<select id="PSMES_UI110_searchData3" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	
+	 
+	 WITH q AS
+        (
+        SELECT  1 AS num
+        UNION ALL
+        SELECT  num + 1
+        FROM    q
+        WHERE   num <= 11
+        )
+
+	SELECT A.NUM, ISNULL(FINAL_COST,0) AS FINAL_COST, ISNULL(GENERAL_COST,0) AS GENERAL_COST, ISNULL(P_FINAL_COST,0) AS P_FINAL_COST
+	
+	FROM (SELECT FORMAT(num, '00') AS NUM FROM q) A
+	LEFT OUTER JOIN  
+	(
+	SELECT T1.R_ORDER_MONTH                  -- 월
+	     ,SUM(T1.FINAL_COST) AS FINAL_COST      -- 매출
+	     ,SUM(T1.GENERAL_COST) AS GENERAL_COST   -- 일반관리비
+	     ,SUM(T1.P_FINAL_COST) AS P_FINAL_COST -- 외주비용
+	  FROM (
+	      SELECT SUBSTRING(R_ORDER_DATE, 5,2) AS R_ORDER_MONTH
+	           ,FINAL_COST
+	           ,GENERAL_COST
+	           ,R_ORDER_PK
+	           ,(SELECT SUM(FINAL_COST) FROM dbo.TB_PURCHASE_ORDER WHERE R_ORDER_PK = T.R_ORDER_PK) AS P_FINAL_COST
+	        FROM dbo.TB_RECEIVE_ORDER T
+	       WHERE SUBSTRING(R_ORDER_DATE, 1,4) = SUBSTRING(CONVERT(varchar, GETDATE(), 112), 1,4)  ) T1
+	 GROUP BY T1.R_ORDER_MONTH
+	) T1 ON T1.R_ORDER_MONTH = A.num
+	
+	 ORDER BY A.num
+	 
+	 
+	]]>	
+	</select>
+	
+	<select id="PSMES_UI110_searchOrderCom" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT R_ORDER_PK AS CD_V
+      ,'['+R_ORDER_NO+'] ' + R_ORDER_NAME AS CD_NM
+  	FROM dbo.TB_RECEIVE_ORDER
+ 	WHERE SALES_TP = 'S03'
+ 
+ 	]]>	
+	</select>
+ 
+</mapper>

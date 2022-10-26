@@ -1,0 +1,83 @@
+package com.CherryPicker.web.ui300;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Repository;
+
+import com.CherryPicker.web.common.AbstractDAO;
+
+@Repository("UI300DAO")
+public class UI300DAO extends AbstractDAO{
+	
+	public List<Map<String, Object>> PSMES_UI310_searchMas(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return (List<Map<String, Object>>)selectList("ui300.PSMES_UI310_searchMas", map);
+	}
+	
+	public List<Map<String, Object>> PSMES_UI310_searchDet(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return (List<Map<String, Object>>)selectList("ui300.PSMES_UI310_searchDet", map);
+	}
+	
+	public List<Map<String, Object>> PSMES_UI310_reportMas(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return (List<Map<String, Object>>)selectList("ui300.PSMES_UI310_reportMas", map);
+	}
+	
+	public List<Map<String, Object>> PSMES_UI310_reportDet(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return (List<Map<String, Object>>)selectList("ui300.PSMES_UI310_reportDet", map);
+	}
+	
+	
+	
+	
+	public void PSMES_UI310_save_mas(Map<String, Object> map) throws Exception{
+		insert("ui300.PSMES_UI310_save_mas", map);
+	}
+	
+	public Map<String, Object> getPOrderPk(Map<String, Object> smap) {
+		// TODO Auto-generated method stub
+		return (Map<String, Object>)selectOne("ui300.getPOrderPk", smap);
+	}
+	
+	
+	public void PSMES_UI310_save_det(Map<String, Object> map) throws Exception{
+		insert("ui300.PSMES_UI310_save_det", map);
+	}
+	
+	public void PSMES_UI310_del_mas(Map<String, Object> map) throws Exception{
+		insert("ui300.PSMES_UI310_del_mas", map);
+	}
+	
+	public void PSMES_UI310_del_det(Map<String, Object> map) throws Exception{
+		insert("ui300.PSMES_UI310_del_det", map);
+	}
+	
+	public void PSMES_UI310_row_del(Map<String, Object> map) throws Exception{
+		insert("ui300.PSMES_UI310_row_del", map);
+	}
+	
+	
+	
+		
+	public List<Map<String, Object>> PSMES_UI320_searchMas(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return (List<Map<String, Object>>)selectList("ui300.PSMES_UI320_searchMas", map);
+	}
+
+	public List<Map<String, Object>> PSMES_UI330_searchMas(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return (List<Map<String, Object>>)selectList("ui300.PSMES_UI330_searchMas", map);
+	}
+	
+	public void PSMES_UI330_save(Map<String, Object> map) throws Exception{
+		insert("ui300.PSMES_UI330_save", map);
+	}
+	
+	public void PSMES_UI330_work_save(Map<String, Object> map) throws Exception{
+		insert("ui300.PSMES_UI330_work_save", map);
+	}
+	
+}

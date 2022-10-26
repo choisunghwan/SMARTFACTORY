@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="shipping16_1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="581" leftMargin="7" rightMargin="7" topMargin="20" bottomMargin="20" uuid="99076a2a-5d33-4ff1-ac45-0a3ca8bbb6f2">
+	<property name="ireport.zoom" value="1.61051000000001"/>
+	<property name="ireport.x" value="17"/>
+	<property name="ireport.y" value="32"/>
+	<parameter name="p_order_no" class="java.lang.String"/>
+	<parameter name="company_code_nm" class="java.lang.String"/>
+	<parameter name="tel_no" class="java.lang.String"/>
+	<parameter name="fax_no" class="java.lang.String"/>
+	<parameter name="p_order_name" class="java.lang.String"/>
+	<parameter name="amount_cnt" class="java.lang.String"/>
+	<parameter name="final_cost" class="java.lang.String"/>
+	<parameter name="vat" class="java.lang.String"/>
+	<parameter name="total_cost" class="java.lang.String"/>
+	<parameter name="total_nm" class="java.lang.String"/>
+	<parameter name="fixed_date" class="java.lang.String"/>
+	<field name="num" class="java.lang.String"/>
+	<field name="p_product_no" class="java.lang.String"/>
+	<field name="p_product_name" class="java.lang.String"/>
+	<field name="unit_cost" class="java.lang.String"/>
+	<field name="amount" class="java.lang.String"/>
+	<field name="sum_cost" class="java.lang.String"/>
+	<field name="note" class="java.lang.String"/>
+	<field name="sum_cost_vat" class="java.lang.String"/>
+	<field name="p_standard" class="java.lang.String"/>
+	<variable name="group1_index" class="java.lang.Integer" incrementType="Group" incrementGroup="group1" calculation="Count">
+		<variableExpression><![CDATA[$V{group1_index}]]></variableExpression>
+		<initialValueExpression><![CDATA[1]]></initialValueExpression>
+	</variable>
+	<group name="group2">
+		<groupExpression><![CDATA[$P{JASPER_REPORT}]]></groupExpression>
+		<groupFooter>
+			<band height="36">
+				<rectangle>
+					<reportElement x="2" y="3" width="578" height="30" uuid="363ecbfc-31d9-4cf7-9e3f-0fda0e67b319"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</rectangle>
+				<line>
+					<reportElement x="2" y="18" width="577" height="1" uuid="431cc008-7658-45c1-be97-24404c7a85ad"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement x="7" y="3" width="67" height="14" uuid="a3a8ccac-00a9-44a5-bdfe-b251ca177b19"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[1. 검수 조건 :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="11" y="18" width="63" height="14" uuid="384ca57e-63de-4395-b0e0-ce6ea914966b"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[2. 기타]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="group1">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupFooter>
+			<band height="33">
+				<staticText>
+					<reportElement mode="Opaque" x="2" y="3" width="33" height="22" forecolor="#000000" backcolor="#EDEDFF" uuid="a192051d-1840-408d-aaed-323f762519ef"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Solid"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[수량]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="35" y="3" width="71" height="22" backcolor="#FFFFFF" uuid="8ecd67cc-bee7-43aa-9034-a42cdb1a458d"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Solid"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="fonts/NGULIM.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="153" y="3" width="114" height="22" backcolor="#FFFFFF" uuid="f845caf5-1029-4d01-817d-32d2c76e9a0f"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Solid"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="fonts/NGULIM.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="106" y="3" width="47" height="22" forecolor="#000000" backcolor="#EDEDFF" uuid="d45c981b-e919-4699-b5b0-2c14c323321e"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Solid"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[공급가]]></text>
+				</staticText>
+				<textField pattern="">
+					<reportElement mode="Transparent" x="156" y="5" width="108" height="18" uuid="e3e4553b-075d-49eb-8c28-9b855b40ec67"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{final_cost}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="267" y="3" width="47" height="22" forecolor="#000000" backcolor="#EDEDFF" uuid="c9afb9c5-db40-41dd-948a-4e6c07cd2acd"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Solid"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[VAT]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="314" y="3" width="87" height="22" backcolor="#FFFFFF" uuid="f83ec3fd-45cf-4f1a-ad2c-76f92d5e05b6"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Solid"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="fonts/NGULIM.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[]]></text>
+				</staticText>
+				<textField pattern="">
+					<reportElement mode="Transparent" x="317" y="5" width="82" height="18" uuid="8c5f1c14-6360-4f2c-b19d-08b40a27d432"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{vat}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="401" y="3" width="47" height="22" forecolor="#000000" backcolor="#EDEDFF" uuid="0c6e3fb0-f53c-4bac-baa8-433464073ab8"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Solid"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[합계]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="448" y="3" width="132" height="22" backcolor="#FFFFFF" uuid="7c1b7e9e-ae67-493c-867b-40cc88ec5969"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Solid"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="fonts/NGULIM.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[]]></text>
+				</staticText>
+				<textField pattern="">
+					<reportElement mode="Transparent" x="453" y="5" width="123" height="18" uuid="c597c5e5-077b-446e-a821-aa49ecc58c75"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{total_cost}]]></textFieldExpression>
+				</textField>
+				<textField pattern="">
+					<reportElement mode="Transparent" x="42" y="5" width="61" height="18" uuid="b84b7d0b-5709-43a6-9751-e54bb9c465ea"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{amount_cnt}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="197" splitType="Stretch">
+			<rectangle>
+				<reportElement x="396" y="0" width="184" height="58" uuid="4954fd2e-bad4-4e24-a1a5-04da89b51111"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="2" y="8" width="311" height="32" uuid="bb37953c-664b-42f4-9624-5ebaa6a787f2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="22" isBold="true" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[구 매 발 주 서]]></text>
+			</staticText>
+			<line>
+				<reportElement x="415" y="19" width="165" height="1" uuid="dc12aff2-ea8a-48a8-a587-5fd07578d669"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="414" y="0" width="1" height="58" uuid="4c0c27eb-6d03-4289-9733-92ab645a24d6"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="468" y="0" width="1" height="58" uuid="70073f3b-d969-4769-b5c6-da77e14ffcb1"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="524" y="0" width="1" height="58" uuid="1e67a024-4aba-49f1-9a9d-9df80a79d5ae"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="401" y="4" width="10" height="49" uuid="d6432e03-9338-4ba4-a4b6-24bcd69a07d5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[결
+
+재]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="421" y="2" width="41" height="16" uuid="d095a728-3478-4bd8-8aca-676592b461e9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[작성]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="476" y="2" width="41" height="16" uuid="d0fd1cd5-75e1-4e17-a5f7-14654a299303"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[검토]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="533" y="2" width="41" height="16" uuid="b7c8bb1a-5a1a-4dec-9dd7-7f6ae2b97b7b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[승인]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="2" y="75" width="276" height="76" uuid="9563a48c-4678-4c3a-9375-0cd6c5f726a5"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<line>
+				<reportElement x="2" y="90" width="276" height="1" uuid="fd8970a0-5b4c-488f-97a6-a1536ee53db4"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="2" y="105" width="276" height="1" uuid="18e875d8-3357-4030-9b2f-4216cfd7f30d"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="2" y="120" width="276" height="1" uuid="97d26941-3fa8-4a0b-b595-607d3ddc0841"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="2" y="151" width="276" height="15" backcolor="#EDEDFF" uuid="604bbf7e-216d-4f4a-a656-2a93a2b953a5"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" pdfFontName="fonts/NGULIM.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="13" y="150" width="254" height="15" uuid="686825e2-42e6-4540-985e-f8756791e3bf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fixed_date}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="59" y="75" width="1" height="76" uuid="3f76fbd2-f2ac-423c-902f-9e77dd239c5a"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="2" y="135" width="276" height="1" uuid="785d6945-d297-4985-93df-99077a644d3e"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="2" y="75" width="57" height="14" uuid="93508727-297a-4059-b107-7c6fef44f143"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[일련번호]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="90" width="57" height="14" uuid="f10bef9b-9b32-4676-8a58-1ecb371ee109"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[수 신]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="106" width="57" height="14" uuid="9c37edf3-c091-4344-8385-aba635cd4c03"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[TEL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="121" width="57" height="14" uuid="6bb8c4ff-6fb7-4bcc-94bb-4b628d91a3bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[FAX]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="135" width="57" height="14" uuid="c6d2c0a9-a610-4079-a63b-ad6dc91c68ef"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[공사명]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="304" y="75" width="276" height="91" uuid="bbeb42a4-82e4-4414-ae31-e699574cd626"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<line>
+				<reportElement x="304" y="121" width="276" height="1" uuid="b022e7a8-df5e-48ce-851c-c00be17f8f36"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="304" y="151" width="276" height="1" uuid="43e70669-7f91-4fb9-9827-9f413dc85b07"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="304" y="122" width="57" height="14" uuid="c73f49f5-afb1-4c86-ab9a-98465e34ecae"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[회사명]]></text>
+			</staticText>
+			<line>
+				<reportElement x="304" y="106" width="276" height="1" uuid="cd5b1ac5-3f09-4744-8e75-9d8ff98a16fd"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="304" y="137" width="57" height="14" uuid="ff4b4c81-b8cd-4535-8df2-b6e3ac3136e8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[주 소]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="304" y="107" width="57" height="14" uuid="f0d5798d-dd9f-4f4f-85c4-cb739d8e788d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[사업자번호]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="304" y="151" width="57" height="14" uuid="b1bdef4f-7436-45e1-b902-b0ee7a1dc9a4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[TEL/FAX]]></text>
+			</staticText>
+			<line>
+				<reportElement x="304" y="136" width="276" height="1" uuid="bf2286b8-de32-4980-866c-def7a8ecb789"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="362" y="107" width="1" height="59" uuid="9b4d79b9-a6d6-474f-a0df-e705f4f60189"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="376" y="77" width="138" height="27" uuid="c324b9f9-93ee-40e3-9b52-99463a6a06ff"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="14" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[(주)제이에스시]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="366" y="107" width="214" height="14" uuid="3897fbd8-0df9-4063-bd0a-bf1168b34ab3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[610-81-58502]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="366" y="122" width="210" height="14" uuid="f08c9979-f5ef-409d-87df-51060381e353"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[(주)제이에스시]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="366" y="136" width="210" height="14" uuid="3ca45c88-369e-4014-88f7-a5c2f0f7d1da"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[경상북도 경주시 외동읍 내외로 620-20]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="366" y="151" width="210" height="14" uuid="66cd3435-9cb3-4828-9139-0f6a16f1f5dd"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[054-774-1677 / 054-774-1679]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="2" y="170" width="578" height="20" backcolor="#EDEDFF" uuid="0eca374d-c538-4480-abd4-aa524839b892"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" pdfFontName="fonts/NGULIM.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="13" y="172" width="199" height="15" uuid="eafa1f06-b4ef-4e86-9838-4492e6778f05"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{total_nm}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="64" y="75" width="206" height="15" uuid="14562351-6250-4110-8b7d-5d4fb8639e44"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{p_order_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="63" y="90" width="207" height="15" uuid="11f1b712-82f6-4920-b95f-94fd6bff8b08"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{company_code_nm}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="63" y="119" width="207" height="15" uuid="7a5ea264-ca59-4102-b58e-534bf1fb99b4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fax_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="63" y="134" width="207" height="15" uuid="98269ab1-d51e-403f-9b6b-1e4aa5ba1699"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{p_order_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="63" y="104" width="207" height="15" uuid="ec4dffcf-1d55-43e6-8133-3960519ce2a3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tel_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="338" y="172" width="226" height="15" uuid="0045cd2f-0b6d-4a1f-a3ea-92a0c09ffdcc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{total_cost}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement stretchType="RelativeToTallestObject" x="533" y="107" width="50" height="42" uuid="b42bf9ea-fc0d-4494-ba29-411cd3fc28e5"/>
+				<imageExpression><![CDATA["../../resources/image/stamp.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="2" y="0" width="30" height="22" forecolor="#000000" backcolor="#EDEDFF" uuid="456faa8e-cd0c-43cf-aa3d-c50870c5ca6e"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[순번]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="32" y="0" width="91" height="22" backcolor="#EDEDFF" uuid="9adadfee-cbc5-49d3-9197-95e873755935"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[품목명]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="123" y="0" width="116" height="22" backcolor="#EDEDFF" uuid="daf9856e-ddb2-402d-8ff1-8678820aa64e"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[규격]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="239" y="0" width="36" height="22" backcolor="#EDEDFF" uuid="c1b98f4b-f8c4-4eec-b884-507fd46dbfeb"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[수량]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="275" y="0" width="83" height="22" backcolor="#EDEDFF" uuid="eadf4246-ff69-4f60-94ea-04064c8cc240"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[단가]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="358" y="0" width="74" height="22" backcolor="#EDEDFF" uuid="3f167951-04f2-44b0-91fd-220cca8128b7"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[공급가액]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="432" y="0" width="64" height="22" backcolor="#EDEDFF" uuid="4c0dbca2-c1eb-4859-9a22-cd7fb14b8fc2"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[부가세]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="496" y="0" width="84" height="22" backcolor="#EDEDFF" uuid="6ba61f8a-de4a-431e-a9a7-2801e46a067c"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[적요]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22">
+			<staticText>
+				<reportElement mode="Opaque" x="432" y="0" width="64" height="22" backcolor="#FFFFFF" uuid="8b00e6b8-117d-44e5-95c0-a2f54c24319c"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="fonts/NGULIM.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="123" y="0" width="116" height="22" backcolor="#FFFFFF" uuid="e5001596-f14f-4724-a100-a5b52bf9ce87"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="fonts/NGULIM.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="2" y="0" width="30" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="48bf8799-3b7d-49b7-921f-07e27db9d82e"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="fonts/NGULIM.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="32" y="0" width="91" height="22" backcolor="#FFFFFF" uuid="0847f9a7-ddc4-4c01-a699-7d507e61f371"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="fonts/NGULIM.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="358" y="0" width="74" height="22" backcolor="#FFFFFF" uuid="cd0d5491-64c0-4d07-b385-03e7f83e53e6"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="fonts/NGULIM.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="275" y="0" width="83" height="22" backcolor="#FFFFFF" uuid="6d47f930-4349-4a3e-b054-8990d94a31fb"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="fonts/NGULIM.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="239" y="0" width="36" height="22" backcolor="#FFFFFF" uuid="d32a037c-b193-4acc-82a9-4f681bf60394"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="fonts/NGULIM.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="4" y="1" width="27" height="20" uuid="8f797e45-bd99-4252-b12d-07262d847094"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{num}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="35" y="1" width="84" height="20" uuid="4e6a9c66-1961-4dfa-a9e9-704f4f93cbad"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{p_product_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="126" y="0" width="110" height="20" uuid="0ec94d32-ef86-4aa3-ac11-a6af73f70726"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{p_standard}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="241" y="0" width="30" height="20" uuid="d4316af3-9d1c-4795-a38d-27e9d57459a8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###.00" isBlankWhenNull="true">
+				<reportElement x="278" y="0" width="76" height="20" uuid="f312d471-86d3-4d10-b4d5-96b5324f3232"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unit_cost}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###.00" isBlankWhenNull="true">
+				<reportElement x="362" y="0" width="67" height="20" uuid="6b8eaf9c-c81e-4e24-834b-ff8d74624757"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sum_cost}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="0" width="58" height="20" uuid="917ae157-d962-49aa-a5d4-6dff63c3c91a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sum_cost_vat}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="496" y="0" width="84" height="22" backcolor="#FFFFFF" uuid="f23ae295-da26-4a6f-a609-95da7f5a8a25"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" pdfFontName="fonts/NGULIM.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="498" y="1" width="78" height="20" uuid="94523902-87d4-4f39-af6a-1dd8e9989e8a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" pdfFontName="../fonts/MALGUNBD.TTF" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+</jasperReport>

@@ -1,0 +1,1010 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ui500">
+	<select id="selectMatCode" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select mat_name,mat_code from TB_MATERIAL where gubun = '0'
+		]]>
+	</select>
+	
+	<select id="selectPrdCode" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select mat_name,mat_code from TB_PRODUCT where gubun = '0'
+		]]>
+	</select>
+	
+	<select id="selectStartPoint" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select point_name, point_num from TB_POINT_INFO where gubun = #{gubun} and part = #{part}
+		]]>
+	</select>
+	
+	<select id="selectTargetPoint" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select point_name, point_num from TB_POINT_INFO where gubun =#{gubun} and part = #{part}
+		]]>
+	</select>
+	
+	<select id="selectTypeCode" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select type_name, type_code from TB_TYPE where gubun = '0'
+		]]>
+	</select>
+	
+	<select id="CPMES_UI510_search" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT CUSTOMER_PK_CP
+      ,ISNULL(CUSTOMER_GUBUN_CP,'') AS CUSTOMER_GUBUN_CP
+      ,ISNULL((SELECT CD_NM_CP FROM TB_CODE_CP WHERE CD_TP_CP ='ACCOUNT_TP' AND CD_V_CP = CUSTOMER_GUBUN_CP),'') AS CUSTOMER_GUBUN_NM_CP 
+      ,CUSTOMER_TP_CP
+      ,CUSTOMER_NAME_CP
+	  ,REG_NO_CP
+      ,CEO_NAME_CP
+      ,TEL_NO_CP
+      ,FAX_NO_CP
+      ,ADDRESS_CP
+      ,REMARKS_CP
+      ,CREATE_USER_CP
+      ,CREATE_DATE_CP
+      ,UPDATE_USER_CP
+      ,UPDATE_DATE_CP
+  FROM [dbo].[TB_JSC_CUSTOMER_CP]
+ WHERE 1=1
+  AND ISNULL(ACTIVE_CP,'Y') = 'Y'
+   	]]>
+	<if test="pCustomerName != ''">
+	AND CUSTOMER_NAME_CP like '%' + #{pCustomerName} + '%' 
+	</if>
+	<if test="pCustomerGubun != ''">
+	AND CUSTOMER_GUBUN_CP =  #{pCustomerGubun} 
+	</if>
+	<![CDATA[
+ ORDER BY CUSTOMER_PK_CP
+	]]>	
+	</select>
+	
+	<update id="CPMES_UI510_save" parameterType="hashmap">
+		<![CDATA[  
+	MERGE INTO [dbo].[TB_JSC_CUSTOMER_CP] AS A
+	USING (SELECT 1 AS dual) AS B
+	   ON (A.CUSTOMER_PK_CP = #{CUSTOMER_PK_CP})
+	WHEN MATCHED THEN
+	   UPDATE 
+	   	 SET  A.CUSTOMER_GUBUN_CP = #{CUSTOMER_GUBUN_CP}
+	   		, CUSTOMER_TP_CP = #{CUSTOMER_TP_CP}
+		    , CUSTOMER_NAME_CP = #{CUSTOMER_NAME_CP}
+			, REG_NO_CP = #{REG_NO_CP}
+		    , CEO_NAME_CP = #{CEO_NAME_CP}
+		    , TEL_NO_CP = #{TEL_NO_CP}
+		    , FAX_NO_CP = #{FAX_NO_CP}
+		    , ADDRESS_CP = #{ADDRESS_CP}
+		    , REMARKS_CP = #{REMARKS_CP}
+		    , UPDATE_USER_CP = #{UPDATE_USER_CP}
+		    , UPDATE_DATE_CP = GETDATE()
+	WHEN NOT MATCHED THEN
+	   INSERT(
+	   	   CUSTOMER_GUBUN_CP
+           ,CUSTOMER_TP_CP
+           ,CUSTOMER_NAME_CP
+           ,REG_NO_CP
+           ,CEO_NAME_CP
+           ,TEL_NO_CP
+           ,FAX_NO_CP
+           ,ADDRESS_CP
+           ,REMARKS_CP
+           ,CREATE_USER_CP
+           ,CREATE_DATE_CP
+           ,UPDATE_USER_CP
+           ,UPDATE_DATE_CP
+           ,ACTIVE_CP
+           ) 
+           VALUES
+           (
+            #{CUSTOMER_GUBUN_CP}
+           ,#{CUSTOMER_TP_CP}
+           ,#{CUSTOMER_NAME_CP}
+           ,#{REG_NO_CP}
+           ,#{CEO_NAME_CP}
+           ,#{TEL_NO_CP}
+           ,#{FAX_NO_CP}
+           ,#{ADDRESS_CP}
+           ,#{REMARKS_CP}
+           ,#{CREATE_USER_CP}
+           ,GETDATE()
+           ,#{UPDATE_USER_CP}
+           ,GETDATE()
+           ,'Y');
+		
+		]]>
+	</update>
+	
+	<update id="CPMES_UI510_delete" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE [dbo].[TB_JSC_CUSTOMER_CP] 
+	   SET ACTIVE_CP = 'N' 
+	   	 , UPDATE_USER_CP = #{UPDATE_USER_CP}
+		 , UPDATE_DATE_CP = GETDATE()
+	 WHERE CUSTOMER_PK_CP = #{CUSTOMER_PK_CP}
+	   ]]>
+	</update>
+	
+	
+	
+	
+	
+	<select id="CPMES_UI520_search" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	
+SELECT USER_ID_CP
+      ,USER_NAME_CP
+      ,USER_PW_CP
+      ,USER_AUTH_CP
+      ,ISNULL((SELECT CD_NM_CP FROM TB_CODE_CP WHERE CD_TP_CP ='MANAGE_TP_CP' AND CD_V_CP = USER_AUTH_CP),'') AS USER_AUTH_NM_CP 
+      ,USER_DISP_CP
+      ,JOIN_DATE_CP
+      ,CREATE_DATE_CP
+      ,CREATE_USER_CP
+      ,UPDATE_DATE_CP
+      ,UPDATE_USER_CP
+  FROM [DB2].[dbo].[TB_USER_CP]
+ WHERE 1=1
+ 	]]>
+	<if test="pUserAuth != ''">
+	AND USER_AUTH_CP =  #{pUserAuth} 
+	</if>
+	<if test="pUserName != ''">
+	AND USER_NAME_CP =  #{pUserName} 
+ ORDER BY USER_NAME	_CP
+	</if>
+	<![CDATA[
+	
+	]]>	
+	</select>
+	
+	<update id="CPMES_UI520_save" parameterType="hashmap">
+		<![CDATA[  
+	MERGE INTO [dbo].[TB_USER_CP] AS A
+	USING (SELECT 1 AS dual) AS B
+	   ON (A.USER_ID_CP = #{USER_ID_CP})
+	WHEN MATCHED THEN
+	   UPDATE 
+	   	 SET  USER_NAME_CP = #{USER_NAME_CP}
+	   		, USER_PW_CP = #{USER_PW_CP}
+		    , USER_AUTH_CP = #{USER_AUTH_CP}
+			, USER_DISP_CP = #{USER_DISP_CP}
+		    ]]>
+			<if test="JOIN_DATE_CP != ''">
+			, JOIN_DATE_CP = #{JOIN_DATE_CP}
+			</if>
+		    <![CDATA[
+		    , UPDATE_USER_CP = #{UPDATE_USER_CP}
+		    , UPDATE_DATE_CP = GETDATE()
+	WHEN NOT MATCHED THEN
+	   INSERT(
+	   		USER_ID_CP
+	      , USER_NAME_CP
+	      , USER_PW_CP
+	      , USER_AUTH_CP
+	      , USER_DISP_CP
+	      ]]>
+			<if test="JOIN_DATE_CP != ''">
+			, JOIN_DATE_CP
+			</if>
+		    <![CDATA[
+	      , CREATE_USER_CP
+	      , CREATE_DATE_CP
+	      , UPDATE_USER_CP
+	      , UPDATE_DATE_CP
+	      
+           ) 
+           VALUES
+           (
+            #{USER_ID_CP}
+	      , #{USER_NAME_CP}
+	      , #{USER_PW_CP}
+	      , #{USER_AUTH_CP}
+	      , #{USER_DISP_CP}
+	      ]]>
+			<if test="JOIN_DATE_CP != ''">
+			, #{JOIN_DATE_CP}
+			</if>
+		    <![CDATA[
+          , #{CREATE_USER_CP}
+          , GETDATE()
+          , #{UPDATE_USER_CP}
+          , GETDATE()
+          );
+		
+		]]>
+	</update>
+	
+	<delete id="CPMES_UI520_delete" parameterType="hashmap">
+		<![CDATA[  
+	DELETE [dbo].[TB_USER_CP] 
+	 WHERE USER_ID_CP = #{USER_ID_CP}
+	   ]]>
+	</delete>
+	
+	<select id="CPMES_UI530_searchMas" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT [CD_V_CP]
+      ,[CD_NM_CP]
+      ,[CD_TP_CP]
+      ,[ACTIVE_CP]
+      ,[SEQ_CP]
+      ,[ATTR1_CP]
+      ,[ATTR2_CP]
+      ,[ATTR3_CP]
+      ,[ATTR4_CP]
+      ,[ATTR5_CP]
+      ,[ATTR6_CP]
+      ,[ATTR7_CP]
+      ,[ATTR8_CP]
+      ,[ATTR9_CP]
+      ,[ATTR10_CP]
+  FROM [dbo].[TB_CODE_CP]
+  WHERE CD_TP_CP = 'TOP' 
+    AND CD_NM_CP LIKE '%' + #{pCdNm} + '%'
+    AND ISNULL(ACTIVE_CP,'Y') = 'Y'
+  ORDER BY CD_V_CP
+		]]>	
+	</select>
+	
+	<select id="CPMES_UI530_searchDet" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT [CD_V_CP]
+      ,[CD_NM_CP]
+      ,[CD_TP_CP]
+      ,[ACTIVE_CP]
+      ,[SEQ_CP]
+      ,[ATTR1_CP]
+      ,[ATTR2_CP]
+      ,[ATTR3_CP]
+      ,[ATTR4_CP]
+      ,[ATTR5_CP]
+      ,[ATTR6_CP]
+      ,[ATTR7_CP]
+      ,[ATTR8_CP]
+      ,[ATTR9_CP]
+      ,[ATTR10_CP]
+  FROM [dbo].[TB_CODE_CP]
+  WHERE CD_TP_CP = #{pCdTp} 
+    AND ISNULL(ACTIVE_CP,'Y') = 'Y'
+  ORDER BY SEQ_CP 
+    	]]>	
+	</select>
+	
+	<update id="CPMES_UI530_saveMas" parameterType="hashmap">
+		<![CDATA[  
+	MERGE INTO [dbo].[TB_CODE_CP] AS A
+	USING (SELECT 1 AS dual) AS B
+	   ON (A.CD_V_CP = #{CD_V_CP} AND A.CD_TP_CP = #{CD_TP_CP})
+	WHEN MATCHED THEN
+	   UPDATE SET A.CD_NM_CP = #{CD_NM_CP}
+	WHEN NOT MATCHED THEN
+	   INSERT(CD_V_CP, CD_NM_CP, CD_TP_CP, ACTIVE_CP, SEQ_CP) VALUES(#{CD_V_CP}, #{CD_NM_CP}, #{CD_TP_CP}, 'Y', 0);
+		
+		]]>
+	</update>
+	
+	
+	<update id="CPMES_UI530_saveDet" parameterType="hashmap">
+		<![CDATA[  
+	MERGE INTO [dbo].[TB_CODE_CP] AS A
+	USING (SELECT 1 AS dual) AS B
+	   ON (A.CD_V_CP = #{CD_V_CP} AND A.CD_TP_CP = #{CD_TP_CP})
+	WHEN MATCHED THEN
+	   UPDATE SET A.CD_NM_CP = #{CD_NM_CP}, A.ATTR1_CP = #{ATTR1_CP} , A.ATTR2_CP = #{ATTR2_CP}, A.ATTR3_CP = #{ATTR3_CP}, A.ATTR4_CP = #{ATTR4_CP}
+	WHEN NOT MATCHED THEN
+	   INSERT(CD_V_CP, CD_NM_CP, CD_TP_CP, ACTIVE_CP, SEQ_CP, ATTR1_CP, ATTR2_CP, ATTR3_CP, ATTR4_CP) 
+	   VALUES(#{CD_V_CP}, #{CD_NM_CP}, #{CD_TP_CP}, 'Y'
+	   			, (SELECT ISNULL(MAX(SEQ_CP),0)+1 FROM [dbo].[TB_CODE_CP] WHERE CD_TP_CP = #{CD_TP_CP} )
+	   			, #{ATTR1_CP}, #{ATTR2_CP}, #{ATTR3_CP}, #{ATTR4_CP});
+		]]>
+	</update>
+	
+	
+	<update id="CPMES_UI530_delete" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE [dbo].[TB_CODE_CP] 
+	   SET ACTIVE_CP = 'N' 
+	 WHERE CD_V_CP = #{CD_V_CP}
+	   AND CD_TP_CP = #{CD_TP_CP}
+		]]>
+	</update>
+	
+	<update id="CPMES_UI530_delete_det" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE [dbo].[TB_CODE_CP] 
+	   SET ACTIVE_CP = 'N' 
+	 WHERE CD_TP_CP = #{CD_V_CP}
+		]]>
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="CPMES_TD1_032_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select mat_name,mat_code,mat_num,gubun,w_name
+		,CONVERT(CHAR(19), in_date, 20) AS in_date
+		,CONVERT(CHAR(19), mod_date, 20) AS mod_date
+		,al_per,CONVERT(NVARCHAR(4000),etc) AS etc  
+	 from TB_MATERIAL where num=#{num}
+		]]>	
+	</select>
+	
+	<select id="CPMES_TD1_032_insertCheck" parameterType="hashmap" resultType="int">
+	<![CDATA[  
+	select count(mat_name) AS cnt from TB_MATERIAL where mat_name = #{mat_name} and mat_code = #{mat_code} and gubun = #{gubun}
+		]]>	
+	</select>
+	
+	<insert id="CPMES_TD1_032_insertList" parameterType="hashmap">
+		<![CDATA[ 
+	INSERT INTO TB_MATERIAL
+           (mat_name
+           ,mat_code
+           ,mat_num
+           ,gubun
+           ,w_name
+           ,in_date
+           ,mod_date
+           ,al_per
+           ,seq
+           ,etc)
+     VALUES
+           (#{mat_name}
+           ,#{mat_code}
+           ,#{mat_num}
+           ,#{gubun}
+           ,#{w_name}
+           ,getdate() 
+           ,getdate() 
+           ,#{al_per}
+           ,#{seq}
+           ,#{etc})
+		]]>
+	</insert>
+	
+	<update id="CPMES_TD1_032_updateList" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE TB_MATERIAL
+	   SET mat_name = #{mat_name}
+	      ,mat_code = #{mat_code}
+          ,mat_num = #{mat_num}
+          ,gubun = #{gubun}
+          ,w_name = #{w_name}
+          ,mod_date = getdate()
+          ,al_per = #{al_per}
+          ,seq = #{seq}
+          ,etc = #{etc}
+ 	WHERE num = #{num}
+		
+		]]>
+	</update>
+	
+	
+	<select id="CPMES_TD1_033_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select num, CONVERT(CHAR(10), in_date, 23) AS in_date, mat_name, mat_code, mat_num, gubun, w_name 
+	  from TB_PRODUCT
+	  order by num asc
+		]]>	
+	</select>
+	
+	<select id="CPMES_TD1_034_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select mat_name,mat_code,mat_num,gubun,w_name
+		,CONVERT(CHAR(19), in_date, 20) AS in_date
+		,CONVERT(CHAR(19), mod_date, 20) AS mod_date
+		,al_per,CONVERT(NVARCHAR(4000),etc) AS etc  
+	 from TB_PRODUCT where num=#{num}
+		]]>	
+	</select>
+	
+	<select id="CPMES_TD1_034_insertCheck" parameterType="hashmap" resultType="int">
+	<![CDATA[  
+	select count(mat_name) AS cnt from TB_PRODUCT where mat_name = #{mat_name} and mat_code = #{mat_code} and gubun = #{gubun}
+		]]>	
+	</select>
+	
+	<insert id="CPMES_TD1_034_insertList" parameterType="hashmap">
+		<![CDATA[ 
+	INSERT INTO TB_PRODUCT
+           (mat_name
+           ,mat_code
+           ,mat_num
+           ,gubun
+           ,w_name
+           ,in_date
+           ,mod_date
+           ,al_per
+           ,etc)
+     VALUES
+           (#{mat_name}
+           ,#{mat_code}
+           ,#{mat_num}
+           ,#{gubun}
+           ,#{w_name}
+           ,getdate() 
+           ,getdate() 
+           ,#{al_per}
+           ,#{etc})
+		]]>
+	</insert>
+	
+	<update id="CPMES_TD1_034_updateList" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE TB_PRODUCT
+	   SET mat_name = #{mat_name}
+	      ,mat_code = #{mat_code}
+          ,mat_num = #{mat_num}
+          ,gubun = #{gubun}
+          ,w_name = #{w_name}
+          ,mod_date = getdate()
+          ,al_per = #{al_per}
+          ,etc = #{etc}
+ 	WHERE num = #{num}
+		
+		]]>
+	</update>
+	
+	
+	<select id="CPMES_TD1_035_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select num, CONVERT(CHAR(10), in_date, 23) AS in_date, mat_name, mat_code, mat_num, gubun, w_name 
+	  from TB_BYPRODUCT
+	  order by num asc
+		]]>	
+	</select>
+	
+	<select id="CPMES_TD1_036_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select mat_name,mat_code,mat_num,gubun,w_name
+		,CONVERT(CHAR(19), in_date, 20) AS in_date
+		,CONVERT(CHAR(19), mod_date, 20) AS mod_date
+		,al_per,CONVERT(NVARCHAR(4000),etc) AS etc  
+	 from TB_BYPRODUCT where num=#{num}
+		]]>	
+	</select>
+	
+	<select id="CPMES_TD1_036_insertCheck" parameterType="hashmap" resultType="int">
+	<![CDATA[  
+	select count(mat_name) AS cnt from TB_BYPRODUCT where mat_name = #{mat_name} and mat_code = #{mat_code} and gubun = #{gubun}
+		]]>	
+	</select>
+	
+	<insert id="CPMES_TD1_036_insertList" parameterType="hashmap">
+		<![CDATA[ 
+	INSERT INTO TB_BYPRODUCT
+           (mat_name
+           ,mat_code
+           ,mat_num
+           ,gubun
+           ,w_name
+           ,in_date
+           ,mod_date
+           ,al_per
+           ,etc)
+     VALUES
+           (#{mat_name}
+           ,#{mat_code}
+           ,#{mat_num}
+           ,#{gubun}
+           ,#{w_name}
+           ,getdate() 
+           ,getdate() 
+           ,#{al_per}
+           ,#{etc})
+		]]>
+	</insert>
+	
+	<update id="CPMES_TD1_036_updateList" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE TB_BYPRODUCT
+	   SET mat_name = #{mat_name}
+	      ,mat_code = #{mat_code}
+          ,mat_num = #{mat_num}
+          ,gubun = #{gubun}
+          ,w_name = #{w_name}
+          ,mod_date = getdate()
+          ,al_per = #{al_per}
+          ,etc = #{etc}
+ 	WHERE num = #{num}
+		
+		]]>
+	</update>
+	
+	
+	
+	<select id="CPMES_TD1_037_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select num, CONVERT(CHAR(10), in_date, 23) as in_date, car_name, car_code, car_num
+		, case when part = '0' then '1로' 
+		       when part = '1' then '2로'
+		  end as part_nm
+		, gubun
+		, case when gubun = '0' then '원료' 
+		       when gubun = '1' then '제품'
+		       when gubun = '2' then '부산물'
+		  end as gubun_nm  
+		, weight
+		, part 
+	  from TB_CAR_INFO
+	  order by num asc
+		]]>	
+	</select>
+	
+	<select id="CPMES_TD1_038_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select car_name,car_code,car_num,gubun,part,CONVERT(CHAR(19), in_date, 20) as in_date,CONVERT(CHAR(19), mod_date, 20) as mod_date,weight,CONVERT(NVARCHAR(4000),etc) AS etc  
+	 from TB_CAR_INFO where num=#{num}
+		]]>	
+	</select>
+	
+	<select id="CPMES_TD1_038_insertCheck" parameterType="hashmap" resultType="int">
+	<![CDATA[  
+	select count(mat_name) AS cnt from TB_CAR_INFO where mat_name = #{car_name} and mat_code = #{car_code} and gubun = #{gubun}
+		]]>	
+	</select>
+	
+	<insert id="CPMES_TD1_038_insertList" parameterType="hashmap">
+		<![CDATA[ 
+	INSERT INTO TB_CAR_INFO
+           (car_name
+           ,car_code
+           ,car_num
+           ,gubun
+           ,part
+           ,in_date
+           ,mod_date
+           ,weight
+           ,etc)
+     VALUES
+           (#{car_name}
+           ,#{car_code}
+           ,#{car_num}
+           ,#{gubun}
+           ,part 
+           ,getdate() 
+           ,getdate() 
+           ,#{weight}
+           ,#{etc})
+		]]>
+	</insert>
+	
+	<update id="CPMES_TD1_038_updateList" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE TB_CAR_INFO
+	   SET car_name = #{car_name}
+	      ,car_code = #{car_code}
+          ,car_num = #{car_num}
+          ,gubun = #{gubun}
+          ,part = #{part}
+          ,mod_date = getdate()
+          ,weight = #{weight}
+          ,etc = #{etc}
+ 	WHERE num = #{num}
+		
+		]]>
+	</update>
+	
+	
+	<select id="CPMES_TD1_039_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select num, CONVERT(CHAR(19), in_date, 20) as in_date, point_name, point_num, part, gubun 
+		, case when part = '0' then '출발지' 
+		       when part = '1' then '목적지'
+		  end as part_nm
+		, case when gubun = '0' then '원료' 
+		       when gubun = '1' then '제품'
+		       when gubun = '2' then '부산물'
+		  end as gubun_nm  
+	  from TB_POINT_INFO
+	order by gubun asc, part asc, point_num asc
+		]]>	
+	</select>
+	
+	<select id="CPMES_TD1_040_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select point_name,point_num,gubun,part,CONVERT(CHAR(19), in_date, 20) as in_date,CONVERT(CHAR(19), mod_date, 20) as mod_date,CONVERT(NVARCHAR(4000),etc) AS etc  
+	 from TB_POINT_INFO where num=#{num}
+		]]>	
+	</select>
+	
+	<select id="CPMES_TD1_040_insertCheck" parameterType="hashmap" resultType="int">
+	<![CDATA[  
+	select count(point_name) AS cnt from TB_POINT_INFO where point_name = #{point_name} and point_num = #{point_num} and gubun = #{gubun}
+		]]>	
+	</select>
+	
+	<insert id="CPMES_TD1_040_insertList" parameterType="hashmap">
+		<![CDATA[ 
+	INSERT INTO TB_POINT_INFO
+           (point_name
+           ,point_num
+           ,gubun
+           ,part
+           ,in_date
+           ,mod_date
+           ,etc)
+     VALUES
+           (#{point_name}
+           ,#{point_num}
+           ,#{gubun}
+           ,part 
+           ,getdate() 
+           ,getdate() 
+           ,#{etc})
+		]]>
+	</insert>
+	
+	<update id="CPMES_TD1_040_updateList" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE TB_POINT_INFO
+	   SET point_name = #{point_name}
+          ,point_num = #{point_num}
+          ,gubun = #{gubun}
+          ,part = #{part}
+          ,mod_date = getdate()
+          ,etc = #{etc}
+ 	WHERE num = #{num}
+		
+		]]>
+	</update>
+	
+	<select id="CPMES_TD1_041_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select num, CONVERT(CHAR(10), in_date, 23) as in_date
+		, mem_name, mem_num
+		, use_ip, mem_part
+		, mem_level, sec_level
+		, manage_level 
+	  from TB_MEMBER 
+	 WHERE 1=1
+		and mem_num LIKE '%' + #{pId} + '%'
+		and mem_name LIKE '%' + #{pName} + '%'
+		
+	  order by num desc
+	  ]]>
+	</select>
+	
+	<select id="selectManCode" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	WITH    q AS
+        (
+        SELECT  1 AS num
+        UNION ALL
+        SELECT  num + 1
+        FROM    q
+        WHERE   num <= 150
+        )
+
+	SELECT q.num as m_code
+	 , case when b.man_code = q.num then CONVERT(NVARCHAR(10),q.num) + '(사용중)'
+	   else CONVERT(NVARCHAR(10),q.num)
+	   end as m_name
+  	FROM q 
+		LEFT OUTER JOIN TB_MEMBER b ON q.num = b.man_code OPTION (MAXRECURSION 150)
+		]]>
+	</select>
+	
+	<select id="CPMES_TD1_042_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select mem_name,mem_num,p_word,use_ip
+		  ,mem_level,mem_work,mem_part
+		  ,sec_level,work_yn,manage_level
+		  ,work_type,CONVERT(CHAR(19), in_date, 20) as in_date
+		  ,CONVERT(CHAR(19), mod_date, 20) as mod_date
+		  ,man_code,mem_wgt
+		  ,CONVERT(NVARCHAR(4000),etc) AS etc
+	 from TB_MEMBER where num=#{num}
+		]]>	
+	</select>
+	
+	<select id="CPMES_TD1_042_insertCheck" parameterType="hashmap" resultType="int">
+	<![CDATA[  
+	select count(mem_name) AS cnt from TB_MEMBER where mem_num = #{mem_num}
+		]]>	
+	</select>
+	
+	<insert id="CPMES_TD1_042_insertList" parameterType="hashmap">
+		<![CDATA[ 
+	INSERT INTO TB_MEMBER
+           (mem_name
+           ,mem_num
+           ,p_word
+		   ,mem_level
+		   ,mem_work
+		   ,mem_part
+		   ,sec_level
+		   ,work_yn
+		   ,manage_level
+		   ,in_date
+           ,mod_date
+           ,man_code
+           ,mem_wgt
+           ,etc   
+           )
+     VALUES
+           (
+            mem_name
+           ,mem_num
+           ,p_word
+		   ,mem_level
+		   ,mem_work
+		   ,mem_part
+		   ,sec_level
+		   ,work_yn
+		   ,manage_level
+		   ,in_date
+           ,getdate() 
+           ,getdate() 
+           ,mem_wgt
+           ,etc  
+           )
+		]]>
+	</insert>
+	
+	<update id="CPMES_TD1_042_updateList" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE TB_MEMBER
+	   SET mem_level = #{mem_level}
+		   ,mem_work = #{mem_work}
+		   ,mem_part = #{mem_part}
+		   ,sec_level = #{sec_level}
+		   ,work_yn = #{work_yn}
+		   ,manage_level = #{manage_level}
+		   ,mem_wgt = #{mem_wgt}
+           ,etc   = #{etc}
+           ,mod_date = getdate()
+ 	WHERE num = #{num}
+		
+		]]>
+	</update>
+	
+	<!-- 빌렛 부분 -->
+	<select id="CPMES_TD2_025_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select num, CONVERT(CHAR(10), in_date, 23) AS in_date, mat_name1, mat_code1
+		, mat_num, gubun, w_name 
+		, base_weight
+	  from TB_BL_MATERIAL
+	  order by num asc
+		]]>	
+	</select>
+	
+	<select id="CPMES_TD2_026_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select mat_name1,mat_code1,mat_num,gubun,w_name
+		,CONVERT(CHAR(19), in_date, 20) AS in_date
+		,CONVERT(CHAR(19), mod_date, 20) AS mod_date
+		,al_per,CONVERT(NVARCHAR(4000),etc) AS etc  
+		,base_weight
+	 from TB_BL_MATERIAL where num=#{num}
+		]]>	
+	</select>
+	
+	<select id="CPMES_TD2_026_insertCheck" parameterType="hashmap" resultType="int">
+	<![CDATA[  
+	select count(mat_name1) AS cnt 
+		from TB_BL_MATERIAL 
+	  where mat_name1 = #{mat_name1} and mat_code1 = #{mat_code1}
+	    and gubun = #{gubun}
+		]]>	
+	</select>
+	
+	<insert id="CPMES_TD2_026_insertList" parameterType="hashmap">
+		<![CDATA[ 
+	INSERT INTO TB_BL_MATERIAL
+           (mat_name1
+           ,mat_code1
+           ,mat_num
+           ,gubun
+           ,w_name
+           ,in_date
+           ,mod_date
+           ,al_per
+           ,seq
+           ,base_weight
+           ,etc)
+     VALUES
+           (#{mat_name1}
+           ,#{mat_code1}
+           ,#{mat_num}
+           ,#{gubun}
+           ,#{w_name}
+           ,getdate() 
+           ,getdate() 
+           ,#{al_per}
+           ,#{seq}
+           ,#{base_weight}
+           ,#{etc})
+		]]>
+	</insert>
+	
+	<update id="CPMES_TD2_026_updateList" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE TB_BL_MATERIAL
+	   SET mat_name1 = #{mat_name1}
+	      ,mat_code1 = #{mat_code1}
+	      ,mat_num = #{mat_num}
+          ,gubun = #{gubun}
+          ,w_name = #{w_name}
+          ,mod_date = getdate()
+          ,al_per = #{al_per}
+          ,seq = #{seq}
+          ,etc = #{etc}
+          ,base_weight = #{base_weight}
+ 	WHERE num = #{num}
+		
+		]]>
+	</update>
+	
+	<select id="CPMES_TD2_027_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select num, CONVERT(CHAR(10), in_date, 23) AS in_date, mat_name, mat_code, size, grade, mat_num, gubun, w_name , base_weight
+	  from TB_BL_PRODUCT
+	  order by num asc
+		]]>	
+	</select>
+	
+	<select id="CPMES_TD2_028_searchList" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select mat_name,mat_code, size, grade,mat_num,gubun,w_name
+		,CONVERT(CHAR(19), in_date, 20) AS in_date
+		,CONVERT(CHAR(19), mod_date, 20) AS mod_date
+		,al_per,CONVERT(NVARCHAR(4000),etc) AS etc  
+		, base_weight
+	 from TB_BL_PRODUCT where num=#{num}
+		]]>	
+	</select>
+	
+	<select id="CPMES_TD2_028_insertCheck" parameterType="hashmap" resultType="int">
+	<![CDATA[  
+	select count(mat_name) AS cnt from TB_BL_PRODUCT where mat_name = #{mat_name} and mat_code = #{mat_code} and size = #{size} and grade = #{grade} and gubun = #{gubun}
+		]]>	
+	</select>
+	
+	<insert id="CPMES_TD2_028_insertList" parameterType="hashmap">
+		<![CDATA[ 
+	INSERT INTO TB_BL_PRODUCT
+           (mat_name
+           ,mat_code
+           ,size
+           ,grade
+           ,mat_num
+           ,gubun
+           ,w_name
+           ,in_date
+           ,mod_date
+           ,al_per
+           ,base_weight
+           ,etc)
+     VALUES
+           (#{mat_name}
+           ,#{mat_code}
+           ,#{size}
+           ,#{grade}
+           ,#{mat_num}
+           ,#{gubun}
+           ,#{w_name}
+           ,getdate() 
+           ,getdate() 
+           ,#{al_per}
+           ,#{base_weight}
+           ,#{etc})
+		]]>
+	</insert>
+	
+	<update id="CPMES_TD2_028_updateList" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE TB_BL_PRODUCT
+	   SET mat_name = #{mat_name}
+	      ,mat_code = #{mat_code}
+	      ,size = #{size}
+	      ,grade = #{grade}
+          ,mat_num = #{mat_num}
+          ,gubun = #{gubun}
+          ,w_name = #{w_name}
+          ,mod_date = getdate()
+          ,al_per = #{al_per}
+          ,base_weight= #{base_weight}
+          ,etc = #{etc}
+ 	WHERE num = #{num}
+		
+		]]>
+	</update>
+	
+	
+	<select id="selectAuthCode" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	select auth_name,auth_code, num, del_yn, etc from TB_AUTH_CODE where isnull(del_yn, 'N') ='N' 
+		]]>
+	</select>
+	
+	<insert id="CPMES_TD1_043_insertAuth" parameterType="hashmap">
+		<![CDATA[ 
+	INSERT INTO TB_AUTH_CODE
+           (auth_name
+           ,auth_code
+           ,del_yn
+           ,etc
+           )
+     VALUES
+           (#{auth_name}
+           ,#{auth_code}
+           ,'N'
+           ,#{etc})
+		]]>
+	</insert>
+	
+	<update id="CPMES_TD1_043_updateAuth" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE TB_AUTH_CODE
+	   SET auth_name = #{auth_name}
+	      ,auth_code = #{auth_code}
+	      ,del_yn = 'N'
+	      ,etc = #{etc}
+ 	WHERE num = #{num}
+		]]>
+	</update>
+	
+	<delete id="CPMES_TD1_043_delAuth" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE TB_AUTH_CODE
+	   SET del_yn = 'Y'
+	      ,etc = #{etc}
+ 	WHERE auth_code = #{sAuth_code}
+		]]>
+	</delete>
+	
+	<delete id="CPMES_TD1_043_menu_del" parameterType="hashmap">
+		<![CDATA[  
+	DELETE FROM TB_MENU_INFO
+ 	WHERE auth_code = #{sAuth_code}
+		]]>
+	</delete>
+	
+	<insert id="CPMES_TD1_043_insertMenu" parameterType="hashmap">
+		<![CDATA[ 
+	INSERT INTO TB_MENU_INFO
+           (memu_code
+           ,menu_name
+           ,top_menu
+           ,menu_url
+           ,auth_code
+           )
+     VALUES
+           (#{memu_code}
+           ,#{menu_name}
+           ,#{top_menu}
+           ,#{menu_url}
+           ,#{auth_code})
+		]]>
+	</insert>
+	<select id="getAuthCode" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	
+	SELECT num
+      ,memu_code
+      ,menu_name
+      ,top_menu
+      ,menu_url
+      ,del_yn
+      ,auth_code
+  FROM TB_MENU_INFO
+WHERE auth_code = #{sAuth_code}
+	]]>
+	</select>
+</mapper>

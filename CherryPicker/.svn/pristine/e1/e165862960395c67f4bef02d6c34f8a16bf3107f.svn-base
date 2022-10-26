@@ -1,0 +1,105 @@
+package com.hubizict.web.ui400;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Repository;
+
+import com.hubizict.web.common.AbstractDAO;
+
+@Repository("UI400DAO")
+public class UI400DAO extends AbstractDAO{
+	
+	//////////////////////////////////////////////////
+	// 작업지시
+	//////////////////////////////////////////////////
+	public void PSMES_UI410_save(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		insert("ui400.PSMES_UI410_save", map);
+	}
+	
+	public void PSMES_UI410_save_status(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		update("ui400.PSMES_UI410_save_status", map);
+	}
+
+	public List<Map<String, Object>> searchROrderLov(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return (List<Map<String, Object>>)selectList("ui400.searchROrderLov", map);
+	}
+
+	public List<Map<String, Object>> PSMES_UI410_search(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return (List<Map<String, Object>>)selectList("ui400.PSMES_UI410_search", map);
+	}
+	
+	public List<Map<String, Object>> PSMES_UI410_searchWorkDateList() {
+		// TODO Auto-generated method stub
+		return (List<Map<String, Object>>)selectList("ui400.PSMES_UI410_searchWorkDateList");
+	}
+	
+	
+	//////////////////////////////////////////////////
+	// 생산실적조회
+	//////////////////////////////////////////////////
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> PSMES_UI420_main_search(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("ui400.PSMES_UI420_main_search", map);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> PSMES_UI420_detail_search(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("ui400.PSMES_UI420_detail_search", map);
+	}
+	
+	public void PSMES_UI420_save(Map<String, Object> map) throws Exception{
+		insert("ui400.PSMES_UI420_save", map);
+	}
+	
+	public void PSMES_UI420_WORK_LIST_save(Map<String, Object> map) throws Exception{
+		insert("ui400.PSMES_UI420_WORK_LIST_save", map);
+	}
+	
+	//////////////////////////////////////////////////
+	// 설비관리
+	//////////////////////////////////////////////////
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> PSMES_UI430_main_search(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("ui400.PSMES_UI430_main_search", map);
+	}
+	
+	public void PSMES_UI430_main_insert(Map<String, Object> map) throws Exception{
+		insert("ui400.PSMES_UI430_main_insert", map);
+	}
+	
+	public void PSMES_UI430_main_update(Map<String, Object> map) throws Exception{
+		insert("ui400.PSMES_UI430_main_update", map);
+	}
+	
+	public void PSMES_UI430_main_delete(Map<String, Object> map) throws Exception{
+		insert("ui400.PSMES_UI430_main_delete", map);
+	}
+	public void PSMES_UI430_detail_delete_all(Map<String, Object> map) throws Exception{
+		insert("ui400.PSMES_UI430_detail_delete_all", map);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> PSMES_UI430_detail_search(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("ui400.PSMES_UI430_detail_search", map);
+	}
+	
+	public void PSMES_UI430_detail_save(Map<String, Object> map) throws Exception{
+		insert("ui400.PSMES_UI430_detail_save", map);
+	}
+	
+	public void PSMES_UI430_detail_delete(Map<String, Object> map) throws Exception{
+		insert("ui400.PSMES_UI430_detail_delete", map);
+	}
+
+
+
+
+
+		
+	
+}

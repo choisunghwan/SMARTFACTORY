@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ui900">
+	<select id="PSMES_UI910_search" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT *
+  FROM dbo.TEST_TABLE
+  
+		]]>
+	</select>
+	
+	<select id="PSMES_UI920_search_param" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT *
+  FROM dbo.TEST_TABLE
+ WHERE 1=1 
+   ]]>
+    <if test="param1 != ''">
+   AND AAA = #{param1} 
+	</if>
+	</select>
+	
+	<insert id="PSMES_UI930_insert" parameterType="hashmap">
+		<![CDATA[  
+	INSERT  INTO dbo.TEST_TABLE
+           (AAA
+           ,BBB
+           ,CCC
+           ,DDD
+           )
+     VALUES
+     		(#{AAA}
+           ,#{BBB}
+           ,#{CCC}
+           ,#{DDD}
+           ,GETDATE())
+	   ]]>
+	</insert>
+	
+	<update id="PSMES_UI930_update" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE dbo.TEST_TABLE
+	   SET BBB = #{BBB}
+	   	 , CCC = #{BBB}
+	   	 , DDD = #{DDD}
+	 WHERE AAA = #{AAA}
+	   ]]>
+	</update>
+	
+	<delete id="PSMES_UI930_delete" parameterType="hashmap">
+		<![CDATA[  
+	DELETE FROM dbo.TEST_TABLE
+	 WHERE AAA = #{AAA}
+	   ]]>
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		<select id="PSMES_UI940_search" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT *
+  FROM dbo.TEST_TABLE1
+		]]>
+		</select>
+		
+	<select id="PSMES_UI950_search_param" parameterType="hashmap" resultType="hashmap">
+   <![CDATA[  
+   SELECT AAA
+      ,BBB
+     ,CCC
+     ,DDD
+     ,CONVERT(CHAR(19), EEE, 120) AS EEE
+  FROM dbo.TEST_TABLE1
+ WHERE 1=1 
+   ]]>
+    <if test="param1 != ''">
+   AND AAA = #{param1} 
+	</if>
+	</select>
+	
+	
+
+	
+<insert id="PSMES_UI960_insert" parameterType="hashmap">
+		<![CDATA[  
+	INSERT  INTO dbo.TEST_TABLE1
+           (AAA
+           ,BBB
+           ,CCC
+           ,DDD
+           ,EEE
+           )
+     VALUES
+     		(#{AAA}
+           ,#{BBB}
+           ,#{CCC}
+           ,#{DDD}
+           ,GETDATE())
+	   ]]>
+	</insert>
+	
+	<update id="PSMES_UI960_update" parameterType="hashmap">
+		<![CDATA[  
+	UPDATE dbo.TEST_TABLE1
+	   SET BBB = #{BBB}
+	   	 , CCC = #{CCC}
+	   	 , DDD = #{DDD}
+	 WHERE AAA = #{AAA}
+	   ]]>
+	</update>
+	
+	<delete id="PSMES_UI960_delete" parameterType="hashmap">
+		<![CDATA[  
+	DELETE FROM dbo.TEST_TABLE1
+	 WHERE AAA = #{AAA}
+	   ]]>
+	</delete>
+	
+</mapper> 

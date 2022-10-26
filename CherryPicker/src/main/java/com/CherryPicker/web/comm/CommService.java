@@ -1,0 +1,50 @@
+package com.CherryPicker.web.comm;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
+
+@Service
+@SuppressWarnings({"rawtypes"})
+@Repository("CommService")
+
+public class CommService	{
+	@Resource(name="CommDAO")
+	private CommDAO CommDAO;
+	
+	//List<Map<String, Object>> selectUserInfo(Map<String, Object> map) throws Exception;
+	//공통코드 mas 조회
+	public List<Map<String, Object>> selectUserInfo(Map<String, Object> map) throws Exception {
+		return CommDAO.selectUserInfo(map);
+	}
+		
+	//공통코드 MAS 저장
+	public void insert_sercutity_log(Map<String, Object> map) throws Exception {
+		CommDAO.insert_sercutity_log(map);
+	}
+	
+	//공통코드 mas 조회
+	public List<Map<String, Object>> searchComcode(Map<String, Object> map) throws Exception {
+		return CommDAO.searchComcode(map);
+	}
+	
+	//공통코드 mas 조회
+	public List<Map<String, Object>> searchGridComcode(Map<String, Object> map) throws Exception {
+		return CommDAO.searchGridComcode(map);
+	}
+	
+	public List<Map<String, Object>> searchYearCombo(Map<String, Object> map) throws Exception {
+		return CommDAO.searchYearCombo(map);
+	}
+	
+	
+
+}

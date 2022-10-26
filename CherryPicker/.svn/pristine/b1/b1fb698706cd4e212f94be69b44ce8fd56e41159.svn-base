@@ -1,0 +1,51 @@
+package com.hubizict.web.common.util;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.security.SecureRandom;
+
+public class UniqueKeyGenerator {
+	private static SecureRandom _seeder = new SecureRandom();
+
+	private static String _VM_INFO;
+
+	static {
+		InetAddress inet = null;
+		byte hostbytes[] = new byte[4];
+
+		try {
+			inet = InetAddress.getLocalHost();
+		}
+		catch (UnknownHostException e) {
+		}
+
+		if (inet == null) {
+			_seeder.nextBytes(hostbytes);
+		}
+		else {
+			hostbytes = inet.getAddress();
+		}
+
+		String hexInetAddress = ByteUtil.byteArrayToHexString(hostbytes);
+		String hexHashCode = Integer.toHexString(_seeder.hashCode());
+
+		hexHashCode = hexHashCode.length() % 2 != 1 ? hexHashCode : "0" + hexHashCode;
+		_VM_INFO = hexInetAddress + hexHashCode;
+	}
+
+	public static String getUniqueKey() {
+		StringBuffer returnValue = new StringBuffer();
+		int time = (int) System.currentTimeMillis() & -1;
+		String hexTime = Integer.toHexString(time);
+		hexTime = hexTime.length() % 2 != 1 ? hexTime : "0" + hexTime;
+		returnValue.append(_VM_INFO);
+		returnValue.append(hexTime);
+
+		int remainingBytes = (32 - returnValue.length()) / 2;
+		byte randomBytes[] = new byte[remainingBytes];
+		_seeder.nextBytes(randomBytes);
+		String randomString = ByteUtil.byteArrayToHexString(randomBytes);
+		returnValue.append(randomString);
+		return returnValue.reverse().toString();
+	}
+}

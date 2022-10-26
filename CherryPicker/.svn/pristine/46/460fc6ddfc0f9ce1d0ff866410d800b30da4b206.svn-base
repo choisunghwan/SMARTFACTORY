@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="comm">
+	<select id="selectUserInfo" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT USER_ID_CP
+      ,USER_NAME_CP
+      ,USER_PW_CP
+      ,USER_AUTH_CP
+      ,USER_DISP_CP
+      ,JOIN_DATE_CP
+      ,CREATE_DATE_CP
+      ,CREATE_USER_CP 
+      ,UPDATE_DATE_CP
+      ,UPDATE_USER_CP
+      , (CONVERT(CHAR(19), getdate(), 20)) AS connectTime
+  FROM TB_USER_CP
+  where USER_ID_CP = #{pUserId}
+    and USER_PW_CP =#{pwd}
+		]]>
+	</select>
+	<insert id="insert_sercutity_log" parameterType="hashmap">
+		<![CDATA[ 
+	INSERT INTO TB_LOG_CP
+           (log_date
+           ,log_content
+           ,pc_ip)
+     VALUES
+           (GETDATE()
+           ,#{log_content}
+           ,#{pc_ip})
+           ]]>
+	</insert>
+	
+	<select id="searchComcode" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	
+	SELECT [CD_V_CP]
+      ,[CD_NM_CP]
+  FROM [dbo].[TB_CODE_CP]
+  WHERE CD_TP_CP = #{pCdTp} 
+    AND ISNULL(ACTIVE,'Y') = 'Y'
+  ORDER BY SEQ_CP 
+    	]]>	
+	</select>
+	
+	<select id="searchGridComcode" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[  
+	SELECT N'선택' AS CD_V_CP
+	    , N'선택' AS CD_NM_CP
+	    , 0 AS SEQ_CP
+    UNION ALL	
+	SELECT [CD_V_CP]
+      ,[CD_NM_CP]
+      , [SEQ_CP]
+  FROM [dbo].[TB_CODE_CP]
+  WHERE CD_TP_CP = #{pCdTp} 
+    AND ISNULL(ACTIVE_CP,'Y') = 'Y'
+  ORDER BY SEQ_CP
+    	]]>	
+	</select>
+	
+	<select id="searchYearCombo" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+	with yearlist as 
+	(
+	    select 2021 as year
+	    union all
+	    select yl.year + 1 as year
+	    from yearlist yl
+	    where yl.year + 1 <= YEAR(GetDate())
+	)
+	
+	select year AS CD_V
+	      ,year AS CD_NM
+	  from yearlist 
+	  order by year desc
+  	]]>
+	</select>
+	
+	
+	
+</mapper>

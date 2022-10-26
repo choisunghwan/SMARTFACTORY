@@ -1,0 +1,232 @@
+package com.hubizict.web.common.util;
+
+
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import com.hubizict.web.common.util.ParamMap;
+@SuppressWarnings({"unchecked"})
+public class ThumnailUtil {
+	public static final int RATIO = 0;
+    public static final int SAME = -1;
+    
+    /**
+     * 썸네일 생성 (대상파일 폴더 및 이름 지정)
+     * @param fileMap
+     * @param srcPath		원본파일이 존재하는 경로
+     * @param srcFileName	원본파일명
+     * @param destPath		대상파일이 존재하는 경로
+     * @param descFileName 	대상파일명
+     * @param width			대상파일의 폭	
+     * @param height		대상파일의 높이
+     * @param gubun			목록용 : L, 상세용 : V
+     * @param isFixSize		true : 사이즈 고정, false : 사이즈 비율
+     */
+	public ThumnailUtil(ParamMap fileMap, String srcPath, String srcFileName, String destPath, String descFileName, int width, int height, String gubun, boolean isFixSize) {
+		/*
+		 * ex : 20110807_xxxx.jpg
+		 */
+		String fileName = descFileName.substring(0, descFileName.lastIndexOf('.')); // 파일명
+		String suffix 	= descFileName.substring(descFileName.lastIndexOf('.')); // 확장자
+		
+		String destFileName = "";
+		
+		if("L".equals(gubun)) {
+			destFileName = fileName + "_l" + suffix;	// 목록용 대상 파일 명 (20110807_xxxx_l.jpg)
+			fileMap.put("thum_list_file_name", destFileName);
+		} else {
+			destFileName = fileName + "_v" + suffix;	// 상세용 대상 파일 명 (20110807_xxxx_v.jpg)
+			fileMap.put("thum_view_file_name", destFileName);
+		}
+		
+		File srcFile 	= new File(srcPath, srcFileName); 	// 원본파일의 파일객체 생성
+		File destFile 	= new File(destPath, destFileName);	// 대상파일의 파일객체 생성
+		
+		if(isFixSize) {
+			resizeFixed(srcFile, destFile, width, height); // 고정 썸네일
+		} else {
+			resizeRate(srcFile, destFile, width, height); // 비율 썸네일
+		}
+	}
+	
+	
+	
+	/**
+     * 썸네일 생성 (대상파일 폴더 및 이름 원본 파일과 동일)
+     * @param fileMap
+     * @param srcPath		원본파일이 존재하는 경로
+     * @param srcFileName	원본파일명
+     * @param width			대상파일의 폭	
+     * @param height		대상파일의 높이
+     * @param gubun			목록용 : L, 상세용 : V
+     * @param isFixSize		true : 사이즈 고정, false : 사이즈 비율
+     */
+	public ThumnailUtil(ParamMap fileMap, String srcPath, String srcFileName, int width, int height, String gubun, boolean isFixSize) {
+		/*
+		 * ex : 20110807_xxxx.jpg
+		 */
+		String fileName = srcFileName.substring(0, srcFileName.lastIndexOf('.')); // 파일명
+		String suffix 	= srcFileName.substring(srcFileName.lastIndexOf('.')); // 확장자
+		
+		String destFileName = "";
+		
+		if("L".equals(gubun)) {
+			destFileName = fileName + "_l" + suffix;	// 목록용 대상 파일 명 (20110807_xxxx_l.jpg)
+			fileMap.put("thum_list_file_name", destFileName);
+		} else {
+			destFileName = fileName + "_v" + suffix;	// 상세용 대상 파일 명 (20110807_xxxx_v.jpg)
+			fileMap.put("thum_view_file_name", destFileName);
+		}
+		
+		File srcFile 	= new File(srcPath, srcFileName); 	// 원본파일의 파일객체 생성
+		File destFile 	= new File(srcPath, destFileName);	// 대상파일의 파일객체 생성
+		
+		if(isFixSize) {
+			resizeFixed(srcFile, destFile, width, height); // 고정 썸네일
+		} else {
+			resizeRate(srcFile, destFile, width, height); // 비율 썸네일
+		}
+	}
+	
+    /**
+     * 고정 사이즈 썸네일 파일 생성
+     * @param src  			원본 파일
+     * @param dest			대상 파일
+     * @param destWidth		대상 파일 가로 길이
+     * @param destHeight	대상 파일 세로 길이
+     */
+    private void resizeFixed(File src, File dest, int destWidth, int destHeight) {
+        Image srcImg = null;
+        
+        try {
+			String suffix = src.getName().substring(src.getName().lastIndexOf('.') + 1).toLowerCase();	// 확장자
+			srcImg = ImageIO.read(src);		// 원본 파일을 읽는다.
+			
+			Image imgTarget = srcImg.getScaledInstance(destWidth, destHeight, Image.SCALE_SMOOTH);
+
+			int pixels[] = new int[destWidth * destHeight]; 
+			PixelGrabber pg = new PixelGrabber(imgTarget, 0, 0, destWidth, destHeight, pixels, 0, destWidth); 
+			
+			try {
+			    pg.grabPixels();
+			} catch (Exception e) {
+			    throw new IOException(e.getMessage());
+			} 
+			
+			// 새로 생성할 이미지에 해당하는 BufferedImage 객체를 생성
+			BufferedImage destImg = null;
+			if("png".equals(suffix)) {
+				destImg = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_ARGB);
+				destImg.setRGB(0, 0, destWidth, destHeight, pixels, 0, destWidth); 
+				ImageIO.write(destImg, "png", dest);
+			} else {
+				destImg = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_RGB);
+				destImg.setRGB(0, 0, destWidth, destHeight, pixels, 0, destWidth); 
+				ImageIO.write(destImg, "jpg", dest);
+			}
+		} catch (Exception e) {
+    		e.printStackTrace();
+    	} 
+	}
+    
+    /**
+     * 비율 사이즈 썸네일 파일 생성
+     * @param src  			원본 파일
+     * @param dest			대상 파일
+     * @param width			대상 파일 가로 길이
+     * @param height		대상 파일 세로 길이
+     */
+    private void resizeRate(File src, File dest, int destWidth, int destHeight) {
+        Image srcImg = null;
+        
+        try {
+        	String suffix = src.getName().substring(src.getName().lastIndexOf('_')+1).toLowerCase();	// 확장자
+        	
+			srcImg = ImageIO.read(src);		// 원본 파일을 읽는다.
+			
+			int srcWidth	= srcImg.getWidth(null);	// 원본 이미지의 가로
+			int srcHeight 	= srcImg.getHeight(null);	// 원본 이미지의 세로
+			
+			if(destWidth == -1) { // 세로가 변한 비율 만큼 가로를 변경한다.
+				double rate = ((double)destHeight) / ((double)srcHeight);
+				destWidth 	= (int)((double)srcWidth * rate);
+			} else {
+				double rate = ((double)destWidth) / ((double)srcWidth);
+			    destHeight 	= (int)((double)srcHeight * rate);
+			}
+			
+			/*
+			int diffWidth 	= srcWidth - destWidth;		// 원본파일, 대상파일 가로 차이
+			int diffHeight 	= srcHeight - destHeight;	// 원본파일, 대상파일 세로 차이
+			int tempWidth	= destWidth;
+			int tempHeight	= destHeight;
+			
+			if(diffWidth >= 0 && diffHeight >= 0) { // 원본파일이 대상파일 보다 클 경우
+				if(diffWidth > diffHeight) { // 가로가 줄어든 비율로 세로를 줄인다.
+					double rate = ((double)destWidth) / ((double)srcWidth);
+				    destHeight 	= (int)((double)srcHeight * rate);
+				} else { // 세로가 줄어든 비율로 가로를 줄인다.
+					double rate = ((double)destHeight) / ((double)srcHeight);
+					destWidth 	= (int)((double)srcWidth * rate);
+				}
+			} else if(diffWidth < 0 && diffHeight < 0) { // 원본파일이 대상파일 보다 작을 경우
+				if(diffWidth > diffHeight) { // 가로가 늘어난 비율로 세로를 늘인다.
+					double rate = ((double)destWidth) / ((double)srcWidth);
+				    destHeight 	= (int)((double)srcHeight * rate);
+				} else { // 세로가 늘어난 비율로 가로를 늘인다.
+					double rate = ((double)destHeight) / ((double)srcHeight);
+					destWidth 	= (int)((double)srcWidth * rate);
+				}
+			} else { // 대상파일이 원본파일과 한쪽은 크고 한쪽은 작을 경우
+				if(diffWidth > 0) { // 가로가 클 경우 가로가 줄어든 만큼 세로를 줄인다.
+					double rate = ((double)destWidth) / ((double)srcWidth);
+				    destHeight 	= (int)((double)srcHeight * rate);
+				} else { // 세로가 클 경우 세로가 줄어든 만큼 가로를 줄인다.
+					double rate = ((double)destHeight) / ((double)srcHeight);
+					destWidth 	= (int)((double)srcWidth * rate);
+				}
+			}
+			
+			if(destWidth > tempWidth) {
+				destWidth = tempWidth;	
+			}
+			
+			if(destHeight > tempHeight) {
+				destHeight = tempHeight;	
+			}
+			*/
+			
+			Image imgTarget = srcImg.getScaledInstance(destWidth, destHeight, Image.SCALE_SMOOTH);
+
+			int pixels[] = new int[destWidth * destHeight]; 
+			PixelGrabber pg = new PixelGrabber(imgTarget, 0, 0, destWidth, destHeight, pixels, 0, destWidth); 
+			
+			try {
+			    pg.grabPixels();
+			} catch (Exception e){
+			    throw new IOException(e.getMessage());
+			} 
+			
+			// 새로 생성할 이미지에 해당하는 BufferedImage 객체를 생성
+			BufferedImage destImg = null;
+			if("png".equals(suffix)) {
+				destImg = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_ARGB);
+				destImg.setRGB(0, 0, destWidth, destHeight, pixels, 0, destWidth); 
+				ImageIO.write(destImg, "png", dest);
+			} else {
+				destImg = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_RGB);
+				destImg.setRGB(0, 0, destWidth, destHeight, pixels, 0, destWidth); 
+				ImageIO.write(destImg, "jpg", dest);
+			}
+			//ImageIO.write(destImg, "png", dest);
+		} catch (Exception e) {
+    		e.printStackTrace();
+    	} 
+	}
+}
+

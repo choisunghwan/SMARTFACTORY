@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee;http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+    version="3.1">
+  <!-- 최초 접속 시 이동 하는 페이지 -->  
+  <welcome-file-list>
+	<welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <!-- 웹서버의 문자 속성을 UTF8 로 필터링 처리 -->
+  <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>
+			org.springframework.web.filter.CharacterEncodingFilter
+        </filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>utf-8</param-value>
+    </init-param>
+  </filter>
+  <!-- url 에 .do 인 것을 utf-8로 필터링 처리 -->
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
+  
+  
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <!-- 호출 시 /WEB-INF/config/action-servlet.xml 의 설정에 따라 처리 될 수 있도록 servlet 파일의 위치 지정 -->
+  <servlet>
+    <servlet-name>action</servlet-name>
+    <servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>
+				/WEB-INF/config/action-servlet.xml
+	  </param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <!--.do action 일 경우 servlet 설정대로 mapping 되도록 설정 -->
+  <servlet-mapping>
+    <servlet-name>action</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  
+  <!-- DB 접속 및 log 들을 관리하는 context 파일의 위치를 지정 -->
+  <context-param>
+	<param-name>contextConfigLocation</param-name>
+	<param-value>classpath*:config/spring/context-*.xml</param-value>
+  </context-param>
+  
+  <!-- Web Server 의 session 유지 시간을 설정 초단위 -->	
+  <session-config>
+	<session-timeout>600</session-timeout>
+  </session-config>
+  
+  <!-- Web에러 발생 시 이동 할 페이지 지정 400,403,500 에러 시 error.jsp 페이지로 이동하라는 설정 -->
+<!--   <error-page> -->
+<!-- 	<error-code>400</error-code> -->
+<!-- 	<location>/error.jsp</location> -->
+<!-- 	</error-page> -->
+<!--   <error-page> -->
+<!-- 	<error-code>403</error-code> -->
+<!-- 	<location>/error.jsp</location> -->
+<!--   </error-page> -->
+<!--   <error-page> -->
+<!-- 	<error-code>500</error-code> -->
+<!-- 	<location>/error.jsp</location> -->
+<!--   </error-page> -->
+
+</web-app>

@@ -1,0 +1,748 @@
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%-- <%@ page session="false" %> --%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ page import = "com.CherryPicker.web.common.util.CommonUtils" %>
+<%@ page import="com.CherryPicker.web.comm.UserVO" %>
+<%@ page import="java.util.*" %>
+<%
+
+UserVO user = (UserVO)session.getAttribute("UserInfo");
+
+String pSearchStaDt = CommonUtils.diffDate(7);
+String pSearchEndDt = CommonUtils.currenDate();
+%>
+
+<!DOCTYPE HTML>
+<html lang="ko">  
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta http-equive="Content-Style-Type" content="text/css"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>휴비즈ICT</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1" />	
+	
+<%@ include file="/resources/js/include-header.jspf" %>	
+
+	
+<style>
+	
+      
+
+
+.jqx-icon-arrow-left jqx-icon-arrow-left-ui-overcast
+{
+    margin-left: 6px;
+    margin-top: 5px;
+    width: 15px;
+    height: 15px;
+}
+
+.switch {      
+  position: relative;
+  display: inline-block;  
+  width: 200px;
+  height: 50px;
+  margin: 8px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 30px;
+  width: 30px;
+  left: 10px;
+  bottom: 10px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+/*   background-color: #2196F3; */
+  background-color: #4FC9DE;
+}
+
+input:checked + .slider + .ptext {
+  color: #000;
+}
+
+input:focus + .slider {
+/*   box-shadow: 0 0 1px #2196F3; */
+	background-color: #4FC9DE;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(150px);
+  -ms-transform: translateX(150px); 
+  transform: translateX(150px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+
+
+
+
+.switch1 {      
+  position: relative;
+  display: inline-block;  
+  width: 300px;
+  height: 60px;
+  margin: 8px;
+}
+
+.switch1 input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider1 {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;   
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider1:before {
+  position: absolute;
+  content: "";  
+  height: 0px; 
+  width: 0px;
+  left: 10px;    
+  bottom: 10px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider1 {
+/*   background-color: #4FC9DE;  */
+  background-color: #FF6C6C;
+  
+}
+
+input:checked + .slider1 + .ptext {
+  color: #000;
+}   
+  
+input:focus + .slider1 {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider1:before {
+  -webkit-transform: translateX(240px);
+  -ms-transform: translateX(240px);
+  transform: translateX(240px);
+}
+
+/* Rounded sliders */
+.slider1.round {
+  border-radius: 34px;
+}
+
+.slider1.round:before {
+  border-radius: 50%;
+}
+
+
+
+
+.switch2 {      
+  position: relative;
+  display: inline-block;  
+  width: 300px;
+  height: 60px;
+  margin: 8px;
+}  
+
+
+
+.switch2 input { 
+  opacity: 0;  
+  width: 0;
+  height: 0;
+}
+
+.slider2 {
+  position: absolute;
+  cursor: pointer;  
+  top: 0;
+  left: 0;    
+  right: 0;  
+  bottom: 0;   
+  background-color: #2196F3;
+  -webkit-transition: .4s;
+  transition: .4s;    
+}  
+
+.slider2:hover{background-color:#4FC9DE;}  
+
+.slider2:before {
+  position: absolute;
+  content: "";  
+  height: 0px; 
+  width: 0px;
+  left: 10px;    
+  bottom: 10px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider2 {
+/*   background-color: #4FC9DE;  */
+  background-color: #2196F3;
+  
+}
+
+input:checked + .slider2 + .ptext {
+  color: #000;
+}   
+  
+input:focus + .slider2 {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider1:before {
+  -webkit-transform: translateX(240px);
+  -ms-transform: translateX(240px);
+  transform: translateX(240px);
+}
+
+/* Rounded sliders */
+.slider2.round {
+  border-radius: 34px;
+}
+
+.slider1.round:before {
+  border-radius: 50%;
+}
+</style>   
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+	
+	$('#mainSplitter').jqxSplitter({ width: 'calc(100% - 2px)', height: 'calc(100% - 80px)',  panels: [{ size: 480}] });  
+	
+	      
+	//로딩이미지 문구 처리  
+	$("#jqxLoader").jqxLoader({ width: 100, height: 60, imagePosition: 'top', text: "Loading"  });
+	
+	//달력 이미지 클릭 시 처리
+	$('#fa-calendar').click(function() {
+	    $("#datepicker").focus();
+	});
+	
+	$('#fa-calendar1').click(function() {
+	    $("#datepicker1").focus();
+	});
+	
+	$('.chk').click(function(){
+		$(this).prop('checked',true);     
+		$('.chk').not($(this)).prop('checked',false);
+		
+		$("#pUserId").val($(this).val());
+	});
+	
+	$('.chk1').click(function(){
+		$(this).prop('checked',true);    
+		$('.chk1').not($(this)).prop('checked',false);   
+		
+		$("#pWork").val($(this).val());
+		
+		fn_search("/PSMES/PSMES_UI610_searchwork.do", "grid",setColumn,"80%");
+		
+	});  
+
+	$('.chk2').click(function(){  
+		//$('.chk2').$(this).prop('checked',false);    
+		
+		
+		if($(this).val() == "S")
+		{
+			fn_save();
+		}
+		else if($(this).val() == "E")
+		{
+			if(!confirm("작업완료 하시겠습니까?")) return;
+			
+			fn_comp();
+		}
+			
+		$(this).prop('checked',false);     
+	});
+	
+	/*버튼 이벤트*/
+	//조회버튼
+	
+	  
+	/*버튼 이벤트 끝*/
+	
+	/*그리드 초기화*/
+	setGrid("grid", "",setColumn,"80%");  
+	/*그리드 초기화 끝*/
+	    
+	/*그리드 이벤트*/
+	$('#grid').on('cellclick', function (event) {
+		var args = event.args;
+	    // row's bound index.
+	    var rowBoundIndex = args.rowindex;
+	    
+		var value = $('#grid').jqxGrid('getcellvalue', rowBoundIndex, "WORK_START_DATE");
+		var value1 = $('#grid').jqxGrid('getcellvalue', rowBoundIndex, "WORK_END_DATE");
+			
+// 		if(isEmpty(value))
+// 		{
+// 			 $("#chk2test1").show(); 
+// 			 $("#chk2test2").hide(); 
+// 		}
+// 		else if(!isEmpty(value) && isEmpty(value1))
+// 		{
+// 			$("#chk2test1").hide();
+// 			$("#chk2test2").show();
+// 		}	
+	});
+	
+	
+	/*그리드 이벤트 끝*/
+	
+	//$('#btnSearch').click();
+	 
+});
+
+$( window ).resize( function() {
+	
+} );
+
+
+//그리드 데이터 출력
+function setGrid (pGrid_id, pResponse, pSetColumn, pHeight)
+{
+	//grid_id = "";
+	//setColumn = "";
+	var gridData = null;
+	
+	if(pResponse != "")
+	{
+		gridData = pResponse;
+	}
+	
+	var gridSource =
+    {
+        localdata: gridData,
+        datatype: 'json',
+       	root: "entry",
+       	//pager: function (pagenum, pagesize, oldpagenum) {
+       	pager: function (pagenum, pagesize, oldpagenum) {	
+         // callback called when a page or page size is changed.
+ 		}
+    };
+    
+    var gridDataAdapter = new $.jqx.dataAdapter(gridSource);
+    
+    $("#" + pGrid_id).jqxGrid(
+	{
+		width: '100%',
+        height: pHeight,
+		source: gridDataAdapter,   
+		editable: true,
+		selectionmode: 'singlerow',
+        editmode: 'click',
+ 		theme: 'energyblue',
+	    pagermode: 'simple',
+		columnsresize: true,
+		showrowlines:true,
+		showcolumnlines: true,
+ 		columns: pSetColumn
+		
+	});
+    
+}
+
+/*그리드 설정 */
+//그리드 링크 항목 처리
+var cellsrenderer = function (row, columnfield, value, defaulthtml, columnproperties) {
+
+	var formattedValue = value;
+
+	var scan = "<div class='jqx-grid-cell-middle-align' style='margin-top:9px;color:blue;cursor:pointer;text-decoration:underline;'>" + formattedValue + " </div>";
+                         
+ 	return scan;
+}
+
+
+//그리드 컬럼 셋팅
+var setColumn = [
+	{
+	     text: '순번', sortable: false, filterable: false, editable: false, align: 'center', cellsalign: 'center',
+	     groupable: false, draggable: false, resizable: false,
+	     datafield: '', columntype: 'number', width: 50,
+	     cellsrenderer: function (row, column, value) {
+	         return "<div style='margin:7px;text-align:center'>" + (value + 1) + "</div>";
+	     }
+ 	}, 
+	{ text: ''			, columntype: 'textbox', datafield: 'STATUS_IMG'		, cellsalign: 'center', align: 'center',  width: 50 , editable: false},
+	{ text: '상태'		, columntype: 'textbox', datafield: 'STATUS_NM'			, cellsalign: 'center', align: 'center',  width: 100 , editable: false},
+	{ text: '공정'		, columntype: 'textbox', datafield: 'WORK_NM'			, cellsalign: 'center', align: 'center',  width: 120 , editable: false},
+	{ text: '수주명'		, columntype: 'textbox', datafield: 'ORDER_NAME'		, cellsalign: 'left', align: 'center',  editable: false},
+	{ text: '품명'		, columntype: 'textbox', datafield: 'PRODUCT_NAME'		, cellsalign: 'left', align: 'center',  width: 250 ,  editable: false},
+	{ text: '작업자'		, columntype: 'textbox', datafield: 'WORKER'			, cellsalign: 'center', align: 'center',  width: 100 , editable: false},
+	{ text: '계획시작일'	, columntype: 'textbox', datafield: 'PLAN_DATE'			, cellsalign: 'center', align: 'center',  width: 100 , editable: false},
+	{ text: '작업시작일'	, columntype: 'textbox', datafield: 'WORK_START_DATE'	, cellsalign: 'center', align: 'center',  width: 100 , editable: false},
+	{ text: '작업완료일'	, columntype: 'textbox', datafield: 'WORK_END_DATE'		, cellsalign: 'center', align: 'center',  width: 100 , editable: false},
+	{ text: 'R_ORDER_PK'		, columntype: 'textbox', datafield: 'R_ORDER_PK'	, hidden: true },
+	{ text: 'R_ORDER_DETAIL_PK'	, columntype: 'textbox', datafield: 'R_ORDER_DETAIL_PK'	, hidden: true },
+	{ text: 'CHK'	, columntype: 'textbox', datafield: 'CHK'	, hidden: true }
+	
+];
+  
+//행추가 ROW 설정
+var generaterow = function (i) {  
+    var row = {};
+    row["CD_V"] = ""; 
+    row["CD_NM"] = "";
+    row["CD_TP"] = "TOP";
+    
+    return row;
+}
+
+/*그리드 설정 끝*/
+ 
+
+
+/*사용자 함수 */
+var fn_save = function () {
+  //저장 전 체크 
+	var rowindexes = $('#grid').jqxGrid('getselectedrowindexes');
+	
+	var rows = "";
+	var cdtpCnt = 0;
+	var cdNmCnt = 0;
+	
+	for(var i=0;i<rowindexes.length;i++)
+	{
+		
+		$("#grid").jqxGrid('setcellvalue', rowindexes[i], "CHK", "1");
+		
+		//rows += $("#grid").jqxGrid('getrowdata', i);
+	}
+	
+	if($("#pUserId").val()=="")
+	{
+		alert("작업자을 선택하여 주십시요.");
+		return;
+	}    
+	
+	if(rowindexes.length == 0)
+	{
+		alert("작업을 선택하여 주십시요.");
+		return;
+	}  
+	
+	//if(!confirm("작업시작 저장하시겠습니까?")) return;
+  
+  //로딩이미지 오픈
+	$('#jqxLoader').jqxLoader('open');
+	
+  	var rows = $('#grid').jqxGrid('getrows');
+	
+	$("#gridData").val(JSON.stringify(rows));
+		
+	$.ajax({
+      url: "/PSMES/PSMES_UI610_save_start.do",
+      dataType: 'json',
+      data : $("#form1").serialize(),
+		//data : param,
+      type : 'POST',
+      beforeSend: function (request) {
+//       	xmlHttpRequest.setRequestHeader("AJAX", "true");
+      	$("jqxgrid").html('');
+          request.setRequestHeader("AJAX", "true");
+      },
+      error: function (json, textStatus, errorThrown) {
+          if(json.status == "403")
+          {
+          	alert("세션이 만료되어 로그인 화면으로 이동합니다.");
+              window.parent.location.href="/login.do";
+          }
+          else
+          {
+          	alert(' Error :' + errorThrown + "  " + textStatus + "  " + json);	
+          }
+      	
+      },
+      success: function (data) {
+			// initailize grid
+			$('#jqxLoader').jqxLoader('close');
+          
+			//alert("작업시작 했습니다.");
+          
+			$('#grid').jqxGrid('clearselection');
+          
+			fn_search("/PSMES/PSMES_UI610_searchwork.do", "grid",setColumn,"80%");
+          
+			
+			
+		}
+	});
+};
+
+
+/*사용자 함수 */
+var fn_comp = function () {
+  //저장 전 체크 
+	var rowindexes = $('#grid').jqxGrid('getselectedrowindexes');
+	
+	var rows = "";
+	var cdtpCnt = 0;
+	var cdNmCnt = 0;
+	
+	for(var i=0;i<rowindexes.length;i++)
+	{
+		
+		$("#grid").jqxGrid('setcellvalue', rowindexes[i], "CHK", "1");
+		
+		//rows += $("#grid").jqxGrid('getrowdata', i);
+	}
+	
+	if($("#pUserId").val()=="")
+	{
+		alert("작업자을 선택하여 주십시요.");
+		return;
+	}    
+	
+	if(rowindexes.length == 0)
+	{
+		alert("작업을 선택하여 주십시요.");
+		return;
+	}  
+	
+	//if(!confirm("작업시작 저장하시겠습니까?")) return;
+  
+  //로딩이미지 오픈
+	$('#jqxLoader').jqxLoader('open');
+	
+  	var rows = $('#grid').jqxGrid('getrows');
+	
+	$("#gridData").val(JSON.stringify(rows));
+		
+	$.ajax({
+      url: "/PSMES/PSMES_UI610_save_end.do",
+      dataType: 'json',
+      data : $("#form1").serialize(),
+		//data : param,
+      type : 'POST',
+      beforeSend: function (request) {
+//       	xmlHttpRequest.setRequestHeader("AJAX", "true");
+      	$("jqxgrid").html('');
+          request.setRequestHeader("AJAX", "true");
+      },
+      error: function (json, textStatus, errorThrown) {
+          if(json.status == "403")
+          {
+          	alert("세션이 만료되어 로그인 화면으로 이동합니다.");
+              window.parent.location.href="/login.do";
+          }
+          else
+          {
+          	alert(' Error :' + errorThrown + "  " + textStatus + "  " + json);	
+          }
+      	
+      },
+      success: function (data) {
+			// initailize grid
+			$('#jqxLoader').jqxLoader('close');
+          
+			//alert("작업시작 했습니다.");
+          
+			$('#grid').jqxGrid('clearselection');
+          
+			fn_search("/PSMES/PSMES_UI610_searchwork.do", "grid",setColumn,"80%");
+          
+			
+			
+		}
+	});
+};
+//삭제 
+
+
+//팝업 강제로 닫기 버튼
+//	$('#btn_search').click(function () {
+// 	$('#jqxwindow').jqxWindow('close');
+//	});
+ 
+ // 원료사용실적 등록 팝업 오픈
+//  var fn_showPop = function(num, IsNew){
+// 	$("#jqxwindow").jqxWindow({ height: 380, width: 920, theme: 'summer'});
+	
+// 	var url ="/PSMES/PSMES_TD1_032.do?num="+num + "&IsNew=" + IsNew;
+	
+// 	//팝업 헤더 안보이게 하는 부분
+// //		$('.jqx-window-header').css('display', 'none');
+// 	var opened = $("#jqxwindow").jqxWindow('isOpen');
+// 	$("#jqxwindow").jqxWindow('setContent', "<iframe src='"+ url +"' width='100%' height='99%' scrolling='auto' frameborder='0' ></iframe>");	
+// 	$("#jqxwindow").jqxWindow('setTitle',"원료 정보 관리")
+// 	$("#jqxwindow").jqxWindow("open");
+//  }
+ 
+function test()
+{
+	
+	
+	
+}
+
+</script>
+
+<body>
+<form id="form1" name="form1" style="height: 100%;">
+<input type="hidden" id="pCdTp" name="pCdTp">
+<input type="hidden" name="gridData" id="gridData" value="">
+<input type="hidden" name="gridData2" id="gridData2" value="">
+
+<input type="hidden" name="pUserId" id="pUserId" value="">
+<input type="hidden" name="pWork" id="pWork" value="">
+
+
+<!-- #wrap -->
+<div id="wrap" >
+
+	<!-- #container -->
+<!-- 	<div id="container">	 -->
+		<!-- #side -->
+		<!-- #content -->
+		<div id="content" style="height:100%" id ="content">			
+			<div class="content-inner hid" style="height:100%">
+				<div class="inner_top">
+					<h3 class="tit">작업실적</h3>
+					<div class="top_btn">
+<!-- 						<a href="#n" class="btn1" id="btnSearch" style="display: inline-block;">조회</a> -->
+<!-- 						<a href="#n" class="btn1" id="btnSave" style="display: inline-block;">저장</a> -->
+					</div>
+				</div>
+					   
+           		<div id="mainSplitter">  
+	                <div class="splitter-panel">
+	                	<c:forEach items="${userInfo}" var="userInfo">
+	                	<label class="switch">      
+						  <input type="checkbox" id="test1" class="chk" value="${userInfo.USER_ID}">   
+<%-- 						  <input type="hidden" name="userId" value="${userInfo.USER_ID}">     --%>
+						  <span class="slider round"><p class="ptext" style="text-align:center;color:#fff;font-size:30px;padding-top:5px;margin-top: auto;"><b><c:out value="${userInfo.USER_NAME}"/></b></p></span>
+						</label>
+						</c:forEach>
+						
+	                </div> 
+	                <div class="splitter-panel">
+	                	<!-- left -->
+	                	<form1>
+							<div class="form-row" style="text-align:center;">
+								<label class="switch1">  
+								  <input type="checkbox" id="test2" class="chk1" value="1">  
+								  <span class="slider1 round"><p class="ptext" style="text-align:center;color:#fff;font-size:35px;padding-top:8px;margin-top: auto;"><b>제관공정</b></p></span>
+								</label>
+								
+								<label class="switch1">  
+								  <input type="checkbox" id="test2" class="chk1" value="2">  
+								  <span class="slider1 round"><p class="ptext" style="text-align:center;color:#fff;font-size:35px;padding-top:8px;margin-top: auto;"><b>용접공정</b></p></span>
+								</label>
+								  
+								<label class="switch1">  
+								  <input type="checkbox" id="test2" class="chk1" value="3">  
+								  <span class="slider1 round"><p class="ptext" style="text-align:center;color:#fff;font-size:35px;padding-top:8px;margin-top: auto;"><b>가공공정</b></p></span>
+								</label>
+								
+								<label class="switch1">  
+								  <input type="checkbox" id="test2" class="chk1" value="4">  
+								  <span class="slider1 round"><p class="ptext" style="text-align:center;color:#fff;font-size:35px;padding-top:8px;margin-top: auto;"><b>조립공정</b></p></span>
+								</label>
+								
+							</div>
+						</form1>
+					</section>
+	                	 
+	                	<div id="inner_grid" class="con_list mtable" style="height:calc(100% - 38px);">		
+				           	<div id="grid"></div>
+				           	
+				           	<div style="text-align: center;padding:10px;">
+								<label class="switch2">    
+								  <input type="checkbox" id="chk2test1" class="chk2" value="S">  
+								  <span class="slider2 round"><p class="ptext" style="text-align:center;color:#fff;font-size:35px;padding-top:8px;margin-top: auto;"><b>▶ 작업시작</b></p></span>
+								</label>
+								<label class="switch2">  
+								  <input type="checkbox" id="chk2test2" class="chk2" value="E">  
+								  <span class="slider2 round"><p class="ptext" style="text-align:center;color:#fff;font-size:35px;padding-top:8px;margin-top: auto;"><b>▣ 작업완료</b></p></span>
+								</label>
+								
+							</div> 
+						
+				        </div>
+				        
+				        
+						
+	                </div>
+	            </div>
+            		
+         			
+<!-- 					<div class="scroll_x">좌우로 스크롤하시면 볼 수 있습니다.</div> -->
+				</div>
+			</div>
+		</div>
+		<div id="jqxLoader">
+    	</div>
+		
+
+	
+	 
+	</form>    	
+	
+</body>
+
+
+	<div id='jqxwindow' style="display:none;">
+        <div id='content' style="text-align:center;">
+        </div>
+    </div>
+</html>
