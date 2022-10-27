@@ -123,12 +123,12 @@ $(document).ready(function() {
 	/*버튼 이벤트*/
 	//조회버튼
 	$('#btnSearch').click(function () {
-		fn_searchMas ();
-		
-		if(!isEmpty($("#P_ORDER_PK_CP").val()))
-		{
+		if($("#P_ORDER_PK_CP").val() == ""){
 			$("#btnReload").show();
+			alert("신규등록 및 발주목록에서 선택후 조회 해주세요.");
+			return;
 		}
+		fn_searchMas ();
 	});
 	
 	//저장

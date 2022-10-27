@@ -436,9 +436,9 @@ $(document).ready(function() {
 	    {  
 	    	amount = args.value;
 	    	
-	    	if(!isEmpty($("#grid").jqxGrid('getcellvalue', rowBoundIndex, "UNIT_COST_CP_CP")))
+	    	if(!isEmpty($("#grid").jqxGrid('getcellvalue', rowBoundIndex, "UNIT_COST_CP")))
 	    	{
-	    		unitCost = $("#grid").jqxGrid('getcellvalue', rowBoundIndex, "UNIT_COST_CP_CP");  
+	    		unitCost = $("#grid").jqxGrid('getcellvalue', rowBoundIndex, "UNIT_COST_CP");  
 	    	}
 	    	   
 	    	$("#grid").jqxGrid('setcellvalue', rowBoundIndex, "SUM_COST_CP", Number(unitCost) * Number(amount));
