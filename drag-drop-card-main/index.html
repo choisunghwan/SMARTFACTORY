@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- ===== CSS ===== -->
+        <link rel="stylesheet" href="assets/css/styles.css">
+
+        <!-- ===== BOX ICONS ===== -->
+        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+
+        <title>Drag y drop card</title>
+    </head>
+    <body>
+        <div class="drop">
+            <div class="drop__container" id="drop-items">
+                <div class="drop__card">
+                    <div class="drop__data">
+                        <img src="assets/img/img1.jpg" alt="" class="drop__img">
+                        <div>
+                            <h1 class="drop__name">Clay</h1>
+                            <span class="drop__profession">Web developer</span>
+                            <td style="width: 50%;">  
+				    			
+				    			<div class="card card-secondary" style="margin: 10px;">
+					              <div class="card-header">
+					                <h3 class="card-title">  월 수주 및 발주현황</h3>  
+					              </div>
+					              <!-- /.card-header -->
+					              <div class="card-body"> 
+					                	<table style="width: 100%;">
+					                		<tbody><tr>
+					                			<td style="width: 100%;">
+					                				<section class="content">
+												      <div class="container-fluid">
+												        <!-- Small boxes (Stat box) -->
+												        <div class="row">
+												          <div class="col-lg-6 col-6">
+												            <!-- small box -->
+												            <div class="small-box bg-info">
+												              <div class="inner">
+												                <h3><span style="color:black;">수주</span></h3>
+												  
+												                <p>&nbsp;</p> 
+												              </div>
+												              <div class="icon">   
+					<!-- 							                <i class="ion ion-bag"></i> -->
+												                <i class=""><span id="s02" style="color: #17a2b8;">0 건</span></i>
+												              </div> 
+												              <a href="#n" onclick="javascript:addTab('/CPMES/CPMES_UI220.do', '수주목록')" class="small-box-footer">더보기 <i class="fas fa-arrow-circle-right"></i></a>
+												            </div>
+												          </div>
+												          <!-- ./col -->
+												          <div class="col-lg-6 col-6">
+												            <!-- small box -->
+												            <div class="small-box bg-success">
+												              <div class="inner">
+												                <h3><span style="color:black;">발주</span></h3>
+												
+												                <p>&nbsp;</p>
+												              </div>
+												              <div class="icon">
+												                <i class=""><span id="order" style="color: #28a745;">0 건</span></i>
+												              </div>
+												              <a href="#n" onclick="javascript:addTab('/CPMES/CPMES_UI320.do', '발주목록')" class="small-box-footer">더보기 <i class="fas fa-arrow-circle-right"></i></a>
+												            </div>
+												          </div>
+												          
+												        </div>
+														</div>
+													</section>
+					                			</td>
+					                		</tr>
+					                			
+					                		<tr>
+					                			<td>
+					                				<section class="content">
+												      <div class="container-fluid">
+												        <!-- Small boxes (Stat box) -->
+												        <div class="row">
+												          <div class="col-lg-6 col-6">
+												            <!-- small box -->
+												            <div class="small-box bg-warning">
+												              <div class="inner">
+												                <h3><span style="color:black;">작업중</span></h3>
+												
+												                <p>&nbsp;</p>
+												              </div>
+												              <div class="icon">
+												                <i class=""><span id="s03" style="color: #ffc107;">0 건</span></i>
+												              </div>
+												              <a href="#n" onclick="javascript:addTab('/CPMES/CPMES_UI420.do', '생산실적조회')" class="small-box-footer">더보기 <i class="fas fa-arrow-circle-right"></i></a>
+												            </div>
+												          </div>
+												          <!-- ./col -->
+												          <div class="col-lg-6 col-6">
+												            <!-- small box -->
+												            <div class="small-box bg-danger">
+												              <div class="inner">
+												                <h3><span style="color:black;">작업완료</span></h3>
+												
+												                <p>&nbsp;</p>
+												              </div>
+												              <div class="icon">
+												                <i class=""><span id="s04" style="color: #dc3545;">0 건</span></i>
+												              </div>
+												              <a href="#n" onclick="javascript:addTab('/CPMES/CPMES_UI420.do', '생산실적조회')" class="small-box-footer">더보기 <i class="fas fa-arrow-circle-right"></i></a>
+												            </div>
+												          </div>
+												          <!-- ./col -->
+												        </div>
+														</div>
+													</section>	
+					                			</td>
+					                		</tr>
+					                	</tbody></table>
+					                		
+					              </div>
+					              <!-- /.card-body -->
+					            </div>
+					            <!-- /.card -->
+				    				
+				    		</td>
+                        </div>
+                    </div>
+
+                    <div>
+                        <a href="#" class="drop__social"><i class='bx bxl-instagram'></i></a>
+                        <a href="#" class="drop__social"><i class='bx bxl-facebook'></i></a>
+                        <a href="#" class="drop__social"><i class='bx bxl-twitter'></i></a>
+                    </div>
+                </div>
+
+                <div class="drop__card">
+                    <div class="drop__data">
+                        <img src="assets/img/img2.jpg" alt="" class="drop__img">
+                        <div>
+                            <h1 class="drop__name">Sara Mill</h1>
+                            <span class="drop__profession">Graphic design</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <a href="#" class="drop__social"><i class='bx bxl-instagram'></i></a>
+                        <a href="#" class="drop__social"><i class='bx bxl-facebook'></i></a>
+                        <a href="#" class="drop__social"><i class='bx bxl-twitter'></i></a>
+                    </div>
+                </div>
+
+                <div class="drop__card">
+                    <div class="drop__data">
+                        <img src="assets/img/img3.jpg" alt="" class="drop__img">
+                        <div>
+                            <h1 class="drop__name">Robbie Ford</h1>
+                            <span class="drop__profession">Ui/Ux design</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <a href="#" class="drop__social"><i class='bx bxl-instagram'></i></a>
+                        <a href="#" class="drop__social"><i class='bx bxl-facebook'></i></a>
+                        <a href="#" class="drop__social"><i class='bx bxl-twitter'></i></a>
+                    </div>
+                </div>
+
+                <div class="drop__card">
+                    <div class="drop__data">
+                        <img src="assets/img/img4.jpg" alt="" class="drop__img">
+                        <div>
+                            <h1 class="drop__name">Jenny Lit</h1>
+                            <span class="drop__profession">Digital marketing</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <a href="#" class="drop__social"><i class='bx bxl-instagram'></i></a>
+                        <a href="#" class="drop__social"><i class='bx bxl-facebook'></i></a>
+                        <a href="#" class="drop__social"><i class='bx bxl-twitter'></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--===== SORTABLE JS =====-->
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
+         <!--===== MAIN JS =====-->
+         <script src="assets/js/main.js"></script>
+    </body>
+</html>
