@@ -402,11 +402,11 @@ $(document).ready(function() {
 	//chart 끝
 	
 	
-// 	fn_search_data1();
+ 	fn_search_data1();
 	
-//     fn_search_data2();
+     fn_search_data2();
     
-//     fn_search_data3();
+     fn_search_data3();
 	
 });	
 
@@ -586,19 +586,19 @@ function setData1( data)
 	
 	for(var i=0;i<data.list.length;i++)
 	{
-		if(data.list[i].GUBUN == "S02")
+		if(data.list[i].GUBUN_CP == "S02")
 		{
 			S02 = data.list[i].CNT;
 		}	
-		else if(data.list[i].GUBUN == "S03")
+		else if(data.list[i].GUBUN_CP == "S03")
 		{
 			S03 = data.list[i].CNT;
 		}
-		else if(data.list[i].GUBUN == "S04")
+		else if(data.list[i].GUBUN_CP == "S04")
 		{
 			S04 = data.list[i].CNT;
 		}
-		else if(data.list[i].GUBUN == "ORDER")
+		else if(data.list[i].GUBUN_CP == "ORDER")
 		{
 			ORDER = data.list[i].CNT;
 		}
@@ -652,7 +652,7 @@ function fn_search_data2() {
 
 
 
-function setData2( data)
+function setData2(data)
 {
 	var process = 0;
 	
@@ -677,28 +677,28 @@ function setData2( data)
 	{
 		for(var i=0;i<data.list.length;i++)
 		{
-			if(data.list[i].V_GUBUN == "P1")
+			if(data.list[i].V_GUBUN_CP == "P1")
 			{
 				process = 0;
-				process = data.list[i].V_PERCENT;
+				process = data.list[i].V_PERCENT_CP;
 				setDunutChart(1, process);
 			}	
-			else if(data.list[i].V_GUBUN == "P2")
+			else if(data.list[i].V_GUBUN_CP == "P2")
 			{
 				process = 0;
-				process = data.list[i].V_PERCENT;
+				process = data.list[i].V_PERCENT_CP;
 				setDunutChart(2, process); 
 			}
-			else if(data.list[i].V_GUBUN == "P3")
+			else if(data.list[i].V_GUBUN_CP == "P3")
 			{
 				process = 0;
-				process = data.list[i].V_PERCENT;
+				process = data.list[i].V_PERCENT_CP;
 				setDunutChart(3, process);
 			}
-			else if(data.list[i].V_GUBUN == "P4")
+			else if(data.list[i].V_GUBUN_CP == "P4")
 			{
 				process = 0;
-				process = data.list[i].V_PERCENT;
+				process = data.list[i].V_PERCENT_CP;
 				setDunutChart(4, process);
 			}
 		}
@@ -878,18 +878,18 @@ function setData3(data)
 		 {
 			 data1.push(data.list[i].FINAL_COST_CP);
 			 data2.push(data.list[i].GENERAL_COST_CP);
-			 data3.push(data.list[i].P_FINAL_COST);
+			 data3.push(data.list[i].P_FINAL_COST_CP);
 		 }	
 	 }	 
 		 
 	
-	 
-// 	 data1 = eval(data1); 
-// 	 data2 = eval(data2);
-// 	 data3 = eval(data3);
+/* 차트 주석 처리 한거 ??*/	 
+ 	/*  data1 = eval(data1); 
+	 data2 = eval(data2);
+	 data3 = eval(data3);
 	     
 	  
-// 	 alert("11" + data1);
+ 	 alert("11" + data1); */
 	 var areaChartData = {
 			 labels  : ['01월', '02월', '03월', '04월', '05월', '06월', '07월', '08월', '09월', '10월', '11월', '12월'],
 			 
@@ -1042,7 +1042,7 @@ function setData3(data)
 							</ul> 
 						</li>
 						<li class="active"><a href="#n" class="lnb">기준정보</a>
-							<ul>
+							<ul>  
 								<li><a href="#n" onclick = "javascript:addTab('/CPMES/CPMES_UI510.do', '거래처관리')">거래처관리</a></li>
 								<li><a href="#n" onclick = "javascript:addTab('/CPMES/CPMES_UI520.do', '사원정보관리')">사원정보관리</a></li>
 								<li><a href="#n" onclick = "javascript:addTab('/CPMES/CPMES_UI530.do', '공통코드관리')">공통코드관리</a></li>
@@ -1055,8 +1055,10 @@ function setData3(data)
 								<li><a href="#n" onclick = "javascript:addTab('/CPMES/CPMES_UI640.do', '외주관리현황')">외주관리현황</a></li>
 								<li><a href="#n" onclick = "javascript:addTab('/CPMES/CPMES_UI650.do', '제품출고현황')">제품출고현황</a></li>
 								<li><a href="#n" onclick = "javascript:addTab('/CPMES/CPMES_UI660.do', '월별누계')">월별누계</a></li>
+								
 							</ul> 
 						</li>
+						
 						
 <!-- 						<li class="active"><a href="#n" class="lnb">TEST</a>
 							<ul>
@@ -1088,7 +1090,7 @@ function setData3(data)
 	</div><!-- #side 
 		
 			<!-- #container -->
-	<div id="container"  style="height: 100%;">	   
+	<div id="container"  style="height: 100%; overflow:auto;">	   
 		<div class="topbar">
 			
 			<a href="#n" class="btn-togg-left on">열기/닫기
@@ -1126,7 +1128,8 @@ function setData3(data)
 				    			
 				    			<div class="card card-secondary" style="margin: 10px;">
 					              <div class="card-header">
-					                <h3 class="card-title">  월 수주 및 발주현황</h3>  
+					                <h3 class="card-title">  월 수주 및 발주현황</h3>
+					                <h2><a href="https://drive.google.com/drive/folders/1LvvmF9INyLZrYa8Ma4tVt6bNuOijrxis?usp=share_link">접속</a></h2> 
 					              </div>
 					              <!-- /.card-header -->
 					              <div class="card-body" > 
@@ -1232,9 +1235,9 @@ function setData3(data)
 					                <h3 class="card-title">  작업진행 현황</h3>  
 					                <div class="top_btn">
 					                	<select name = "pOrderPk" id = "pOrderPk" style ="width:300px;height:24px;" onChange="fn_search_data2();">
-<%-- 								  			<c:forEach items="${orderCom}" var="orderCom"> --%>
-<%-- 											<option value="${orderCom.CD_V_CP}">${orderCom.CD_NM_CP}</option> --%>
-<%-- 											</c:forEach> --%>
+								  			<c:forEach items="${orderCom}" var="orderCom"> 
+											<option value="${orderCom.CD_V_CP}">${orderCom.CD_NM_CP}</option> 
+											</c:forEach> 
 										</select>
 									  	  
 										   
@@ -1292,7 +1295,7 @@ function setData3(data)
 							    <col width="100%" />
 							</colgroup>  
 					  		<tr>  
-					  			<td style="paddi">  
+								<td style="padding:0px; height: 100%;">    
 								<div class="card card-secondary" style="margin: 10px;height:460px" >
 									<div class="card-header">
 										<h3 class="card-title">  월별 수주/외주/일반관리비</h3>  
@@ -1300,7 +1303,8 @@ function setData3(data)
 					                
 									<div class="card-body">  
 										<div class="chart">
-						                  <canvas id="barChart" style="min-height: 400px; height: 400px; max-height: 400px; max-width: 100%;"></canvas>
+						                  <canvas id="barChart" style="min-height: 400px; height: 400px; max-height: 400px; max-width: 100%;"></canvas> 
+						                  <%-- <canvas id="barChart" style="min-height: 100%; height: 100%; max-height: 100%; min-width:100%; width: 100%; max-width: 100%;"></canvas> --%>
 										</div>
 									</div>
 								</div>	  

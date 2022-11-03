@@ -38,28 +38,28 @@ public class UI600DAO extends AbstractDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> PSMES_UI620_searchList(Map<String, Object> map) throws Exception{
-		return (List<Map<String, Object>>)selectList("ui600.PSMES_UI620_searchList", map);
+	public List<Map<String, Object>> CPMES_UI620_searchList(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("ui600.CPMES_UI620_searchList", map);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> PSMES_UI630_searchList(Map<String, Object> map) throws Exception{
-		return (List<Map<String, Object>>)selectList("ui600.PSMES_UI630_searchList", map);
+	public List<Map<String, Object>> CPMES_UI630_searchList(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("ui600.CPMES_UI630_searchList", map);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> PSMES_UI640_searchList(Map<String, Object> map) throws Exception{
-		return (List<Map<String, Object>>)selectList("ui600.PSMES_UI640_searchList", map);
+	public List<Map<String, Object>> CPMES_UI640_searchList(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("ui600.CPMES_UI640_searchList", map);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> PSMES_UI650_searchList(Map<String, Object> map) throws Exception{
-		return (List<Map<String, Object>>)selectList("ui600.PSMES_UI650_searchList", map);
+	public List<Map<String, Object>> CPMES_UI650_searchList(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("ui600.CPMES_UI650_searchList", map);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> PSMES_UI660_searchList(Map<String, Object> map) throws Exception{
-		return (List<Map<String, Object>>)selectList("ui600.PSMES_UI660_searchList", map);
+	public List<Map<String, Object>> CPMES_UI660_searchList(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("ui600.CPMES_UI660_searchList", map);
 	}
 	
 	

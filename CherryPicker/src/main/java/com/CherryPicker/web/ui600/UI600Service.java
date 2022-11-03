@@ -52,24 +52,24 @@ public class UI600Service	{
 		UI600DAO.CPMES_UI610_update_compYn(map);
 	}
 	
-	public List<Map<String, Object>> PSMES_UI620_searchList(Map<String, Object> map) throws Exception {
-		return UI600DAO.PSMES_UI620_searchList(map);
+	public List<Map<String, Object>> CPMES_UI620_searchList(Map<String, Object> map) throws Exception {
+		return UI600DAO.CPMES_UI620_searchList(map);
 	}
 	
-	public List<Map<String, Object>> PSMES_UI630_searchList(Map<String, Object> map) throws Exception {
-		return UI600DAO.PSMES_UI630_searchList(map);
+	public List<Map<String, Object>> CPMES_UI630_searchList(Map<String, Object> map) throws Exception {
+		return UI600DAO.CPMES_UI630_searchList(map);
 	}
 	
-	public List<Map<String, Object>> PSMES_UI640_searchList(Map<String, Object> map) throws Exception {
-		return UI600DAO.PSMES_UI640_searchList(map);
+	public List<Map<String, Object>> CPMES_UI640_searchList(Map<String, Object> map) throws Exception {
+		return UI600DAO.CPMES_UI640_searchList(map);
 	}
 	
-	public List<Map<String, Object>> PSMES_UI650_searchList(Map<String, Object> map) throws Exception {
-		return UI600DAO.PSMES_UI650_searchList(map);
+	public List<Map<String, Object>> CPMES_UI650_searchList(Map<String, Object> map) throws Exception {
+		return UI600DAO.CPMES_UI650_searchList(map);
 	}
 	
-	public List<Map<String, Object>> PSMES_UI660_searchList(Map<String, Object> map) throws Exception {
-		return UI600DAO.PSMES_UI660_searchList(map);
+	public List<Map<String, Object>> CPMES_UI660_searchList(Map<String, Object> map) throws Exception {
+		return UI600DAO.CPMES_UI660_searchList(map);
 	}
 	
 }

@@ -182,17 +182,17 @@ public class UI600Controller {
     }
 	
 	
-	@RequestMapping(value="/PSMES/PSMES_UI620.do")
-    public ModelAndView PSMES_UI620(CommandMap commandMap) throws Exception{
-    	ModelAndView mv = new ModelAndView("/PSMES/PSMES_UI620");
+	@RequestMapping(value="/CPMES/CPMES_UI620.do")
+    public ModelAndView CPMES_UI620(CommandMap commandMap) throws Exception{
+    	ModelAndView mv = new ModelAndView("/CPMES/CPMES_UI620");
     	
     	
 		
     	return mv;
     }
 	
-	@RequestMapping(value="/PSMES/PSMES_UI620_searchuser.do")
-    public ModelAndView PSMES_UI620_searchuser(CommandMap commandMap, HttpServletRequest request) throws Exception{
+	@RequestMapping(value="/CPMES/CPMES_UI620_searchuser.do")
+    public ModelAndView CPMES_UI620_searchuser(CommandMap commandMap, HttpServletRequest request) throws Exception{
 		
 		ModelAndView mv = new ModelAndView(); 
 		
@@ -205,12 +205,12 @@ public class UI600Controller {
 		return mv;
     }
 	
-	@RequestMapping(value="/PSMES/PSMES_UI620_searchList.do")
-    public ModelAndView PSMES_UI620_searchList(CommandMap commandMap, HttpServletRequest request) throws Exception{
+	@RequestMapping(value="/CPMES/CPMES_UI620_searchList.do")
+    public ModelAndView CPMES_UI620_searchList(CommandMap commandMap, HttpServletRequest request) throws Exception{
 		
 		ModelAndView mv = new ModelAndView(); 
 		
-		List<Map<String,Object>> list = UI600Service.PSMES_UI620_searchList(commandMap.getMap());
+		List<Map<String,Object>> list = UI600Service.CPMES_UI620_searchList(commandMap.getMap());
 		
 		mv.addObject("response", list);
 			
@@ -220,9 +220,9 @@ public class UI600Controller {
     }
 	
 	
-	@RequestMapping(value="/PSMES/PSMES_UI630.do")
-    public ModelAndView PSMES_UI630(CommandMap commandMap) throws Exception{
-    	ModelAndView mv = new ModelAndView("/PSMES/PSMES_UI630");
+	@RequestMapping(value="/CPMES/CPMES_UI630.do")
+    public ModelAndView CPMES_UI630(CommandMap commandMap) throws Exception{
+    	ModelAndView mv = new ModelAndView("/CPMES/CPMES_UI630");
     	
     	List<Map<String,Object>> list = CommService.searchYearCombo(commandMap.getMap());
 		mv.addObject("yearCombo", list);
@@ -231,10 +231,10 @@ public class UI600Controller {
     	return mv;
     }
 	
-	@RequestMapping(value="/PSMES/PSMES_UI630_searchList.do")
-    public ModelAndView PSMES_UI630_searchList(CommandMap commandMap, HttpServletRequest request) throws Exception{
+	@RequestMapping(value="/CPMES/CPMES_UI630_searchList.do")
+    public ModelAndView CPMES_UI630_searchList(CommandMap commandMap, HttpServletRequest request) throws Exception{
 		
-		List<Map<String,Object>> list = UI600Service.PSMES_UI630_searchList(commandMap.getMap());
+		List<Map<String,Object>> list = UI600Service.CPMES_UI630_searchList(commandMap.getMap());
 		
 		ModelAndView mv = new ModelAndView(); 
 			
@@ -245,9 +245,9 @@ public class UI600Controller {
 		return mv;
     }
 	
-	@RequestMapping(value="/PSMES/PSMES_UI640.do")
-    public ModelAndView PSMES_UI640(CommandMap commandMap) throws Exception{
-    	ModelAndView mv = new ModelAndView("/PSMES/PSMES_UI640");
+	@RequestMapping(value="/CPMES/CPMES_UI640.do")
+    public ModelAndView CPMES_UI640(CommandMap commandMap) throws Exception{
+    	ModelAndView mv = new ModelAndView("/CPMES/CPMES_UI640");
     	
     	List<Map<String,Object>> list = CommService.searchYearCombo(commandMap.getMap());
 		mv.addObject("yearCombo", list);
@@ -256,10 +256,10 @@ public class UI600Controller {
     	return mv;
     }
 	
-	@RequestMapping(value="/PSMES/PSMES_UI640_searchList.do")
-    public ModelAndView PSMES_UI640_searchList(CommandMap commandMap, HttpServletRequest request) throws Exception{
+	@RequestMapping(value="/CPMES/CPMES_UI640_searchList.do")
+    public ModelAndView CPMES_UI640_searchList(CommandMap commandMap, HttpServletRequest request) throws Exception{
 		
-		List<Map<String,Object>> list = UI600Service.PSMES_UI640_searchList(commandMap.getMap());
+		List<Map<String,Object>> list = UI600Service.CPMES_UI640_searchList(commandMap.getMap());
 		
 		ModelAndView mv = new ModelAndView(); 
 			
@@ -270,9 +270,9 @@ public class UI600Controller {
 		return mv;
     }
 	
-	@RequestMapping(value="/PSMES/PSMES_UI650.do")
-    public ModelAndView PSMES_UI650(CommandMap commandMap) throws Exception{
-    	ModelAndView mv = new ModelAndView("/PSMES/PSMES_UI650");
+	@RequestMapping(value="/CPMES/CPMES_UI650.do")
+    public ModelAndView CPMES_UI650(CommandMap commandMap) throws Exception{
+    	ModelAndView mv = new ModelAndView("/CPMES/CPMES_UI650");
     	
     	List<Map<String,Object>> list = CommService.searchYearCombo(commandMap.getMap());
 		mv.addObject("yearCombo", list);
@@ -281,10 +281,10 @@ public class UI600Controller {
     	return mv;
     }
 	
-	@RequestMapping(value="/PSMES/PSMES_UI650_searchList.do")
-    public ModelAndView PSMES_UI650_searchList(CommandMap commandMap, HttpServletRequest request) throws Exception{
+	@RequestMapping(value="/CPMES/CPMES_UI650_searchList.do")
+    public ModelAndView CPMES_UI650_searchList(CommandMap commandMap, HttpServletRequest request) throws Exception{
 		
-		List<Map<String,Object>> list = UI600Service.PSMES_UI650_searchList(commandMap.getMap());
+		List<Map<String,Object>> list = UI600Service.CPMES_UI650_searchList(commandMap.getMap());
 		
 		ModelAndView mv = new ModelAndView();  
 			
@@ -295,9 +295,9 @@ public class UI600Controller {
 		return mv;
     }
 	
-	@RequestMapping(value="/PSMES/PSMES_UI660.do")
-    public ModelAndView PSMES_UI660(CommandMap commandMap) throws Exception{
-    	ModelAndView mv = new ModelAndView("/PSMES/PSMES_UI660");
+	@RequestMapping(value="/CPMES/CPMES_UI660.do")
+    public ModelAndView CPMES_UI660(CommandMap commandMap) throws Exception{
+    	ModelAndView mv = new ModelAndView("/CPMES/CPMES_UI660");
     	
     	List<Map<String,Object>> list = CommService.searchYearCombo(commandMap.getMap());
 		mv.addObject("yearCombo", list);
@@ -306,10 +306,10 @@ public class UI600Controller {
     	return mv;
     }
 	
-	@RequestMapping(value="/PSMES/PSMES_UI660_searchList.do")
-    public ModelAndView PSMES_UI660_searchList(CommandMap commandMap, HttpServletRequest request) throws Exception{
+	@RequestMapping(value="/CPMES/CPMES_UI660_searchList.do")
+    public ModelAndView CPMES_UI660_searchList(CommandMap commandMap, HttpServletRequest request) throws Exception{
 		
-		List<Map<String,Object>> list = UI600Service.PSMES_UI660_searchList(commandMap.getMap());
+		List<Map<String,Object>> list = UI600Service.CPMES_UI660_searchList(commandMap.getMap());
 		
 		ModelAndView mv = new ModelAndView();  
 			
