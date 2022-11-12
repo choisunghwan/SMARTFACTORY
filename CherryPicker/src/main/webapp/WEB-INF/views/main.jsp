@@ -36,6 +36,7 @@ if(menuType == null) menuType="2";
 <meta http-equive="Content-Style-Type" content="text/css"/>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>대가대 CP</title>
+<link rel="icon" href="/resources/image/CP_icon.png">
 <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/content.css'/>">
 <%-- <script type="text/javascript" src="<c:url value='/resources/js/jquery.min.js'/>"></script> --%>
 <link rel="stylesheet" href="<c:url value='/resources/jqwidgets/styles/jqx.base.css'/>" type="text/css" />
@@ -819,6 +820,8 @@ function setDunutChart(index, cha)
 //- BAR CHART -  
 //-------------
 
+
+
 function fn_search_data3() {
 	//로딩이미지 오픈
 // 	$('#jqxLoader').jqxLoader('open');
@@ -1055,10 +1058,15 @@ function setData3(data)
 								<li><a href="#n" onclick = "javascript:addTab('/CPMES/CPMES_UI640.do', '외주관리현황')">외주관리현황</a></li>
 								<li><a href="#n" onclick = "javascript:addTab('/CPMES/CPMES_UI650.do', '제품출고현황')">제품출고현황</a></li>
 								<li><a href="#n" onclick = "javascript:addTab('/CPMES/CPMES_UI660.do', '월별누계')">월별누계</a></li>
-								
 							</ul> 
 						</li>
-						
+						<li class="active"><a href="#n" class="lnb">감지프로그램</a>
+						<ul>
+						<li><a href="#n" onclick = "javascript:addTab('/CPMES/CPMES_UI710.do', '출입관리 프로그램')">출입관리 프로그램</a></li>
+						<li><a href="#n" onclick = "javascript:addTab('/CPMES/CPMES_UI720.do', '물건감지 프로그램')">물건감지 프로그램</a></li>
+						<li><a href="#n" onclick = "javascript:addTab('/CPMES/CPMES_UI730.do', '화재감지 프로그램')">화재감지 프로그램</a></li>
+						<li><a href="#n" onclick = "javascript:addTab('/CPMES/CPMES_UI790.do', '얼굴감지 프로그램')">얼굴감지 프로그램</a></li>
+						</ul>
 						
 <!-- 						<li class="active"><a href="#n" class="lnb">TEST</a>
 							<ul>
@@ -1090,7 +1098,7 @@ function setData3(data)
 	</div><!-- #side 
 		
 			<!-- #container -->
-	<div id="container"  style="height: 100%; overflow:auto;">	   
+	<div id="container"  style="height: 100%;">	   
 		<div class="topbar">
 			
 			<a href="#n" class="btn-togg-left on">열기/닫기
@@ -1122,14 +1130,14 @@ function setData3(data)
 						</div>  
 					</div>   
 					<!-- Main content -->
+					
 				    <table style="width: 100%;">
 				    	<tr>
 				    		<td style="width: 50%;">  
 				    			
 				    			<div class="card card-secondary" style="margin: 10px;">
 					              <div class="card-header">
-					                <h3 class="card-title">  월 수주 및 발주현황</h3>
-					                <h2><a href="https://drive.google.com/drive/folders/1LvvmF9INyLZrYa8Ma4tVt6bNuOijrxis?usp=share_link">접속</a></h2> 
+					                <h3 class="card-title">  월 수주 및 발주현황</h3>  
 					              </div>
 					              <!-- /.card-header -->
 					              <div class="card-body" > 
@@ -1287,24 +1295,31 @@ function setData3(data)
 				    	
 				    </table>
 				          
-					<div id ="grape_area" style="padding:0px">  
+					<div id ="grape_area" style="padding:0px; height: 47%">  
 <!-- 					  	<h3 class="tit">&nbsp;&nbsp;□ 년간  탈산제 원료입고/ 제품 생산 실적</h3> -->
 					  	    
-					  	<table   style="width:100%; height:100%;" style="padding:10px">
+					  	<table   style="width:100%; height:100%;">
 					  		<colgroup>
 							    <col width="100%" />
-							</colgroup>  
+							</colgroup>
+							
+							
+							<!-- 수정할부분 -->  
 					  		<tr>  
-								<td style="padding:0px; height: 100%;">    
-								<div class="card card-secondary" style="margin: 10px;height:460px" >
+					  			<td style="padding:0px; height: 100%;">  
+								<div class="card card-secondary" style="margin: 10px; height:100%;" >
 									<div class="card-header">
 										<h3 class="card-title">  월별 수주/외주/일반관리비</h3>  
 									</div>	
 					                
+					               <!-- 여기  -->
+					             
+					                
+					                
+					                
 									<div class="card-body">  
-										<div class="chart">
-						                  <canvas id="barChart" style="min-height: 400px; height: 400px; max-height: 400px; max-width: 100%;"></canvas> 
-						                  <%-- <canvas id="barChart" style="min-height: 100%; height: 100%; max-height: 100%; min-width:100%; width: 100%; max-width: 100%;"></canvas> --%>
+										<div class="chart" style="height: 100%;">
+						                  <canvas id="barChart" style="min-height: 100%; height: 100%; max-height: 100%; max-width: 100%;"></canvas>
 										</div>
 									</div>
 								</div>	  
@@ -1313,8 +1328,8 @@ function setData3(data)
 					  		
 					  	</table>
 					</div>
-		       </div>
 		       
+		       </div>
 			</div>
 			
 		</div>
