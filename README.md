@@ -1,4 +1,4 @@
-# 인공지능 영상인식을 활용한 스마트 팩토리👩‍💻⚙
+# 인공지능 영상인식을 활용한 스마트 팩토리👩‍💻⚙ 🥇
 ---
 
 <h2>Smart Factory Using Artificial Intelligence Image Recognition</h2>
