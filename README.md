@@ -46,7 +46,7 @@ SmartFactory: 스마트 팩토리
 
 <h3> ScreenShot </h3>
 
-<img src="https://user-images.githubusercontent.com/33335762/202643963-ceb1a9ff-62b9-4b15-bb0e-136da171aec9.png" width="680" />
+<img src="https://user-images.githubusercontent.com/33335762/202643963-ceb1a9ff-62b9-4b15-bb0e-136da171aec9.png"/>
 
 ![image](https://user-images.githubusercontent.com/33335762/202644338-922d5805-dac3-4cc4-a9f0-24b1c9bd858c.png)
 
