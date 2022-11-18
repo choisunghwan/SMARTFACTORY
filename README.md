@@ -62,11 +62,11 @@ SmartFactory: 스마트 팩토리
 ---
 <h3>블로그 정리</h3>
 
-### DB 분석
+### DB 분석 👨‍💻
 
 쿼리 해석: https://couchcoding.tistory.com/328
 
-### Skill
+### Skill 🛠
 
 WebSocket : https://couchcoding.tistory.com/331
 
