@@ -16,7 +16,21 @@ Project execution period: 2022.10.19~2022.11.30
 
 </p>
 
+<h4>ERP(Enterprise resource planning) vs MES(Manufacturing Execution Systems) vs SMART FACTORY  개념 정의 </h4>
 
+erp : 전사적 자원 관리 
+
+- 전사적 자원 관리는 회사의 모든 정보 뿐만 아니라, 공급 사슬관리, 고객의 주문정보까지 포함하여 통합적으로 관리하는 시스템이다
+
+MES : 생산 관리 시스템
+
+- 기업의 생산 현장에서 작업 일정, 작업 지시, 품질 관리, 작업 실적 집계 등 제반 활동을 지원하기 위한 관리 시스템을 말한다.
+
+- 생산관리시스템은 생산 계획과 실행의 차이를 줄이기 위한 현장 상태의 실시간 정보 제공을 통하여 인공지능과 설비 사이의 의사 결정을 지원하는 기능을 수행한다.
+
+SmartFactory: 스마트 팩토리
+
+- 스마트팩토리는 설계 및 개발, 제조 및 유통 등 생산과정에 디지털 자동화 솔루션이 결합된 정보통신기술(ICT)를 적용하여 생산성, 품질, 고객만족도를 향상시키는 지능형 생산공장으로 공장 내 설비와 기계에 사물인터넷(IoT)을 설치하여 공정 데이터를 실시간으로 수집하고, 이를 분석해 스스로 제어할 수 있게 만든 미래의 공장이다
 
 
 
@@ -30,7 +44,7 @@ Project execution period: 2022.10.19~2022.11.30
 <img src="https://user-images.githubusercontent.com/33335762/202595930-75bed747-8695-44e6-b10b-f55dab40d56d.png" width="680" />
 
 
-<h3> screenshot </h3>
+<h3> ScreenShot </h3>
 
 <img src="https://user-images.githubusercontent.com/33335762/202643963-ceb1a9ff-62b9-4b15-bb0e-136da171aec9.png" width="680" />
 
