@@ -11,7 +11,7 @@
 
 UserVO user = (UserVO)session.getAttribute("UserInfo");
 
-String pSearchStaDt = CommonUtils.diffDate(7);
+String pSearchStaDt = CommonUtils.diffDate(0);
 String pSearchEndDt = CommonUtils.currenDate();
 
 String param1 = request.getParameter("param1");	
@@ -944,6 +944,7 @@ function returnValue(arr){
 			<div class="content-inner hid" style="height:100%">
 				<div class="inner_top">
 					<h3 class="tit">수주등록및조회</h3>
+					
 					<div class="top_btn">
 						<a href="#n" class="btn1" id="btn1" style="display: inline-block;">외주발주</a>
 						<a href="#n" class="btn1" id="btn2" style="display: inline-block;">작업지시</a>
@@ -1032,7 +1033,7 @@ function returnValue(arr){
 											</td>
 											<th>일반관리비</th>
 											<td>
-												<input type="text" style="width:100%;text-align:right;" class="form-control" id="pGeneralCost" name="pGeneralCost_">
+												<input type="text" style="width:100%;text-align:right;" class="form-control" id="pGeneralCost" name="pGeneralCost">
 											</td>
 											<th>결정가</th>
 											<td>

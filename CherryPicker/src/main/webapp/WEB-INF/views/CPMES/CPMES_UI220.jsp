@@ -25,7 +25,7 @@ String pSearchEndDt = CommonUtils.currenDate();
 <meta http-equive="Content-Style-Type" content="text/css"/>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>휴비즈ICT</title>
+<title>DCU CP</title>
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1" />	
@@ -96,7 +96,7 @@ $(document).ready(function() {
 		fn_search("/CPMES/CPMES_UI220_searchMas.do", "grid",setColumn,"100%", true);
 		console.log("111111111111111111");
 		setGrid("grid2", "",setColumn,"100%");
-		console.log("2222222222222222222");
+		
 	});
 	
 	//저장버튼 이벤트

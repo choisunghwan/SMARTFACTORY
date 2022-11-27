@@ -660,7 +660,7 @@ var fn_del = function(grid_id)
 // 			$("#P_ORDER_NO_CP").val("");
 //             $("#P_ORDER_PK_CP").val("");
 //             $("#P_ORDER_NAME_CP").val("");
-//             $("#COMPANY_CODE_CP_NM_CP").val("");
+//             $("#COMPANY_CODE_NM_CP").val("");
 //             $("#COMPANY_CODE_CP").val("");
 //             $("#P_ORDER_DATE_CP").val("");
 //             $("#FIXED_DATE_CP").val("");
@@ -883,7 +883,7 @@ function windowOpen(url, wname, w, h, scrollbars){
 					<div class="top_btn">
 						<a href="#n" class="btn1" id="btnBalju" style="display: inline-block;">발주서생성</a>
 						<a href="#n" class="btn1" id="btnSearch" style="display: inline-block;">조회</a>
-						<a href="#n" class="btn1" id="btnReload" style="display: none;" >신규</a>
+						<a href="#n" class="btn1" id="btnReload" style="display: inline-block;" >신규</a>
 						<a href="#n" class="btn1" id="btnSave" style="display: inline-block;">저장</a>
 						<a href="#n" class="btn1" id="btnDel" style="display: inline-block;">삭제</a>
 					</div>

@@ -25,8 +25,8 @@ String pSearchEndDt = CommonUtils.currenDate();
 <meta http-equive="Content-Style-Type" content="text/css"/>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>DCU CP</title>
-
+<title>대가대 CP</title>
+<link rel="icon" href="/resources/image/CP_icon.png">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1" />	
 	
