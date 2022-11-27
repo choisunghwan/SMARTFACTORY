@@ -42,7 +42,7 @@
 	
 	
 	<select id="CPMES_UI210_searchMas" parameterType="hashmap" resultType="hashmap">
-	<![CDATA[  `
+	<![CDATA[ 
 		SELECT T.R_ORDER_PK_CP
 			 , T.R_ORDER_NO_CP
 			 , T.R_ORDER_NAME_CP
@@ -340,7 +340,7 @@ VALUES
 		      ,UPDATE_DATE_CP  = getdate()
 		 WHERE 1=1
 		   AND R_ORDER_PK_CP = #{pROrderPk}
-		   AND PRODUCT_NO_CP = #{produnctNo}
+		   AND PRODUCT_NO_CP = #{productNo}
 		   AND R_ORDER_DETAIL_PK_CP = (
 		                             SELECT R_ORDER_DETAIL_PK_CP FROM dbo.TB_RECEIVE_ORDER_CP WHERE R_ORDER_NO_CP = #{orderNo}
 		                           )
@@ -370,10 +370,10 @@ VALUES
 	<update id="CPMES_UI230_save" parameterType="hashmap">
 		<![CDATA[  
 	UPDATE [dbo].[TB_RECEIVE_ORDER_CP]
-	   SET SALES_TP = 'S05'
+	   SET SALES_TP_CP = 'S05'
 	 	  ,UPDATE_USER_CP = #{UPDATE_USER_CP}
 	 	  ,UPDATE_DATE_CP = GETDATE()
-	 WHERE R_ORDER_PK_CP = #{R_ORDER_PK}
+	 WHERE R_ORDER_PK_CP = #{R_ORDER_PK_CP}
 	   ]]>
 	</update>
 	
