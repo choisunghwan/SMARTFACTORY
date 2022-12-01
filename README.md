@@ -57,6 +57,13 @@ SmartFactory: 스마트 팩토리
 ![image](https://user-images.githubusercontent.com/33335762/202645020-c0cade44-56b9-4636-af24-539cf1092a49.png)
 
 
+##시연영상
+
+
+
+https://user-images.githubusercontent.com/33335762/205066367-3b922b9a-7ac2-4ae2-9569-7505781d2426.mp4
+
+
 
 
 ---
