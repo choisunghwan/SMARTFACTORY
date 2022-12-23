@@ -5,7 +5,7 @@
 
 Team name: Cherry Picker(체리피커)
 
-Project execution period: 2022.10.19~2022.11.30
+Project execution period: 2022.10.19~2022.11.30.
 
 ---
 <h3>Description</h3>
