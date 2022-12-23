@@ -1,6 +1,6 @@
 # 인공지능 영상인식을 활용한 스마트 팩토리👩‍💻⚙ 🥇
 ---
-
+![header](https://capsule-render.vercel.app/api?type=wave&color=cbb3ff&height=300&section=header&text=스마트팩토리%20시스템&fontSize=70)
 <h2>Smart Factory Using Artificial Intelligence Image Recognition</h2>
 
 Team name: Cherry Picker(체리피커)
